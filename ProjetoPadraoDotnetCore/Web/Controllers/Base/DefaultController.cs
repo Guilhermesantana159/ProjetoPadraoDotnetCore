@@ -1,0 +1,81 @@
+﻿using Aplication.Enum;
+using Aplication.Models.Response.Base;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Web.Controllers.Base;
+
+public class DefaultController : ControllerBase
+{
+    protected JsonResult ResponderSucesso(string mensagem,object objeto)
+    {
+        var retorno = new Retorno()
+        {
+            Mensagem = mensagem,
+            Objeto = objeto,
+            Status = StatusRetorno.Sucesso,
+            Sucesso = true
+        };
+        
+        return new JsonResult(retorno);
+    }
+    protected JsonResult ResponderSucesso(string mensagem)
+    {
+        var retorno = new Retorno()
+        {
+            Mensagem = mensagem,
+            Status = StatusRetorno.Sucesso,
+            Sucesso = true
+        };
+        
+        return new JsonResult(retorno);
+    }
+    
+    protected JsonResult ResponderSucesso(object objeto)
+    {
+        var retorno = new Retorno()
+        {
+            Status = StatusRetorno.Sucesso,
+            Sucesso = true,
+            Objeto = objeto
+        };
+        
+        return new JsonResult(retorno);
+    }
+
+    protected JsonResult ResponderErro(string mensagem,object objeto)
+    {
+        var retorno = new Retorno()
+        {
+            Mensagem = mensagem,
+            Objeto = objeto,
+            Status = StatusRetorno.Erro,
+            Sucesso = false
+        };
+        
+        return new JsonResult(retorno);
+    }
+    
+    protected JsonResult ResponderErro(string mensagem)
+    {
+        var retorno = new Retorno()
+        {
+            Mensagem = mensagem,
+            Status = StatusRetorno.Erro,
+            Sucesso = false
+        };
+        
+        return new JsonResult(retorno);
+    }
+    
+    protected JsonResult ResponderErro(object objeto)
+    {
+        var retorno = new Retorno()
+        {
+            Status = StatusRetorno.Erro,
+            Sucesso = false,
+            Objeto = objeto
+        };
+        
+        return new JsonResult(retorno);
+    }
+}
