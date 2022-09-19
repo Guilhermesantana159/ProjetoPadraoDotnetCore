@@ -3,5 +3,8 @@
 public class UsuarioRequest
 {
     public string Nome { get; set; } = null!;
-    public int Idade { get; set; }
+    public string Email { get; set; } = null!;
+    public string Cpf { get; set; } = null!;
+    public string Telefone { get; set; } = null!;
+    public string Senha { get; set; } = null!;
 }

@@ -1,5 +1,7 @@
 ﻿using Aplication.Interfaces;
 using Aplication.Models.Request;
+using Aplication.Utils.Obj;
+using Aplication.Validators.Usuario;
 using AutoMapper;
 using Domain.Interfaces;
 using Infraestrutura.Entity;
@@ -9,11 +11,13 @@ public class UsuarioApp : IUsuarioApp
 {
     protected readonly IUsuarioService Service;
     protected readonly IMapper Mapper;
+    protected readonly IUsuarioValidator Validation;
 
-    public UsuarioApp(IUsuarioService service,IMapper mapper)
+    public UsuarioApp(IUsuarioService service,IMapper mapper,IUsuarioValidator validation)
     {
         Service = service;
         Mapper = mapper;
+        Validation = validation;
     }
 
     public List<Usuario> GetAll()
@@ -30,6 +34,19 @@ public class UsuarioApp : IUsuarioApp
     {
         var usuario = Mapper.Map<UsuarioRequest,Usuario>(request);
         Service.Cadastrar(usuario);
+    }
+
+    public ValidationResult CadastroInicial(UsuarioRegistroInicialRequest request)
+    {
+        var validation = Validation.ValidaçãoCadastroInicial(request);
+        
+        if(validation.Valid)
+        {
+            var usuario = Mapper.Map<UsuarioRegistroInicialRequest,Usuario>(request);
+            Service.Cadastrar(usuario);
+        }
+
+        return validation;
     }
 
     public void CadastrarListaUsuario(List<Usuario> lUsuario)

@@ -1,5 +1,6 @@
 ﻿using Aplication.Controllers;
 using Aplication.Interfaces;
+using Aplication.Validators.Usuario;
 using Domain.Interfaces;
 using Domain.Services;
 using Infraestrutura.DataBaseContext;
@@ -15,9 +16,13 @@ namespace CrossCutting.IOC
     {
         public static void Injectory(this IServiceCollection services, WebApplicationBuilder builder)
         {
+            //Validators
+            services.AddScoped<IUsuarioValidator, UsuarioValidator>();
+            
             //Aplicação
             services.AddScoped<IUsuarioApp, UsuarioApp>();
-
+            services.AddScoped<IAuthApp, AuthApp>();
+            
             //Domínio
             services.AddScoped<IUsuarioService, UsuarioService>();
 
@@ -31,5 +36,6 @@ namespace CrossCutting.IOC
             services.AddDbContext<Context>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
         }
+        
     }
 }

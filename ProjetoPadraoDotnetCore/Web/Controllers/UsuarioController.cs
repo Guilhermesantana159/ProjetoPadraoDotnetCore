@@ -32,6 +32,25 @@ public class UsuarioController : DefaultController
             return ResponderErro(e.Message);
         }
     }
+    
+    [HttpPost]
+    [Route("CadastroInicial")]
+    public JsonResult CadastroInicial(UsuarioRegistroInicialRequest request)
+    {
+        try
+        {
+            var cadastro = App.CadastroInicial(request);
+
+            if (!cadastro.Valid)
+                return ResponderErro(cadastro.LErrors.FirstOrDefault());
+                
+            return ResponderSucesso("Usuário cadastrado com sucesso!");
+        }
+        catch (Exception e)
+        {
+            return ResponderErro(e.Message);
+        }
+    }
 
     [HttpGet]
     [Route("ConsultarTodos")]

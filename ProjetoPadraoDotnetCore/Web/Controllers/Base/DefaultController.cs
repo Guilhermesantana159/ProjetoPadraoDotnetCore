@@ -55,7 +55,7 @@ public class DefaultController : ControllerBase
         return new JsonResult(retorno);
     }
     
-    protected JsonResult ResponderErro(string mensagem)
+    protected JsonResult ResponderErro(string? mensagem)
     {
         var retorno = new Retorno()
         {

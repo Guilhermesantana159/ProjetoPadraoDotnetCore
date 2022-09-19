@@ -22,6 +22,8 @@
     <ItemGroup>
       <Compile Remove="IRepository\**" />
       <Compile Remove="Repository\Interface\IBaseWriteRespository.cs" />
+      <Compile Remove="Migrations\20220913232913_Initial.cs" />
+      <Compile Remove="Migrations\20220913232913_Initial.Designer.cs" />
     </ItemGroup>
 
     <ItemGroup>
