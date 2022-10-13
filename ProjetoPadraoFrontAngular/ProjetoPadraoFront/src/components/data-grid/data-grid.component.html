@@ -1,0 +1,35 @@
+<table mat-table matSort (matSortChange)="ConsultarGrid(undefined,$event)" [dataSource]="data">
+  <!-- Cabeçalho e corpo -->
+  <ng-container *ngFor="let item of displayedColumns">
+    <ng-container [matColumnDef]="item">
+      <th class="px-5" [mat-sort-header]="item" mat-header-cell *matHeaderCellDef> {{item}} </th>
+      <td class="px-5" mat-cell *matCellDef="let data"> {{data[item]}} </td>
+    </ng-container>
+  </ng-container>
+
+  <!--Filtro -->
+  <ng-container *ngFor="let item of displayedColumnsFilter">
+    <ng-container [matColumnDef]="item">
+      <th class="px-5" mat-header-cell *matHeaderCellDef>{{item}}</th>
+    </ng-container>
+  </ng-container>
+
+
+  <!-- Primeira linha do header -->
+  <tr mat-header-row *matHeaderRowDef="displayedColumns" class="example-first-header-row"></tr>
+
+  <!-- Segunda linha do header -->
+  <tr mat-header-row *matHeaderRowDef="displayedColumnsFilter"></tr>
+
+  <!-- Body da tabela -->
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+<mat-paginator 
+  [length]="pageEvent.length"
+  [pageIndex]="pageEvent.pageIndex"
+  [pageSize]="pageEvent.pageSize"
+  [pageSizeOptions]="pageSizeOptions"
+  (page)="ConsultarGrid($event,undefined)"
+  showFirstLastButtons="true">
+</mat-paginator>
+

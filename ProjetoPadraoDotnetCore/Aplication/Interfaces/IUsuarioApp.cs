@@ -1,12 +1,14 @@
-﻿using Aplication.Models.Request;
-using Aplication.Utils.Obj;
+﻿using Aplication.DTO.Grid;
+using Aplication.Models.Request.Usuario;
 using Infraestrutura.Entity;
+using ValidationResult = Aplication.Utils.Obj.ValidationResult;
 
 namespace Aplication.Interfaces;
 
 public interface IUsuarioApp
 {
     public List<Usuario> GetAll();
+    public Usuario? GetByCpf(string cpf);
     public Usuario GetById(int id);
     public void Cadastrar(UsuarioRequest request);
     public ValidationResult CadastroInicial(UsuarioRegistroInicialRequest request);
@@ -14,4 +16,6 @@ public interface IUsuarioApp
     public void Editar(Usuario usuario);
     public void EditarListaUsuario(List<Usuario> lUsuario);
     public void DeleteById(int id);
+    public BaseGridResponse ConsultarGridUsuario(BaseGridRequest request);
+
 }

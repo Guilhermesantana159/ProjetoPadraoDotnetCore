@@ -14,6 +14,9 @@ public class Context : DbContext
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());    
     }
-    
+
+    //Injeção dos dataSets
     public DbSet<Usuario> Usuario { get; set; } = null!;
+    public DbSet<Modulo> Modulo { get; set; } = null!;
+    public DbSet<Menu> Menu { get; set; } = null!;
 }

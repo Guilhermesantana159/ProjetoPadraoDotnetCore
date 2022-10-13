@@ -5,6 +5,7 @@ namespace Domain.Interfaces;
 public interface IUsuarioService
 {
     public Usuario GetById(int id);
+    public Usuario? GetByCpf(string cpf);
     public List<Usuario> GetAll();
     public void Cadastrar(Usuario usuarioEntity);
     public void CadastrarListaUsuario(List<Usuario> lUsuario);

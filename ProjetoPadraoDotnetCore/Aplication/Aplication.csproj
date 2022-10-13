@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="DTO" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Domain\Domain.csproj" />
     </ItemGroup>
 
@@ -20,6 +16,7 @@
 
     <ItemGroup>
       <Compile Remove="AutoMapper\ViewToDomain.cs" />
+      <Compile Remove="DTO\Grid\Order.cs" />
     </ItemGroup>
 
 </Project>

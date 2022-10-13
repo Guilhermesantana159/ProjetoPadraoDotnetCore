@@ -1,7 +1,9 @@
+using Aplication.DTO.Grid;
 using Aplication.Interfaces;
-using Aplication.Models.Request;
+using Aplication.Models.Request.Usuario;
 using Aplication.Models.Response;
 using Infraestrutura.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Controllers.Base;
 
@@ -41,7 +43,7 @@ public class UsuarioController : DefaultController
         {
             var cadastro = App.CadastroInicial(request);
 
-            if (!cadastro.Valid)
+            if (!cadastro.IsValid())
                 return ResponderErro(cadastro.LErrors.FirstOrDefault());
                 
             return ResponderSucesso("Usuário cadastrado com sucesso!");
@@ -53,6 +55,7 @@ public class UsuarioController : DefaultController
     }
 
     [HttpGet]
+    [Authorize]
     [Route("ConsultarTodos")]
     public JsonResult ConsultarTodos()
     {
@@ -138,6 +141,23 @@ public class UsuarioController : DefaultController
         {
             App.DeleteById(id);
             return ResponderSucesso("Usuário deletado com sucesso!");
+        }
+        catch (Exception e)
+        {
+            return ResponderErro(e.Message);
+        }
+    }
+    
+    [HttpPost]
+    [Authorize]
+    [Route("ConsultarGridUsuario")]
+    public JsonResult ConsultarGridUsuario(BaseGridRequest request)
+    {
+        try
+        {
+            var retorno = App.ConsultarGridUsuario(request);
+            
+            return ResponderSucesso(retorno);
         }
         catch (Exception e)
         {

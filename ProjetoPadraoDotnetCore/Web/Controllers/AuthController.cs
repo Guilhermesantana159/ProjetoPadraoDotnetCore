@@ -1,5 +1,7 @@
+using Aplication.Authentication;
 using Aplication.Interfaces;
-using Aplication.Models.Request;
+using Aplication.Models.Request.Login;
+using Aplication.Models.Request.Token;
 using Microsoft.AspNetCore.Mvc;
 using Web.Controllers.Base;
 
@@ -9,11 +11,16 @@ namespace Web.Controllers;
 [Route("[controller]")]
 public class AuthController : DefaultController
 {
-    protected readonly IAuthApp App;
+    protected readonly IAuthApp AuthApp;
+    protected readonly IJwtTokenAuthentication Token;
+    protected readonly IUsuarioApp UsuarioApp;
+
     
-    public AuthController(IAuthApp authApp)
+    public AuthController(IAuthApp authApp,IJwtTokenAuthentication token,IUsuarioApp usuarioApp)
     {
-        App = authApp;
+        AuthApp = authApp;
+        Token = token;
+        UsuarioApp = usuarioApp;
     }
 
     [HttpPost]
@@ -22,11 +29,32 @@ public class AuthController : DefaultController
     {
         try
         {
-            var retorno = App.Login(request);
+            var retorno = AuthApp.Login(request);
 
             if (!retorno.Autenticado)
                 return ResponderErro("Usuário ou senha inválido!");
+
+            return ResponderSucesso(retorno);
+        }
+        catch (Exception e)
+        {
+            return ResponderErro(e.Message);
+        }
+    }
+    
+    [HttpPost]
+    [Route("GerarToken")]
+    public JsonResult GerarToken(TokenRequest request)
+    {
+        try
+        {
+            var usuario = UsuarioApp.GetByCpf(request.Cpf);
             
+            if(usuario == null)
+                return ResponderErro("Não foi encontrado usuário com este CPF!");
+
+            var retorno = Token.GerarToken(request.Cpf);
+
             return ResponderSucesso(retorno);
         }
         catch (Exception e)

@@ -11,7 +11,7 @@ public class DefaultController : ControllerBase
         var retorno = new Retorno()
         {
             Mensagem = mensagem,
-            Objeto = objeto,
+            Data = objeto,
             Status = StatusRetorno.Sucesso,
             Sucesso = true
         };
@@ -36,18 +36,18 @@ public class DefaultController : ControllerBase
         {
             Status = StatusRetorno.Sucesso,
             Sucesso = true,
-            Objeto = objeto
+            Data = objeto
         };
         
         return new JsonResult(retorno);
     }
-
+    
     protected JsonResult ResponderErro(string mensagem,object objeto)
     {
         var retorno = new Retorno()
         {
             Mensagem = mensagem,
-            Objeto = objeto,
+            Data = objeto,
             Status = StatusRetorno.Erro,
             Sucesso = false
         };
@@ -73,7 +73,7 @@ public class DefaultController : ControllerBase
         {
             Status = StatusRetorno.Erro,
             Sucesso = false,
-            Objeto = objeto
+            Data = objeto
         };
         
         return new JsonResult(retorno);

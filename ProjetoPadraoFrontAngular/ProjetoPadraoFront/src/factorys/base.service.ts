@@ -1,5 +1,5 @@
-import { HttpClient, JsonpClientBackend } from "@angular/common/http";
-import { Injectable, OnInit } from '@angular/core';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from '@angular/core';
 import { environment } from "src/environments/environment.prod";
 
 @Injectable({
@@ -18,8 +18,8 @@ export class BaseService{
         this.rota = environment.link;
     }
 
-    Get(controller: string,metodo: string,objetoEnvio:any){
-        return this.request.get<any>(this.rota + controller + '/' + metodo, objetoEnvio)
+    Get(controller: string,metodo: string){
+        return this.request.get<any>(this.rota + controller + '/' + metodo)
     };
     
     Post(controller: string,metodo: string,objetoEnvio: any){

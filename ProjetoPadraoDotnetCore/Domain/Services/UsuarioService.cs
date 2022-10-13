@@ -19,7 +19,12 @@ public class UsuarioService : IUsuarioService
     {
         return ReadRepository.GetById(id);
     }
-    
+
+    public Usuario? GetByCpf(string cpf)
+    {
+        return ReadRepository.GetAll().FirstOrDefault(x => x.Cpf == cpf);
+    }
+
     public List<Usuario> GetAll()
     {
         return ReadRepository.GetAll().ToList();

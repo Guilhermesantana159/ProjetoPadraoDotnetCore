@@ -1,16 +1,7 @@
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 
-body{
-    background: url('src/assets/Images/Walpaper.jpg') no-repeat center center fixed;
-    background-size: cover;
-}
-
 button:hover{
     cursor: pointer;
-}
-
-button:disabled{
-    cursor: no-drop;
 }
 
 input:hover{
@@ -19,4 +10,19 @@ input:hover{
 
 label:hover{
     cursor: auto;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    left: 0;
+    top: 0;
+}
+
+a{
+    cursor: pointer;
+}
+
+login-root{
+    background-image: url('assets/Images/WallPaperLogin.png') ;
 }

@@ -1,5 +1,6 @@
-﻿using Aplication.Interfaces;
-using Aplication.Models.Request;
+﻿using Aplication.DTO.Grid;
+using Aplication.Interfaces;
+using Aplication.Models.Request.Usuario;
 using Aplication.Utils.Obj;
 using Aplication.Validators.Usuario;
 using AutoMapper;
@@ -24,7 +25,12 @@ public class UsuarioApp : IUsuarioApp
     {
         return Service.GetAll();
     }
-    
+
+    public Usuario? GetByCpf(string cpf)
+    {
+        return Service.GetByCpf(cpf);
+    }
+
     public Usuario GetById(int id)
     {
         return Service.GetById(id);
@@ -39,8 +45,12 @@ public class UsuarioApp : IUsuarioApp
     public ValidationResult CadastroInicial(UsuarioRegistroInicialRequest request)
     {
         var validation = Validation.ValidaçãoCadastroInicial(request);
+        var lUsuario = Service.GetAll();
+
+        if (lUsuario.Any(x => x.Email == request.Email))
+            validation.LErrors.Add("Email já vinculado a outro usuário");
         
-        if(validation.Valid)
+        if(validation.IsValid())
         {
             var usuario = Mapper.Map<UsuarioRegistroInicialRequest,Usuario>(request);
             Service.Cadastrar(usuario);
@@ -67,6 +77,24 @@ public class UsuarioApp : IUsuarioApp
     public void DeleteById(int id)
     {
         Service.DeleteById(id);
+    }
+    
+    public BaseGridResponse ConsultarGridUsuario(BaseGridRequest request)
+    {
+        var itens = Service
+            .GetAll();
+
+        // itens = request.Order.Active == string.Empty
+        //     ? itens.OrderByDescending(x => x.IdUsuario)
+        //     : request.Order.Direction == "desc"
+        //         ? itens.OrderByDescending(x => )
+        //         : itens.OrderBy(x => request.Order.Active);
+        
+        return new BaseGridResponse()
+        {
+            Itens = itens.Skip(request.Page).Take(request.Take),
+            TotalItens = itens.Count()
+        };
     }
 }
 

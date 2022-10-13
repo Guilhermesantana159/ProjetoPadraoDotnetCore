@@ -1,41 +1,17 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { AppComponent } from 'src/app/entities/base/app.component';
+import { EntitiesModule } from 'src/app/entities.module';
 import { AppRoutingModule } from './routes/app-routing.module';
-import { AppComponent } from '../app/base/app.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { LoginComponent } from '../app/entities/login/login.component';
-import { MainComponent } from '../app/entities/main/main.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { TextErrorMessageComponentModule } from 'src/components/text-error-message/text-error-message.module';
-import { NgxMaskModule, IConfig } from 'ngx-mask'
-import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-
-const maskConfigFunction: () => Partial<IConfig> = () => {
-  return {
-    validation: true,
-  };
-};
+import { BrowserModule } from '@angular/platform-browser';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    MainComponent
-    ],
+  declarations: [],
   imports: [
-    BrowserModule,
+    EntitiesModule,
     AppRoutingModule,
-    FontAwesomeModule,
-    ReactiveFormsModule,
-    FormsModule,
-    HttpClientModule,
-    TextErrorMessageComponentModule,
-    NgxMaskModule.forRoot(maskConfigFunction),
-    ToastrModule.forRoot(),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    BrowserModule
   ],
   providers: [],
   bootstrap: [AppComponent]

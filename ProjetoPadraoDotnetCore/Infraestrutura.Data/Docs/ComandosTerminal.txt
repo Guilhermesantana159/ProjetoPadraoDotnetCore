@@ -1,5 +1,5 @@
 ﻿//Criar Migration
-dotnet ef migrations add AddCamposNovosRegistroInitial
+dotnet ef migrations add AddTableMenu
 
 //Remover ultimo migration
 dotnet ef migrations remove

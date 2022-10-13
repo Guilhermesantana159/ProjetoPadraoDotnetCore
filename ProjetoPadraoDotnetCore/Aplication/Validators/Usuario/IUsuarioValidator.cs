@@ -1,5 +1,6 @@
 ﻿using Aplication.Models.Request;
-using Aplication.Utils.Obj;
+using Aplication.Models.Request.Usuario;
+using ValidationResult = Aplication.Utils.Obj.ValidationResult;
 
 namespace Aplication.Validators.Usuario;
 

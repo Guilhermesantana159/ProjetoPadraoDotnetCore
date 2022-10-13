@@ -21,6 +21,62 @@ namespace Infraestrutura.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("Infraestrutura.Entity.Menu", b =>
+                {
+                    b.Property<int>("IdMenu")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdMenu"), 1L, 1);
+
+                    b.Property<int>("IdModulo")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Link")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Link");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Nome");
+
+                    b.HasKey("IdMenu");
+
+                    b.HasIndex("IdModulo");
+
+                    b.ToTable("MENU", (string)null);
+                });
+
+            modelBuilder.Entity("Infraestrutura.Entity.Modulo", b =>
+                {
+                    b.Property<int>("IdModulo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdModulo"), 1L, 1);
+
+                    b.Property<string>("DescricaoLabel")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("DESCRICAOLABEL");
+
+                    b.Property<string>("Icone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ICONE");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("NOME");
+
+                    b.HasKey("IdModulo");
+
+                    b.ToTable("MODULO", (string)null);
+                });
+
             modelBuilder.Entity("Infraestrutura.Entity.Usuario", b =>
                 {
                     b.Property<int>("IdUsuario")
@@ -51,13 +107,28 @@ namespace Infraestrutura.Migrations
                         .HasColumnName("SENHA");
 
                     b.Property<string>("Telefone")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("TELEFONE");
 
                     b.HasKey("IdUsuario");
 
                     b.ToTable("USUARIO", (string)null);
+                });
+
+            modelBuilder.Entity("Infraestrutura.Entity.Menu", b =>
+                {
+                    b.HasOne("Infraestrutura.Entity.Modulo", "Modulo")
+                        .WithMany("lMenus")
+                        .HasForeignKey("IdModulo")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Modulo");
+                });
+
+            modelBuilder.Entity("Infraestrutura.Entity.Modulo", b =>
+                {
+                    b.Navigation("lMenus");
                 });
 #pragma warning restore 612, 618
         }

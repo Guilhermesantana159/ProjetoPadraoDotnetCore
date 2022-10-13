@@ -1,87 +1,78 @@
-<div class="container-fluid">
-    <div class="row flex-nowrap">
-        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
-            <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-                <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                    <span class="fs-5 d-none d-sm-inline">Menu</span>
-                </a>
-                <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link align-middle px-0">
-                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Home</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#submenu1" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">Dashboard</span> </a>
-                        <ul class="collapse show nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
-                            <li class="w-100">
-                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Item</span> 1 </a>
-                            </li>
-                            <li>
-                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Item</span> 2 </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline">Orders</span></a>
-                    </li>
-                    <li>
-                        <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle ">
-                            <i class="fs-4 bi-bootstrap"></i> <span class="ms-1 d-none d-sm-inline">Bootstrap</span></a>
-                        <ul class="collapse nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">
-                            <li class="w-100">
-                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Item</span> 1</a>
-                            </li>
-                            <li>
-                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Item</span> 2</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#submenu3" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-grid"></i> <span class="ms-1 d-none d-sm-inline">Products</span> </a>
-                            <ul class="collapse nav flex-column ms-1" id="submenu3" data-bs-parent="#menu">
-                            <li class="w-100">
-                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 1</a>
-                            </li>
-                            <li>
-                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 2</a>
-                            </li>
-                            <li>
-                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 3</a>
-                            </li>
-                            <li>
-                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Product</span> 4</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Customers</span> </a>
-                    </li>
-                </ul>
-                <hr>
-                <div class="dropdown pb-4">
-                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://github.com/mdo.png" alt="hugenerd" width="30" height="30" class="rounded-circle">
-                        <span class="d-none d-sm-inline mx-1">loser</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                        <li><a class="dropdown-item" href="#">New project...</a></li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="#">Sign out</a></li>
-                    </ul>
-                </div>
+<div class="wrapper">
+  <nav id="sidebar">
+      <div class="sidebar-header">
+          <h3>Projeto Padrão</h3>
+          <strong>PJ</strong>
+      </div>
+       
+      <div class="d-flex flex-column align-items-center justify-content-center mt-2" *ngIf="loading">
+        <div class="spinner-grow" role="status"></div>
+      </div>
+
+      <ul class="list-unstyled components" *ngIf="!loading">
+        <li class="active">  
+            <a href="main">
+            <i class="bi bi-house-fill"></i>              
+            Principal
+            </a>
+        </li>
+        <div *ngFor="let menu of estruturaMenu">
+        <li>  
+            <a [href]="'#'+ menu.nome" role="button" data-bs-toggle="collapse" aria-expanded="false" 
+            class="dropdown-toggle" [attr.aria-controls]="menu.nome">
+            <i [class]="menu.icone"></i>
+                {{ menu.descricaoLabel}}
+            </a>
+            <ul class="collapse list-unstyled" [id]="menu.nome" *ngFor="let subMenu of menu.lMenus"> 
+                <li routerLinkActive="active">
+                    <a [routerLink]="subMenu.link" routerLinkActive="active"><span class="px-2">&#x268A;</span>{{subMenu.nome}}</a>
+                </li>
+            </ul> 
+        </li>
+        </div>
+      </ul>
+  </nav>
+  <div id="content">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <div class="container-fluid">
+            <div class="btn-group">
+                <button type="button" id="sidebarCollapse" class="btn btn-danger" (click)="toggleClass()">
+                    <span><i class="bi bi-justify-left"></i></span>
+                </button>
             </div>
-        </div>
-        <div class="col py-3">
-            Content area...
-        </div>
-    </div>
+            <div class="btn-group dropstart">
+                <button type="button" class="btn btn-light btn-avatar" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img class="rounded" src="assets/Images/Avatar.png" width="40" />
+                </button>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-header"><b>User: </b><small>{{usuarioNome}}</small></li>    
+                    <div class="dropdown-divider"></div>                
+                  <li><a class="dropdown-item" (click)="deslogar()"><small><i class="bi bi-box-arrow-in-left"></i><span class="px-2">Sair</span></small></a></li>
+                </ul>
+              </div>
+          </div>
+      </nav>
+      <div class="container-fluid">
+        <router-outlet></router-outlet>                
+      </div>
+  </div>
 </div>
+<footer class="container-fluid text-center p-2 border-top">
+    <section class="d-inline">
+        <span class="mb-1 mb-md-0 text-muted">&copy; 2022 Copyright: </span>
+
+        <a class="btn btn-outline-none btn-floating" href="#!" role="button">
+            <i class="bi bi-whatsapp"></i>
+        </a>
+  
+        <a class="btn btn-outline-none btn-floating" href="#!" role="button">
+            <i class="bi bi-github"></i>
+        </a>
+  
+        <a class="btn btn-outline-none btn-floating" href="#!" role="button" >
+            <i class="bi bi-facebook"></i>
+        </a>
+    </section>
+</footer>
+
+
