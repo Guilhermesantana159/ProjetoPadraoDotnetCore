@@ -24,7 +24,7 @@ public class AuthApp : IAuthApp
     {
         var retorno = new LoginResponse();
 
-        var usuario = UsuarioService.GetAll()
+        var usuario = UsuarioService.GetAllList()
             .FirstOrDefault(x => x.Email == request.EmailLogin && x.Senha ==
                 Crypto.Hash(request.SenhaLogin));
 

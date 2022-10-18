@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
+import { TypeFilter } from 'src/enums/TypeFilter';
 import { GridOptions } from 'src/objects/Grid/GridOptions';
 
 @Component({
@@ -7,40 +8,80 @@ import { GridOptions } from 'src/objects/Grid/GridOptions';
   styleUrls: ['./usuario.component.css']
 })
 
-export class UsuarioComponent {
+export class UsuarioComponent{
   gridOptions: GridOptions;
   
-  constructor(){
+  constructor(){  
     this.gridOptions = {
         Parametros: {
           Controller: 'Usuario',
           Metodo: 'ConsultarGridUsuario',
           PaginatorSizeOptions: [5,10,15],
-          PageSize: 5
+          PageSize: 5,
         },
         Colunas: [{
+            Field: 'Action',
+            DisplayName: 'Action',
+            CellTemplate: '<h1>teste</h1>',
+            Type: TypeFilter.none,
+            Filter: false,
+            ServerField: '',
+            ActionButton: [
+              {
+                TypeActionButton: 1,
+                TypeButton: 0,
+                ParametrosAction: {
+                  Metodo: 'EditarUsuario',
+                  Controller: 'Usuario',
+                  PropriedadeEnviadaServer: ['idUsuario'],
+                  Conteudo: '<i class="bi bi-pencil-square"></i>',
+                  ClassProperty: 'btn btn-info',
+                  Disabled: false,
+                  Hidden: false,
+                  Target: undefined,
+                  Href: undefined,
+                  Tooltip: 'Editar'
+                }
+              }
+            ]  
+        },
+        {
           Field: 'idUsuario',
-          DisplayName: 'Cód'
+          DisplayName: 'Cód',
+          CellTemplate: undefined,
+          ActionButton: undefined,
+          Type: TypeFilter.Number,
+          Filter: true,
+          ServerField: 'IdUsuario'
         },
         {
           Field: 'nome',
-          DisplayName: 'Nome'
+          DisplayName: 'Nome',
+          CellTemplate: undefined,
+          ActionButton: undefined,
+          Type: TypeFilter.String,
+          Filter: true,
+          ServerField: 'Nome'  
         },
         {
           Field: 'email',
-          DisplayName: 'Email'
+          DisplayName: 'Email',
+          CellTemplate: undefined,
+          ActionButton: undefined,
+          Type: TypeFilter.String,
+          ServerField: 'Email',
+          Filter: true  
         },
         {
           Field: 'cpf',
-          DisplayName: 'CPF'
-        },
-        {
-          Field: 'telefone',
-          DisplayName: 'Telefone'
+          DisplayName: 'CPF',
+          CellTemplate: undefined,
+          ActionButton: undefined, 
+          Type: TypeFilter.String,
+          ServerField: 'CPF',
+          Filter: true  
         }
       ]
     }
   }
 }
-
-

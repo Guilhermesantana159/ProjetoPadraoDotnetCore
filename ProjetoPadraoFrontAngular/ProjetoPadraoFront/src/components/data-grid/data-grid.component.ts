@@ -1,11 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { BaseService } from 'src/factorys/base.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { GridOptions } from 'src/objects/Grid/GridOptions';
+import { Action, GridOptions } from 'src/objects/Grid/GridOptions';
 import { ResponseData } from 'src/objects/Grid/GridResponse';
 import { MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
+import { DomSanitizer } from '@angular/platform-browser';
+import { Filter } from 'src/objects/Grid/Filter';
 
 @Component({
   selector: 'data-grid',
@@ -18,9 +20,10 @@ export class DataGridComponent implements OnInit{
   @Input() gridOptions!: GridOptions;
 
   //variaveis grid
+  displayedColumnsHeader: string[] = [];
+  displayedColumnsFilter: string[] = [];
   displayedColumns: string[] = [];
   data: any = [];
-  displayedColumnsFilter: string[] = [];
 
   //variaveis paginação
   pageEvent: PageEvent = {
@@ -36,8 +39,12 @@ export class DataGridComponent implements OnInit{
     direction: ''
   }
 
+  //Variaveis Filters
+  QueryFilters: Filter[] = [];
+
   constructor(private response: BaseService,private toastr: ToastrService,
-    private router: Router,private paginator: MatPaginatorIntl) {
+    private router: Router,private paginator: MatPaginatorIntl,private elementRef: ElementRef,
+    private sanitizer: DomSanitizer) {
       paginator.itemsPerPageLabel = 'Itens por página'
     }
 
@@ -45,7 +52,7 @@ export class DataGridComponent implements OnInit{
     //Setar colunas e configurações da grid
     this.gridOptions.Colunas.forEach(element => {
       this.displayedColumns.push(element.Field);
-      this.displayedColumnsFilter.push(element.Field + 'Filter');
+      this.displayedColumnsFilter.push(element.ServerField + 'Field');
     });  
 
     if(this.gridOptions.Parametros.PaginatorSizeOptions != undefined)
@@ -57,30 +64,69 @@ export class DataGridComponent implements OnInit{
     this.ConsultarGrid(this.pageEvent);
   }
 
-  ConsultarGrid(event?:PageEvent,sortEvent?: Sort){
+  ConsultarGrid(event?:PageEvent,sortEvent?: Sort,filter?: Filter){
     if(event != undefined)    
       this.pageEvent = event;
 
     if(sortEvent != undefined)    
       this.sort = sortEvent;
 
+    if(filter != undefined){
+
+      for (let index = 0; index < this.QueryFilters.length; index++) {
+        if(this.QueryFilters[index].Field == filter.Field)
+          this.QueryFilters.splice(index, 1); 
+      }
+      
+      if(filter.Value != ""){
+        this.QueryFilters.push(filter);
+      }
+    }    
+
     this.response.Post(this.gridOptions.Parametros.Controller,this.gridOptions.Parametros.Metodo,{
       Take: this.pageEvent.pageSize,
       Page: this.pageEvent.pageIndex,
-      Order: {
-        active: this.sort.active,
-        direction: this.sort.direction
-      }
+      OrderFilters: {
+        Campo: this.sort.active,
+        Operador: this.sort.direction == 'asc' ? 0 : 1
+      },
+      QueryFilters: this.QueryFilters
     })
     .subscribe(
       (response: ResponseData) =>{        
         if(response.sucesso){
           this.data = response.data.itens;
           this.pageEvent.length = response.data.totalItens;
-        }else{
+
+          //Atribuição de html a coluna
+          this.gridOptions.Colunas.forEach(element =>{
+            if(element.ActionButton != undefined){
+              response.data.itens.forEach(cell =>
+                cell[element.Field] = element.CellTemplate);
+            }  
+          });
+
+          //Atribuição de action button a coluna
+          this.gridOptions.Colunas.forEach(element =>{
+            if(element.CellTemplate != undefined){
+              response.data.itens.forEach(cell =>
+                cell[element.Field] = element.CellTemplate);
+            }  
+          });
+        }
+        else{
           this.toastr.error(response.mensagem, 'Mensagem');
         }
       }
     );
+  }
+
+  //Grid Services
+  ActionButton(action: Action,data: any){
+    debugger
+    if(action.ParametrosAction.Href != undefined)
+      return;
+
+    
   }
 }

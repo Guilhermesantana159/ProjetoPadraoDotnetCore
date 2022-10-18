@@ -1,19 +1,51 @@
-<table mat-table matSort (matSortChange)="ConsultarGrid(undefined,$event)" [dataSource]="data">
+<table mat-table matSort (matSortChange)="ConsultarGrid(undefined,$event,undefined)" [dataSource]="data">
   <!-- Cabeçalho e corpo -->
-  <ng-container *ngFor="let item of displayedColumns">
-    <ng-container [matColumnDef]="item">
-      <th class="px-5" [mat-sort-header]="item" mat-header-cell *matHeaderCellDef> {{item}} </th>
-      <td class="px-5" mat-cell *matCellDef="let data"> {{data[item]}} </td>
+  <ng-container *ngFor="let item of gridOptions.Colunas">
+    <ng-container [matColumnDef]="item.Field">
+      <th class="px-5" [mat-sort-header]="item.Field" mat-header-cell *matHeaderCellDef> 
+        {{item.DisplayName}} 
+      </th>
+      <td class="px-5" mat-cell *matCellDef="let data">
+        <div *ngIf="item.ActionButton != undefined">
+          <div *ngFor="let action of item.ActionButton">
+            <button 
+            [class]="action.ParametrosAction.ClassProperty" 
+            *ngIf="action.TypeButton == 0" 
+            [innerHTML]="action.ParametrosAction.Conteudo | noSanitize" 
+            (click)="ActionButton(action,data)"
+            [hidden]="action.ParametrosAction.Hidden"
+            [disabled]="action.ParametrosAction.Disabled"
+            data-toggle="tooltip" data-placement="top"
+            [title]="action.ParametrosAction.Tooltip">
+            </button>
+            <a 
+            [hidden]="action.ParametrosAction.Hidden"
+            [class]="action.ParametrosAction.ClassProperty" 
+            [href]="action.ParametrosAction.Href"
+            [target]="action.ParametrosAction.Target"
+            *ngIf="action.TypeButton == 1" 
+            (click)="ActionButton(action,data)">
+            </a>
+          </div>
+        </div> 
+        <div *ngIf="item.ActionButton == undefined" [innerHTML]="data[item.Field] | noSanitize"></div>
+      </td>
     </ng-container>
   </ng-container>
 
   <!--Filtro -->
-  <ng-container *ngFor="let item of displayedColumnsFilter">
-    <ng-container [matColumnDef]="item">
-      <th class="px-5" mat-header-cell *matHeaderCellDef>{{item}}</th>
+  <ng-container *ngFor="let item of gridOptions.Colunas">
+    <ng-container [matColumnDef]="item.ServerField + 'Field'">
+      <th class="px-5" mat-header-cell *matHeaderCellDef>
+        <input type="date" *ngIf="item.Filter && item.Type == 'data'"  
+        #box (keyup.enter)="ConsultarGrid(undefined,undefined,{Value:box.value,Type:item.Type,Field:item.ServerField})">
+        <input type="search" *ngIf="item.Filter && item.Type == 'string'" 
+        #box (keyup.enter)="ConsultarGrid(undefined,undefined,{Value:box.value,Type:item.Type,Field:item.ServerField})">
+        <input type="number" *ngIf="item.Filter && item.Type == 'number'" 
+        #box (keyup.enter)="ConsultarGrid(undefined,undefined,{Value:box.value,Type:item.Type,Field:item.ServerField})">
+      </th>
     </ng-container>
   </ng-container>
-
 
   <!-- Primeira linha do header -->
   <tr mat-header-row *matHeaderRowDef="displayedColumns" class="example-first-header-row"></tr>
@@ -29,7 +61,7 @@
   [pageIndex]="pageEvent.pageIndex"
   [pageSize]="pageEvent.pageSize"
   [pageSizeOptions]="pageSizeOptions"
-  (page)="ConsultarGrid($event,undefined)"
+  (page)="ConsultarGrid($event,undefined,undefined)"
   showFirstLastButtons="true">
 </mat-paginator>
 

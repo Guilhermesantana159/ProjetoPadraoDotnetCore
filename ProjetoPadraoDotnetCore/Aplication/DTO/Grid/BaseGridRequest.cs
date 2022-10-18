@@ -1,16 +1,24 @@
-﻿namespace Aplication.DTO.Grid;
+﻿using Aplication.Enum;
+
+namespace Aplication.DTO.Grid;
 
 public class BaseGridRequest
 {
     public int Take { get; set; }
     public int Page { get; set; }
-    public Order Order { get; set; }
+    public OrderFilters? OrderFilters { get; set; }
+    public List<QueryFilters>? QueryFilters { get; set; }
 }
 
-public class Order
+public class OrderFilters
 {
-    public string Active { get; set; }
-    public string Direction { get; set; }
+    public string? Campo { get; set; }
+    public EOperador Operador { get; set; }
 }
 
-
+public class QueryFilters
+{
+    public string? Value { get; set; }
+    public string? Type { get; set; }
+    public string? Field { get; set; }
+}

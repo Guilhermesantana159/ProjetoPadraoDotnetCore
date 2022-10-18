@@ -15,4 +15,10 @@
       <ProjectReference Include="..\Infraestrutura.Reports\Infraestrutura.Reports.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Linq.Dynamic" Version="1.0.4" />
+      <PackageReference Include="LinqBuilder.OrderBy" Version="0.16.1" />
+      <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.20" />
+    </ItemGroup>
+
 </Project>

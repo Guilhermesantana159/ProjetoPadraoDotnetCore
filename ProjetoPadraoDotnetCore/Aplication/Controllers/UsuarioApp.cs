@@ -6,6 +6,8 @@ using Aplication.Validators.Usuario;
 using AutoMapper;
 using Domain.Interfaces;
 using Infraestrutura.Entity;
+using System.Linq.Dynamic.Core;
+using Aplication.Utils.FilterDynamic;
 
 namespace Aplication.Controllers;
 public class UsuarioApp : IUsuarioApp
@@ -23,7 +25,7 @@ public class UsuarioApp : IUsuarioApp
 
     public List<Usuario> GetAll()
     {
-        return Service.GetAll();
+        return Service.GetAllList();
     }
 
     public Usuario? GetByCpf(string cpf)
@@ -45,7 +47,7 @@ public class UsuarioApp : IUsuarioApp
     public ValidationResult CadastroInicial(UsuarioRegistroInicialRequest request)
     {
         var validation = Validation.ValidaçãoCadastroInicial(request);
-        var lUsuario = Service.GetAll();
+        var lUsuario = Service.GetAllList();
 
         if (lUsuario.Any(x => x.Email == request.Email))
             validation.LErrors.Add("Email já vinculado a outro usuário");
@@ -81,18 +83,17 @@ public class UsuarioApp : IUsuarioApp
     
     public BaseGridResponse ConsultarGridUsuario(BaseGridRequest request)
     {
-        var itens = Service
-            .GetAll();
+        var itens = Service.GetAllQuery();
+        
+        itens = string.IsNullOrEmpty(request.OrderFilters?.Campo)
+            ? itens.OrderByDescending(x => x.IdUsuario)
+            : itens.OrderBy($"{request.OrderFilters.Campo} {request.OrderFilters.Operador.ToString()}");
 
-        // itens = request.Order.Active == string.Empty
-        //     ? itens.OrderByDescending(x => x.IdUsuario)
-        //     : request.Order.Direction == "desc"
-        //         ? itens.OrderByDescending(x => )
-        //         : itens.OrderBy(x => request.Order.Active);
+        itens = itens.AplicarFiltrosDinamicos(request.QueryFilters);
         
         return new BaseGridResponse()
         {
-            Itens = itens.Skip(request.Page).Take(request.Take),
+            Itens = itens.Skip(request.Page).Take(request.Take).ToList(),
             TotalItens = itens.Count()
         };
     }

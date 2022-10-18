@@ -5,9 +5,11 @@ import {MatTableModule} from '@angular/material/table';
 import { BrowserModule } from '@angular/platform-browser';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
+import { NoSanitizePipe } from '../utils/sanitize'
+
 
 @NgModule({
-    declarations: [ TextErrorMessageComponent,DataGridComponent],
+    declarations: [ TextErrorMessageComponent,DataGridComponent,NoSanitizePipe],
     exports: [ TextErrorMessageComponent,DataGridComponent],
     imports: [MatTableModule,BrowserModule,MatPaginatorModule,MatSortModule]
 })

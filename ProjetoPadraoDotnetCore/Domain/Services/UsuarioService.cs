@@ -25,9 +25,14 @@ public class UsuarioService : IUsuarioService
         return ReadRepository.GetAll().FirstOrDefault(x => x.Cpf == cpf);
     }
 
-    public List<Usuario> GetAll()
+    public List<Usuario> GetAllList()
     {
         return ReadRepository.GetAll().ToList();
+    }
+    
+    public IQueryable<Usuario> GetAllQuery()
+    {
+        return ReadRepository.GetAll();
     }
 
     public void Cadastrar(Usuario usuario)
