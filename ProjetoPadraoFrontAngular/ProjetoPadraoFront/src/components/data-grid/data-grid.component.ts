@@ -12,7 +12,7 @@ import { Filter } from 'src/objects/Grid/Filter';
 @Component({
   selector: 'data-grid',
   templateUrl: './data-grid.component.html',
-  styleUrls: ['./data-grid.component.css']
+  styleUrls: ['./data-grid.component.scss']
 })
 
 export class DataGridComponent implements OnInit{

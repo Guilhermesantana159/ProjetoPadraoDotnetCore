@@ -41,7 +41,6 @@ span {
 }
 
 #sidebar {
-    min-width: 250px;
     max-width: 250px;
     background: #0074b4;
     color: #fff;
@@ -184,7 +183,9 @@ a.article:hover {
     width: 100%;
     padding: 20px;
     min-height: 100vh;
-    transition: all 0.3s;
+    min-width: 100vh;
+    transition: all 0.3s; 
+    background-color: rgb(243, 243, 244);
 }
 
 /* ---------------------------------------------------
