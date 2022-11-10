@@ -25,4 +25,5 @@ export class BaseService{
     Post(controller: string,metodo: string,objetoEnvio: any){
         return this.request.post<any>(this.rota + controller + '/' + metodo,objetoEnvio)
     };
+
 };

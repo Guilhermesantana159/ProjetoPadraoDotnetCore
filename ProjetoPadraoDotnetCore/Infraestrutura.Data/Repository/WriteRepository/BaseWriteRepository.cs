@@ -5,50 +5,50 @@ namespace Infraestrutura.Repository.WriteRepository;
 
 public class BaseWriteRepository <T> : IBaseWriteRepository<T> where T : class
 {
-    private Context Context;
+    private Context _context;
 
     public BaseWriteRepository(Context context)
     {
-        Context = context;
+        _context = context;
     }
     
     public void Add(T entidade)
     {
-        Context.Set<T>().Add(entidade);
-        Context.SaveChanges();
+        _context.Set<T>().Add(entidade);
+        _context.SaveChanges();
     }
 
     public void AddRange(List<T> lEntidade)
     {
-        Context.AddRange(lEntidade);
-        Context.SaveChanges();
+        _context.AddRange(lEntidade);
+        _context.SaveChanges();
     }
 
     public void Update(T entidade)
     {
-        Context.Set<T>().Update(entidade);
-        Context.SaveChanges();
+        _context.Set<T>().Update(entidade);
+        _context.SaveChanges();
     }
     
     public void UpdateRange(List<T> lEntidade)
     {
-        Context.UpdateRange(lEntidade);
-        Context.SaveChanges();
+        _context.UpdateRange(lEntidade);
+        _context.SaveChanges();
     }
 
     public void DeleteById(int id)
     {
-        var entidade = Context.Set<T>().Find(id);
+        var entidade = _context.Set<T>().Find(id);
         if (entidade != null)
-            Context.Set<T>().Remove(entidade);
+            _context.Set<T>().Remove(entidade);
        
-        Context.SaveChanges();
+        _context.SaveChanges();
     }
 
     public void DeleteRange(List<T> lEntidade)
     {
-        Context.Remove(lEntidade);
-        Context.SaveChanges();
+        _context.Remove(lEntidade);
+        _context.SaveChanges();
     }
     
     public void Dispose() {}

@@ -1,4 +1,3 @@
-using Aplication.DTO.Grid;
 using Aplication.Interfaces;
 using Aplication.Models.Request.Usuario;
 using Aplication.Models.Response;
@@ -21,13 +20,19 @@ public class UsuarioController : DefaultController
     }
 
     [HttpPost]
+    [Authorize]
     [Route("Cadastrar")]
     public JsonResult Cadastrar(UsuarioRequest request)
     {
         try
         {
-            App.Cadastrar(request);
-            return ResponderSucesso("Usuário cadastrado com sucesso!");
+            var cadastro = App.Cadastrar(request);
+            
+            if(cadastro.IsValid())
+                return ResponderSucesso("Usuário cadastrado com sucesso!");
+            
+            return ResponderErro(cadastro.LErrors.FirstOrDefault());
+
         }
         catch (Exception e)
         {
@@ -75,7 +80,8 @@ public class UsuarioController : DefaultController
     }
 
     [HttpGet]
-    [Route("ConsultarViaId")]
+    [Authorize]
+    [Route("ConsultarViaId/{id}")]
     public JsonResult ConsultarViaId(int id)
     {
         try
@@ -89,6 +95,7 @@ public class UsuarioController : DefaultController
     }
 
     [HttpPost]
+    [Authorize]
     [Route("CadastrarListaUsuario")]
     public JsonResult CadastrarListaUsuario(List<Usuario> lUsuario)
     {
@@ -104,6 +111,7 @@ public class UsuarioController : DefaultController
     }
     
     [HttpPost]
+    [Authorize]
     [Route("Editar")]
     public JsonResult Editar(Usuario usuario)
     {
@@ -119,6 +127,7 @@ public class UsuarioController : DefaultController
     }
     
     [HttpPost]
+    [Authorize]
     [Route("EditarListaUsuario")]
     public JsonResult EditarListaUsuario(List<Usuario> lUsuario)
     {
@@ -134,6 +143,7 @@ public class UsuarioController : DefaultController
     }
     
     [HttpPost]
+    [Authorize]
     [Route("DeleteById")]
     public JsonResult DeleteById(int id)
     {
@@ -151,7 +161,7 @@ public class UsuarioController : DefaultController
     [HttpPost]
     [Authorize]
     [Route("ConsultarGridUsuario")]
-    public JsonResult ConsultarGridUsuario(BaseGridRequest request)
+    public JsonResult ConsultarGridUsuario(UsuarioGridRequest request)
     {
         try
         {

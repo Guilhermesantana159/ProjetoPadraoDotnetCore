@@ -1,6 +1,6 @@
 ﻿using System.Linq.Dynamic.Core;
-using Aplication.DTO.Grid;
-using Aplication.Enum;
+using Aplication.Models.Grid;
+using Infraestrutura.Enum;
 
 namespace Aplication.Utils.FilterDynamic;
 
@@ -14,26 +14,42 @@ public static class Filters
 
         foreach (var filter in queryFilter)
         {
-            string typeField = null!;
-            
-            switch (filter.Type)
+            if (filter.Type == "string" && filter.EOperadorFilter == EOperadorFilter.Contains)
             {
-                case "string":
-                    typeField = ETypeFilter.Contains.ToString();
-                    break;
-                case "number":
-                    typeField = ETypeFilter.Equals.ToString();
-                    break;
-                case "data":
-                    typeField = ETypeFilter.Greater.ToString();
-                    break;
+                if (filter.Value != null && filter.Value != null)
+                    source = source.Where(filter.Field + ".Contains(@0)",filter.Value);   
             }
-
-            if (string.IsNullOrEmpty(typeField))
-                return source;
-            
-            source = source.Where(filter.Field + '.' + typeField + "(" + filter.Value + ")");
-
+            else if (filter.Type == "number" && filter.EOperadorFilter == EOperadorFilter.Contains)
+            {
+                if (filter.Value != null && filter.Value != null)
+                    source = source.Where(filter.Field + ".ToString().Contains(@0)",filter.Value);
+            }
+            else if (filter.Type == "data" && filter.EOperadorFilter == EOperadorFilter.GreaterThen)
+            {
+                if (filter.Value != null && filter.Value != null)
+                {
+                    var date = DateTime.Parse(filter.Value);
+                    source = source.Where(filter.Field + " >= @0", date);
+                }
+            }
+            else if (filter.Type == "data" && filter.EOperadorFilter == EOperadorFilter.LessThen)
+            {
+                if (filter.Value != null && filter.Value != null)
+                {
+                    var date = DateTime.Parse(filter.Value);
+                    source = source.Where(filter.Field + " <= @0", date);
+                }
+            }
+            else if (filter.Type == "enum" && filter.EOperadorFilter == EOperadorFilter.Equals)
+            {
+                if (filter.Value != null && filter.Value != null)
+                {
+                    var numberEnum = Int32.Parse(filter.Value);
+                    source = source.Where("Perfil" + " == @0",numberEnum);
+                }
+            }
+            else
+                source = null!;
         }
         
         return source;

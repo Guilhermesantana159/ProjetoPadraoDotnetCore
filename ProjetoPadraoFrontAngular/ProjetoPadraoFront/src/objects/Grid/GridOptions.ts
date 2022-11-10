@@ -1,4 +1,5 @@
 import { EActionButton } from "src/enums/EActionButton"
+import { EnumBase } from "src/enums/EnumBase"
 import { TypeActionButton } from "src/enums/TypeActionButton"
 import { TypeFilter } from "src/enums/TypeFilter"
 
@@ -10,8 +11,14 @@ export interface GridOptions{
 export interface Parametros{
     Controller: string,
     Metodo: string,
+    MultiModal: boolean,
+    Modal: {
+        SelectedValue: string,
+        SelectedText: string
+    } | undefined
     PaginatorSizeOptions: Array<number> | undefined,
-    PageSize: number | undefined
+    PageSize: number | undefined,
+    Params: any | undefined
 }
 
 export interface Coluna{
@@ -20,8 +27,28 @@ export interface Coluna{
     CellTemplate: string | undefined,
     ActionButton: Array<Action> | undefined,
     Type: TypeFilter,
+    EnumOptions: Array<EnumBase> | undefined
+    EnumName: string | undefined,
     Filter: boolean,
-    ServerField: string 
+    OrderBy: boolean,
+    ServerField: string,
+    StyleColuna: string | undefined
+    StyleCell: string | undefined
+    ClassCell: string | undefined
+    CellGraphics: {
+        PropertyLink: string,
+        Tooltip: string,
+        OnlyGraphics: boolean,
+        ClassGraphics: string,
+        StyleGraphics: string | undefined,
+    } | undefined
+    CellImage: {
+        PropertyLink: string,
+        ClassImage: string,
+        StyleImage: string | undefined,
+        Tooltip: string,
+        OnlyImage: boolean
+    } | undefined
 }
 
 export interface Action{
@@ -31,14 +58,22 @@ export interface Action{
 }
 
 export interface ParametrosAction{
-    Controller: string | undefined,
-    Metodo: string | undefined,
-    PropriedadeEnviadaServer: Array<string>,
     ClassProperty: string | undefined,
-    Disabled: boolean,
-    Hidden: boolean,
+    Disabled: DisabledProperty,
+    Hidden: HiddenProperty,
     Target: string | undefined,
     Href: string | undefined,
     Conteudo: string,
     Tooltip: string
 }
+
+export interface DisabledProperty{
+    Disabled: boolean | undefined
+    PropertyDisabled: string 
+}
+
+export interface HiddenProperty{
+    Hidden: boolean | undefined
+    PropertyHidden: string 
+}
+

@@ -1,5 +1,5 @@
-﻿using Aplication.Enum;
-using Aplication.Models.Response.Base;
+﻿using Aplication.Models.Response.Base;
+using Infraestrutura.Enum;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers.Base;

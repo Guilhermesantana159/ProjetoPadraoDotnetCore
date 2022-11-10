@@ -73,6 +73,11 @@
               *ngIf="UserRegisterFormGroup.get('senha')?.errors?.['required'] && submitRegister"
               text="Este campo é obrigatório">
             </text-error-message>
+            <text-error-message  
+            *ngIf="UserRegisterFormGroup.get('senha')?.errors?.['invalidSenha'] && submitRegister && 
+            !UserRegisterFormGroup.get('senha')?.errors?.['required']"
+            [text]="UserRegisterFormGroup.get('senha')?.errors?.['Motivo']">
+            </text-error-message>
           </div>
           <button type="submit" class="submit-login" [disabled]="loading">
             <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -81,8 +86,4 @@
         </form>  
       </div>
     </div>
-  </div>
-    <footer>
-      <p class="mt-5 mb-3 text-muted"><b>&copy; Copyright 2022</b></p>
-    </footer>
 </div>

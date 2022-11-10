@@ -18,6 +18,7 @@ a:focus {
     border-radius: 0;
     margin-bottom: 40px;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    zoom: 0.75;
 }
 
 .navbar-btn {
@@ -37,20 +38,20 @@ span {
 
 .wrapper {
     display: flex;
-    align-items: stretch;
+    align-items: stretch; 
 }
 
 #sidebar {
-    max-width: 250px;
     background: #0074b4;
     color: #fff;
     transition: all 0.3s;
-    box-shadow: 1px 1px rgba(0, 0, 0, 0.288)    
+    box-shadow: 1px 1px rgba(0, 0, 0, 0.288);
+    min-width: 15%;
 }
 
 #sidebar.active {
-    min-width: 120px;
-    max-width: 120px;
+    min-width: 100px;
+    max-width: 100px;
     text-align: center;
 }
 
@@ -176,17 +177,29 @@ a.article:hover {
     box-shadow: none;
 }
 
+.footer-content{
+    max-height: 20vh;
+    margin-top: 20vh;
+}
 /* ---------------------------------------------------
     CONTENT STYLE
 ----------------------------------------------------- */
 #content {
-    width: 100%;
-    padding: 20px;
+    width: 85%;
+    padding: 10px;
     min-height: 100vh;
-    min-width: 100vh;
     transition: all 0.3s; 
     background-color: rgb(243, 243, 244);
 }
+
+#content.active {
+    width: 92%;
+    padding: 10px;
+    min-height: 100vh;
+    transition: all 0.3s; 
+    background-color: rgb(243, 243, 244);
+}
+
 
 /* ---------------------------------------------------
     MEDIAQUERIES
@@ -235,5 +248,12 @@ a.article:hover {
     }
     #sidebar {
         margin-left: 0;
+    }
+    #content {
+        width: 95%;
+        padding: 20px;
+        min-height: 100vh;
+        transition: all 0.3s; 
+        background-color: rgb(243, 243, 244);
     }
 }

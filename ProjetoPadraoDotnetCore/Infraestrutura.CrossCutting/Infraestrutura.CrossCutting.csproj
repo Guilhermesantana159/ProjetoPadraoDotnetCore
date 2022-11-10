@@ -8,7 +8,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Linq.Dynamic" Version="1.0.4" />
       <PackageReference Include="LinqBuilder.OrderBy" Version="0.16.1" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
       <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.20" />
@@ -19,6 +18,11 @@
       <ProjectReference Include="..\Domain\Domain.csproj" />
       <ProjectReference Include="..\Infraestrutura.Data\Infraestrutura.Data.csproj" />
       <ProjectReference Include="..\Infraestrutura.Reports\Infraestrutura.Reports.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="appsettings.Development.json" />
+      <Content Remove="appsettings.json" />
     </ItemGroup>
 
 </Project>

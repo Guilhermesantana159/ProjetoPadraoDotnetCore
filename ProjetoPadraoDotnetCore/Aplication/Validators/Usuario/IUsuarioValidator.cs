@@ -7,4 +7,5 @@ namespace Aplication.Validators.Usuario;
 public interface IUsuarioValidator
 {
     public ValidationResult ValidaçãoCadastroInicial(UsuarioRegistroInicialRequest request);
+    public ValidationResult ValidaçãoCadastro(UsuarioRequest request);
 }

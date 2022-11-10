@@ -5,7 +5,7 @@ namespace Aplication.Utils.HashCripytograph;
 
 public class HashCripytograph : IHashCriptograph
 {
-    public string Hash(string senha)
+    public string Hash(string? senha)
     {
         SHA1 sha1 = SHA1.Create();
 

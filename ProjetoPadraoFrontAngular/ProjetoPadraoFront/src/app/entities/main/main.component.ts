@@ -27,14 +27,15 @@ export class MainComponent{
           }
           this.loading = false;
         }else{
-          this.toastr.error(response.mensagem, 'Mensagem:');
+          this.toastr.error('<small>' + response.mensagem + '</small>', 'Mensagem:');
         }
       }
     ); 
   }
 
   toggleClass = () =>{
-  document.getElementById('sidebar')?.classList.toggle('active');;
+    document.getElementById('sidebar')?.classList.toggle('active');
+    document.getElementById('content')?.classList.toggle('active');;
   }
 
   deslogar = () =>{

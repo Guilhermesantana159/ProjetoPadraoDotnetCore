@@ -3,6 +3,6 @@
 namespace Aplication.Models.Response;
 
 public class UsuarioResponse
-{
+{ 
     public List<Usuario> itens { get; set; }
 }

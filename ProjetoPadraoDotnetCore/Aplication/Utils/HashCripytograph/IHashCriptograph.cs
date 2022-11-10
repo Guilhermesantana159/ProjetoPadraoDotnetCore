@@ -2,5 +2,5 @@
 
 public interface IHashCriptograph
 {
-    public string Hash(string senha);
+    public string Hash(string? senha);
 }

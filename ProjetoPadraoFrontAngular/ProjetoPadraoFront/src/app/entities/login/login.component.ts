@@ -4,6 +4,7 @@ import { BaseService } from 'src/factorys/base.service';
 import { Usuario } from 'src/objects/Usuario/Usuario';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { ValidateSenha } from 'src/factorys/validators/validators-form';
 
 @Component({
   selector: 'login-root',
@@ -32,8 +33,8 @@ export class LoginComponent {
       email: ['', [Validators.required,Validators.email]],
       nome: ['', Validators.required],
       CPF: ['', [Validators.required,Validators.minLength(11)]],
-      senha: ['', Validators.required],
-  });
+      senha: ['', [Validators.required,ValidateSenha]],
+    });
   }
 
   RegisterUsuario = (form:any) =>{
@@ -46,9 +47,9 @@ export class LoginComponent {
     this.response.Post("Usuario","CadastroInicial",form.value).subscribe(
       (response: Usuario) =>{        
         if(response.sucesso){
-          this.toastr.success(response.mensagem, 'Mensagem');
+          this.toastr.success('<small>' + response.mensagem + '</small>', 'Mensagem');
         }else{
-          this.toastr.error(response.mensagem, 'Mensagem');
+          this.toastr.error('<small>' + response.mensagem + '</small>', 'Mensagem');
         }
         this.loading = false;
       }
@@ -67,10 +68,10 @@ export class LoginComponent {
         if(response.sucesso){
           window.localStorage.setItem('NomeUsuario',response.data.nome);
           window.localStorage.setItem('Token',response.data.sessionKey.acess_token);
-          this.toastr.success('Seja bem vindo ' + response.data.nome, 'Mensagem:');   
+          this.toastr.success('<small>' + 'Seja bem vindo ' + response.data.nome + '<small>', 'Mensagem:');   
           this.router.navigate(['/', 'main'])
         }else{
-          this.toastr.error(response.mensagem, 'Mensagem:');
+          this.toastr.error('<small>' + response.mensagem + '</small>', 'Mensagem:');
         }
         this.loading = false;
       }

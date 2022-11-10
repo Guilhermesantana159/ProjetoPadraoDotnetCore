@@ -1,5 +1,5 @@
 ﻿//Criar Migration
-dotnet ef migrations add AddTableMenu
+dotnet ef migrations add Modifykill
 
 //Remover ultimo migration
 dotnet ef migrations remove

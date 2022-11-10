@@ -18,6 +18,7 @@ public class EstruturaMenuController : DefaultController
     }
 
     [HttpPost]
+    [Authorize]
     [Route("IntegrarModulo")]
     public JsonResult IntegrarModulo(ModuloRequest request)
     {
@@ -37,6 +38,7 @@ public class EstruturaMenuController : DefaultController
     }
     
     [HttpPost]
+    [Authorize]
     [Route("IntegrarMenu")]
     public JsonResult IntegrarMenu(MenuRequest request)
     {
@@ -55,8 +57,8 @@ public class EstruturaMenuController : DefaultController
         }
     }
     
-    [Authorize]
     [HttpGet]
+    [Authorize]
     [Route("ConsultarEstruturaMenus")]
     public JsonResult ConsultarEstruturaMenus()
     {

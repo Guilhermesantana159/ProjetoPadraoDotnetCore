@@ -1,4 +1,4 @@
-﻿using Aplication.DTO.Grid;
+﻿using Aplication.Models.Grid;
 using Aplication.Models.Request.Usuario;
 using Infraestrutura.Entity;
 using ValidationResult = Aplication.Utils.Obj.ValidationResult;
@@ -10,7 +10,7 @@ public interface IUsuarioApp
     public List<Usuario> GetAll();
     public Usuario? GetByCpf(string cpf);
     public Usuario GetById(int id);
-    public void Cadastrar(UsuarioRequest request);
+    public ValidationResult Cadastrar(UsuarioRequest request);
     public ValidationResult CadastroInicial(UsuarioRegistroInicialRequest request);
     public void CadastrarListaUsuario(List<Usuario> lUsuario);
     public void Editar(Usuario usuario);

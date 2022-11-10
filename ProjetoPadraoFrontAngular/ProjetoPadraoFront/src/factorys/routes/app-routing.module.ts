@@ -1,16 +1,27 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { UsuarioComponent } from 'src/app/entities/usuario/usuario.component';
+import { UsuarioCrudComponent } from 'src/app/entities/usuario/usuario-crud/usuario-crud.component';
+import { UsuarioComponent } from 'src/app/entities/usuario/usuario-grid/usuario-grid.component';
 import { LoginComponent } from '../../app/entities/login/login.component';
 import { MainComponent } from '../../app/entities/main/main.component';
 
 const routes: Routes = [
   {path: 'main',component: MainComponent, 
-  children: [ 
+    children: [ 
       { 
-          path: 'usuario', 
-          component: UsuarioComponent
-      }]},
+        path: 'usuario', 
+        component: UsuarioComponent,
+      },
+      { 
+        path: 'usuario/:id/editar', 
+        component: UsuarioCrudComponent 
+      },
+      { 
+        path: 'usuario/registro/novo', 
+        component: UsuarioCrudComponent 
+      }
+    ]
+  },
   {path: 'login',component: LoginComponent},
   {path: '**',component: LoginComponent}
 ];

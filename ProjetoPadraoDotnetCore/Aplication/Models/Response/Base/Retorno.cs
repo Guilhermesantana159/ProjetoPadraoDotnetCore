@@ -1,4 +1,4 @@
-﻿using Aplication.Enum;
+﻿using Infraestrutura.Enum;
 
 namespace Aplication.Models.Response.Base;
 

@@ -8,7 +8,6 @@
 
     <ItemGroup>
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
-        <PackageReference Include="Linq.Dynamic" Version="1.0.4" />
         <PackageReference Include="LinqBuilder.OrderBy" Version="0.16.1" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
@@ -25,6 +24,10 @@
 
     <ItemGroup>
       <Compile Remove="WeatherForecast.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="appsettings.Development.json" />
     </ItemGroup>
 
 </Project>

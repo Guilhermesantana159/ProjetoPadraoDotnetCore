@@ -22,7 +22,7 @@ export class AuthTokenInterceptor implements HttpInterceptor {
         if (err instanceof HttpErrorResponse) {
           if (err.status == 401 || err.status == 403) 
           {
-            this.toastr.warning('Sua sessão expirou!');
+            this.toastr.warning('<small>Sua sessão expirou!</small>');
             window.localStorage.clear();
             this.router.navigateByUrl('/');
           }
