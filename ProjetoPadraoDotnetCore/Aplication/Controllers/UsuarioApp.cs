@@ -6,8 +6,10 @@ using AutoMapper;
 using Domain.Interfaces;
 using Infraestrutura.Entity;
 using System.Linq.Dynamic.Core;
+using Aplication.Authentication;
 using Aplication.Models.Grid;
-using Aplication.Models.Response;
+using Aplication.Models.Response.Auth;
+using Aplication.Models.Response.Usuario;
 using Aplication.Utils.FilterDynamic;
 
 namespace Aplication.Controllers;
@@ -16,14 +18,13 @@ public class UsuarioApp : IUsuarioApp
     protected readonly IUsuarioService Service;
     protected readonly IMapper Mapper;
     protected readonly IUsuarioValidator Validation;
-    protected readonly IUtilsService UtilsService;
-
-    public UsuarioApp(IUsuarioService service,IMapper mapper,IUsuarioValidator validation, IUtilsService utilsService)
+    protected readonly IJwtTokenAuthentication Jwt;
+    public UsuarioApp(IUsuarioService service,IMapper mapper,IUsuarioValidator validation, IJwtTokenAuthentication jwt)
     {
         Service = service;
         Mapper = mapper;
         Validation = validation;
-        UtilsService = utilsService;
+        Jwt = jwt;
     }
 
     public List<Usuario> GetAll()
@@ -36,9 +37,9 @@ public class UsuarioApp : IUsuarioApp
         return Service.GetByCpf(cpf);
     }
 
-    public Usuario GetById(int id)
+    public UsuarioCrudResponse GetById(int id)
     {
-        return Service.GetById(id);
+        return Mapper.Map<Usuario, UsuarioCrudResponse>(Service.GetById(id));
     }
 
     public ValidationResult Cadastrar(UsuarioRequest request)
@@ -58,10 +59,16 @@ public class UsuarioApp : IUsuarioApp
         return validation;
     }
 
-    public ValidationResult CadastroInicial(UsuarioRegistroInicialRequest request)
+    public UsuarioCadastroInicialResponse CadastroInicial(UsuarioRegistroInicialRequest request)
     {
         var validation = Validation.ValidaçãoCadastroInicial(request);
-        var lUsuario = Service.GetAllList();
+
+        var response = new UsuarioCadastroInicialResponse()
+        {
+            Validacao = validation,
+        };
+        
+        var lUsuario = Service.GetAllQuery();
 
         if (lUsuario.Any(x => x.Email == request.Email))
             validation.LErrors.Add("Email já vinculado a outro usuário");
@@ -69,10 +76,17 @@ public class UsuarioApp : IUsuarioApp
         if(validation.IsValid())
         {
             var usuario = Mapper.Map<UsuarioRegistroInicialRequest,Usuario>(request);
-            Service.Cadastrar(usuario);
+            var responseCadastro = Service.CadastrarComRetorno(usuario);
+
+            response.DataUsuario = new LoginResponse()
+            {
+                SessionKey = Jwt.GerarToken(responseCadastro.Cpf),
+                Nome = usuario.Nome,
+                Autenticado = true
+            };
         }
 
-        return validation;
+        return response;
     }
 
     public void CadastrarListaUsuario(List<Usuario> lUsuario)

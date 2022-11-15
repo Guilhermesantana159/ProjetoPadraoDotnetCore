@@ -45,6 +45,10 @@
       <Compile Remove="Migrations\20221108224751_ModifyParametrosUsuario.Designer.cs" />
       <Compile Remove="Migrations\20221106221810_AddTableProfissao.cs" />
       <Compile Remove="Migrations\20221106221810_AddTableProfissao.Designer.cs" />
+      <Compile Remove="Migrations\20221110202648_Modifykill.cs" />
+      <Compile Remove="Migrations\20221110202648_Modifykill.Designer.cs" />
+      <Compile Remove="Migrations\20221111002506_Initial.cs" />
+      <Compile Remove="Migrations\20221111002506_Initial.Designer.cs" />
     </ItemGroup>
 
     <ItemGroup>

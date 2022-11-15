@@ -11,6 +11,7 @@ import { BaseOptions, SelectPadrao } from 'src/objects/Select/SelectPadrao';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { RetornoPadrao } from 'src/objects/RetornoPadrao';
 import { ValidateDataAniversario, ValidateSenha } from 'src/factorys/validators/validators-form';
+import { Skill } from 'src/objects/Usuario/Skill';
 
 @Component({
   selector: 'usuario-crud-root',
@@ -40,14 +41,15 @@ export class UsuarioCrudComponent{
   options!: Array<BaseOptions>;
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
   addOnBlur = true;
-  lSkill: string[] = [];
+  lSkill: Skill[] = [];
 
   constructor(private formBuilder: FormBuilder,private response: BaseService,
     private toastr: ToastrService,private router: Router,private route: ActivatedRoute) {
 
     //Formulario builder
     this.UserRegisterFormGroup = this.formBuilder.group({
-      PerfilAdministrador: [false],
+      idUsuario: [undefined],
+      perfilAdministrador: [false],
       dedicacao: [0, Validators.min(1)],
       idUsuarioCadastro: ['', [Validators.required]],
       cep: ['', [Validators.required,Validators.minLength(8)]],
@@ -65,7 +67,7 @@ export class UsuarioCrudComponent{
       observacao: [''],     
       rg: ['', [Validators.minLength(9)]],
       telefone: ['', [Validators.minLength(11)]],
-      genero: ['', [Validators.required]],
+      genero: ['0', [Validators.required]],
       dataNascimento: ['', [Validators.required,ValidateDataAniversario]],
       idProfissao: ['', [Validators.required]],
       lSkills: [[]],
@@ -102,14 +104,14 @@ export class UsuarioCrudComponent{
     const value = (event.value || '').trim();
 
     if (value) {
-      this.lSkill.push(value);
+      this.lSkill.push({descricao:value});
     }
 
     event.chipInput!.clear();
     this.UserRegisterFormGroup.get('lSkills')?.setValue(this.lSkill);
   }
 
-  Remove(skill: string): void {
+  Remove(skill: Skill): void {
     const index = this.lSkill.indexOf(skill);
 
     if (index >= 0) {
@@ -159,14 +161,13 @@ export class UsuarioCrudComponent{
 
   //Operacional da página
   Salvar = (form:FormGroup) =>{
+    debugger
+
     this.loading = true;
     this.submitRegister = true;
 
+    //Formatação tipo da variável
     form.get('genero')?.setValue(parseInt(form.get('genero')?.value));
-
-    form.get('lSkills')?.setValue(
-      [{Descricao: 'C#',IdUsuario:0},{Descricao: 'Angular',IdUsuario:0}]
-    );
 
     if(this.UserRegisterFormGroup.invalid){
       this.loading = false;
@@ -177,7 +178,7 @@ export class UsuarioCrudComponent{
       (response: RetornoPadrao) =>{        
         if(response.sucesso){
           this.toastr.success(response.mensagem, 'Mensagem:');
-          this.router.navigateByUrl('/main/usuario/')
+          this.router.navigateByUrl('/main/usuario')
         }else{
           this.toastr.error(response.mensagem, 'Mensagem:');
         }

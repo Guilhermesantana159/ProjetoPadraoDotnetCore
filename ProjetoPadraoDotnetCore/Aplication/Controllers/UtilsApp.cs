@@ -1,7 +1,8 @@
 ﻿using Aplication.Interfaces;
 using Aplication.Models.Request.Profissao;
-using Aplication.Models.Request.SkillUsuario;
 using Aplication.Models.Response;
+using Aplication.Models.Response.Base;
+using Aplication.Models.Response.Usuario;
 using Aplication.Validators.Utils;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -60,31 +61,5 @@ public class UtilsApp : IUtilsApp
     public void DeletarProfissaoPorId(int id)
     {
         UtilsService.DeletarProfissaoPorId(id);
-    }
-
-    public List<SelectBaseResponse> ConsultarSkills()
-    {
-        return UtilsService.ConsultarSkill()
-            .ProjectTo<SelectBaseResponse>(Mapper.ConfigurationProvider).ToList();
-    }
-
-    public void CadastrarSkill(SkillUsuarioCadastrarRequest profissao)
-    { 
-        UtilsService.CadastrarSkill(Mapper.Map<SkillUsuario>(profissao));
-    }
-    
-    public void EditarSkill(SkillUsuarioEditarRequest profissaoRequest)
-    {
-        var profissao = UtilsService.GetSkillById(profissaoRequest.IdSkillUsuario);
-
-        if (profissao == null)
-            throw new Exception("Id não pertence a nenhuma skill!");
-
-        UtilsService.EditarSkill(Mapper.Map<SkillUsuarioEditarRequest,SkillUsuario>(profissaoRequest));
-    }
-
-    public void DeletarSkillPorId(int id)
-    {
-        UtilsService.DeletarSkillPorId(id);
     }
 }

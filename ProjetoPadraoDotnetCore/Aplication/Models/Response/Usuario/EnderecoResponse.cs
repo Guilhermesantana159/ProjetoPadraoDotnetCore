@@ -1,6 +1,6 @@
 ﻿using Aplication.Utils.Obj;
 
-namespace Aplication.Models.Response;
+namespace Aplication.Models.Response.Usuario;
 
 public class EnderecoResponse : ValidationResult
 { 

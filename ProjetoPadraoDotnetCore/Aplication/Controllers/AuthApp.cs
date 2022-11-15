@@ -2,6 +2,7 @@
 using Aplication.Interfaces;
 using Aplication.Models.Request.Login;
 using Aplication.Models.Response;
+using Aplication.Models.Response.Auth;
 using Aplication.Utils.HashCripytograph;
 using Domain.Interfaces;
 
@@ -35,6 +36,7 @@ public class AuthApp : IAuthApp
             retorno.Autenticado = true;
             retorno.Nome = usuario.Nome;
             retorno.SessionKey = Jwt.GerarToken(usuario.Cpf);
+            retorno.IdUsuario = usuario.IdUsuario;
         }
 
         return retorno;

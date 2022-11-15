@@ -1,6 +1,4 @@
-﻿using Infraestrutura.Entity;
-
-namespace Aplication.Models.Response;
+﻿namespace Aplication.Models.Response.Usuario;
 
 public class UsuarioGridResponse
 {

@@ -1,6 +1,5 @@
 using Aplication.Interfaces;
 using Aplication.Models.Request.Profissao;
-using Aplication.Models.Request.SkillUsuario;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Controllers.Base;
@@ -99,74 +98,6 @@ public class UtilsController : DefaultController
             UtilsApp.DeletarProfissaoPorId(id);
 
             return ResponderSucesso("Profissão apagada com sucesso!");
-        }
-        catch (Exception e)
-        {
-            return ResponderErro(e.Message);
-        }
-    }
-    
-    [HttpGet]
-    [Authorize]
-    [Route("ConsultarSkills")]
-    public JsonResult ConsultarSkills()
-    {
-        try
-        {
-            var retorno = UtilsApp.ConsultarSkills();
-
-            return ResponderSucesso(retorno);
-        }
-        catch (Exception e)
-        {
-            return ResponderErro(e.Message);
-        }
-    }
-    
-    [HttpPost]
-    [Authorize]
-    [Route("CadastrarSkill")]
-    public JsonResult CadastrarSkill(SkillUsuarioCadastrarRequest request)
-    {
-        try
-        {
-            UtilsApp.CadastrarSkill(request);
-
-            return ResponderSucesso("Skill cadastrada com sucesso!");
-        }
-        catch (Exception e)
-        {
-            return ResponderErro(e.Message);
-        }
-    }
-    
-    [HttpPost]
-    [Authorize]
-    [Route("EditarSkill")]
-    public JsonResult EditarSkill(SkillUsuarioEditarRequest request)
-    {
-        try
-        {
-            UtilsApp.EditarSkill(request);
-
-            return ResponderSucesso("Skill editada com sucesso!");
-        }
-        catch (Exception e)
-        {
-            return ResponderErro(e.Message);
-        }
-    }
-    
-    [HttpPost]
-    [Authorize]
-    [Route("DeletarSkillPorId")]
-    public JsonResult DeletarSkillPorId(int id)
-    {
-        try
-        {
-            UtilsApp.DeletarSkillPorId(id);
-
-            return ResponderSucesso("Skill apagada com sucesso!");
         }
         catch (Exception e)
         {

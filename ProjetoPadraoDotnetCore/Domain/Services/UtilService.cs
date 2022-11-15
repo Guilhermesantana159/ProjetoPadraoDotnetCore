@@ -5,7 +5,6 @@ using Domain.Interfaces;
 using Infraestrutura.Entity;
 using Infraestrutura.Repository.External;
 using Infraestrutura.Repository.Interface.Profissao;
-using Infraestrutura.Repository.Interface.SkillUsuario;
 
 namespace Domain.Services;
 
@@ -14,18 +13,15 @@ public class UtilService : IUtilsService
     protected readonly IExternalRepository External;
     protected readonly IProfissaoReadRepository ProfissaoReadRepository;
     protected readonly IProfissaoWriteRepository ProfissaoWriteRepository;
-    protected readonly ISkillUsuarioReadRepository SkillReadRepository;
-    protected readonly ISkillUsuarioWriteRepository SkillWriteRepository;
+
 
     private readonly IConfiguration _configuration;
-    public UtilService(IExternalRepository external,IConfiguration config, IProfissaoReadRepository profissaoReadRepository, IProfissaoWriteRepository profissaoWriteRepository, ISkillUsuarioWriteRepository skillWriteRepository, ISkillUsuarioReadRepository skillReadRepository)
+    public UtilService(IExternalRepository external,IConfiguration config, IProfissaoReadRepository profissaoReadRepository, IProfissaoWriteRepository profissaoWriteRepository)
     {
         External = external;
         _configuration = config;
         ProfissaoReadRepository = profissaoReadRepository;
         ProfissaoWriteRepository = profissaoWriteRepository;
-        SkillWriteRepository = skillWriteRepository;
-        SkillReadRepository = skillReadRepository;
     }
     public async Task<EnderecoExternalReponse> ConsultarEnderecoCep(string cep)
     {
@@ -86,30 +82,5 @@ public class UtilService : IUtilsService
     public void DeletarProfissaoPorId(int id)
     { 
         ProfissaoWriteRepository.DeleteById(id);
-    }
-
-    public IQueryable<SkillUsuario> ConsultarSkill()
-    {
-        return SkillReadRepository.GetAll();
-    }
-
-    public void CadastrarSkill(SkillUsuario profissao)
-    { 
-        SkillWriteRepository.Add(profissao);
-    }
-    
-    public void EditarSkill(SkillUsuario profissao)
-    { 
-        SkillWriteRepository.Update(profissao);
-    }
-    
-    public SkillUsuario GetSkillById(int id)
-    { 
-        return SkillReadRepository.GetById(id);
-    }
-    
-    public void DeletarSkillPorId(int id)
-    { 
-        SkillWriteRepository.DeleteById(id);
     }
 }

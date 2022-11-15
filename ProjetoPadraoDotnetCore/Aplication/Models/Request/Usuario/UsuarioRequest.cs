@@ -1,6 +1,4 @@
-﻿using Aplication.Models.Request.SkillUsuario;
-using Infraestrutura.Entity;
-using Infraestrutura.Enum;
+﻿using Infraestrutura.Enum;
 
 namespace Aplication.Models.Request.Usuario;
 
@@ -29,5 +27,5 @@ public class UsuarioRequest
     public DateTime? DataNascimento { get; set; }
     public EGenero Genero { get; set; }
     public int? IdProfissao { get; set; }
-    public List<SkillUsuarioCadastrarRequest>? LSkills { get; set; } = null!;
+    public List<SkillRequest> lSkills { get; set; }
 }

@@ -37,7 +37,7 @@ export class LoginComponent {
     });
   }
 
-  RegisterUsuario = (form:any) =>{
+  RegisterUsuario = (form:FormGroup) =>{
     if(this.UserRegisterFormGroup.invalid){
       this.submitRegister = true;
       return;
@@ -47,8 +47,13 @@ export class LoginComponent {
     this.response.Post("Usuario","CadastroInicial",form.value).subscribe(
       (response: Usuario) =>{        
         if(response.sucesso){
-          this.toastr.success('<small>' + response.mensagem + '</small>', 'Mensagem');
-        }else{
+          window.localStorage.setItem('NomeUsuario',response.data.nome);
+          window.localStorage.setItem('IdUsuario',response.data.idUsuario);
+          window.localStorage.setItem('Token',response.data.sessionKey.acess_token);
+          this.toastr.success('<small> Seja bem vindo <br>' + response.data.nome, 'Mensagem:');   
+          this.router.navigate(['/', 'main'])        
+        }else
+        {
           this.toastr.error('<small>' + response.mensagem + '</small>', 'Mensagem');
         }
         this.loading = false;
@@ -56,7 +61,7 @@ export class LoginComponent {
     );
   }
     
-  Login = (form:any) =>{
+  Login = (form:FormGroup) =>{
     if(this.loginFormGroup.invalid){
       this.submitLogin = true;
       return;
@@ -67,14 +72,30 @@ export class LoginComponent {
       (response: Usuario) =>{        
         if(response.sucesso){
           window.localStorage.setItem('NomeUsuario',response.data.nome);
+          window.localStorage.setItem('IdUsuario',response.data.idUsuario);
           window.localStorage.setItem('Token',response.data.sessionKey.acess_token);
-          this.toastr.success('<small>' + 'Seja bem vindo ' + response.data.nome + '<small>', 'Mensagem:');   
+          this.toastr.success('<small>' + 'Seja bem vindo de volta: <br>' + response.data.nome + '<small>', 'Mensagem:');   
           this.router.navigate(['/', 'main'])
-        }else{
+        }
+        else
+        {
           this.toastr.error('<small>' + response.mensagem + '</small>', 'Mensagem:');
         }
         this.loading = false;
       }
     );
   }
+
+
+  //Campo Senha
+  ActiveEyePasswordLogin: boolean = false;
+  ActiveEyePasswordRegister: boolean = false;
+
+  EyePasswordRegister = (): void => {
+    this.ActiveEyePasswordRegister = !this.ActiveEyePasswordRegister;
+  };
+
+  EyePasswordLogin = (): void => {
+    this.ActiveEyePasswordLogin = !this.ActiveEyePasswordLogin;
+  };
 }

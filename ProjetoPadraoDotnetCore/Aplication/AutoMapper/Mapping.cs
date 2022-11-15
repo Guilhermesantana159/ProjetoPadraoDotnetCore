@@ -1,8 +1,10 @@
 ﻿using Aplication.Models.Request.ModuloMenu;
 using Aplication.Models.Request.Profissao;
-using Aplication.Models.Request.SkillUsuario;
 using Aplication.Models.Request.Usuario;
 using Aplication.Models.Response;
+using Aplication.Models.Response.Base;
+using Aplication.Models.Response.Menu;
+using Aplication.Models.Response.Usuario;
 using Aplication.Utils.HashCripytograph;
 using AutoMapper;
 using Domain.DTO.Correios;
@@ -15,10 +17,26 @@ public class Mapping : Profile
     public Mapping()
     {
         #region Usuario
+
+        CreateMap<SkillRequest, SkillUsuario>()
+            .ForMember(dst => dst.Descricao,
+                map => map.MapFrom(src => src.Descricao))
+            .ReverseMap();
+
         CreateMap<UsuarioRequest, Usuario>()
             .ForMember(dst => dst.Senha,
-                map => map.MapFrom(src => new HashCripytograph().Hash(src.Senha)));
+                map => map.MapFrom(src => new HashCripytograph().Hash(src.Senha)))
+            .ForMember(dst => dst.LSkillUsuarios,
+                map => map.MapFrom(src => src.lSkills));
         
+        CreateMap<Usuario,UsuarioCrudResponse>()
+            .ForMember(dst => dst.Senha,
+                map => map.MapFrom(src => new HashCripytograph().Hash(src.Senha)))
+            .ForMember(dst => dst.lSkills,
+                map => map.MapFrom(src => src.LSkillUsuarios))
+            .ForMember(dst => dst.DataNascimento,
+                map => map.MapFrom(src => src.DataNascimento.ToString()));
+
         CreateMap<UsuarioRegistroInicialRequest, Usuario>()
             .ForMember(dst => dst.Senha,
                 map => map.MapFrom(src => new HashCripytograph().Hash(src.Senha)));
@@ -60,17 +78,6 @@ public class Mapping : Profile
                 map => map.MapFrom(src => src.Descricao))
             .ForMember(dst => dst.Value,
                 map => map.MapFrom(src => src.IdProfissao));
-
-        CreateMap<SkillUsuarioCadastrarRequest,SkillUsuario>();
-        
-        CreateMap<SkillUsuarioEditarRequest,SkillUsuario>();
-        
-        CreateMap<SkillUsuario,SelectBaseResponse>()
-            .ForMember(dst => dst.Description,
-                map => map.MapFrom(src => src.Descricao))
-            .ForMember(dst => dst.Value,
-                map => map.MapFrom(src => src.IdSkill));
-
         #endregion
     }
 }

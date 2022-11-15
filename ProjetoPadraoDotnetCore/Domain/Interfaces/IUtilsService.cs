@@ -11,10 +11,4 @@ public interface IUtilsService
     public void EditarProfissao(Profissao profissao);
     public Profissao GetProfissaoById(int id);
     public void DeletarProfissaoPorId(int id);
-    public IQueryable<SkillUsuario> ConsultarSkill();
-    public void CadastrarSkill(SkillUsuario profissao);
-    public void EditarSkill(SkillUsuario profissao);
-    public SkillUsuario GetSkillById(int id);
-    public void DeletarSkillPorId(int id);
-
 }

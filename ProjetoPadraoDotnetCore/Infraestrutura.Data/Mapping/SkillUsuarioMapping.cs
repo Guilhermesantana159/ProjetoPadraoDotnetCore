@@ -14,9 +14,9 @@ public class SkillUsuarioMapping : IEntityTypeConfiguration<SkillUsuario>
         builder.Property(t => t.Descricao).HasColumnName("Descricao").IsRequired();
         
         builder
-            .HasOne(t => t.Usuario)
-            .WithMany(t => t.LSkillUsuario)
-            .HasForeignKey(t => t.IdUsuario)
+            .HasOne(p => p.Usuario)
+            .WithMany(b => b.LSkillUsuarios)
+            .HasForeignKey(p => p.IdUsuario)
             .IsRequired();
     }
 }

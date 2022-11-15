@@ -14,7 +14,6 @@ using Infraestrutura.Repository.Interface.Base;
 using Infraestrutura.Repository.Interface.Menu;
 using Infraestrutura.Repository.Interface.Modulo;
 using Infraestrutura.Repository.Interface.Profissao;
-using Infraestrutura.Repository.Interface.SkillUsuario;
 using Infraestrutura.Repository.Interface.Usuario;
 using Infraestrutura.Repository.ReadRepository;
 using Infraestrutura.Repository.WriteRepository;
@@ -60,9 +59,7 @@ namespace CrossCutting.IOC
             services.AddScoped<IExternalRepository, ExternalRepository>();
             services.AddScoped<IProfissaoReadRepository, ProfissaoReadRepository>();
             services.AddScoped<IProfissaoWriteRepository, ProfissaoWriteRepository>();
-            services.AddScoped<ISkillUsuarioReadRepository, SkillUsuarioReadRepository>();
-            services.AddScoped<ISkillUsuarioWriteRepository, SkillUsuarioWriteRepository>();
-            
+
             //Context
             services.AddDbContext<Context>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Transient);

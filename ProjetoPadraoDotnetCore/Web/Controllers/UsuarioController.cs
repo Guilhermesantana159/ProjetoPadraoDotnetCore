@@ -1,6 +1,6 @@
 using Aplication.Interfaces;
 using Aplication.Models.Request.Usuario;
-using Aplication.Models.Response;
+using Aplication.Models.Response.Usuario;
 using Infraestrutura.Entity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -48,10 +48,10 @@ public class UsuarioController : DefaultController
         {
             var cadastro = App.CadastroInicial(request);
 
-            if (!cadastro.IsValid())
-                return ResponderErro(cadastro.LErrors.FirstOrDefault());
+            if (!cadastro.Validacao.IsValid())
+                return ResponderErro(cadastro.Validacao.LErrors.FirstOrDefault());
                 
-            return ResponderSucesso("Usuário cadastrado com sucesso!");
+            return ResponderSucesso(cadastro.DataUsuario);
         }
         catch (Exception e)
         {

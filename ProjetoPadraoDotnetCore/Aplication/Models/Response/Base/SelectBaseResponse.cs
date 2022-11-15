@@ -1,4 +1,4 @@
-﻿namespace Aplication.Models.Response;
+﻿namespace Aplication.Models.Response.Base;
 
 public class SelectBaseResponse 
 { 

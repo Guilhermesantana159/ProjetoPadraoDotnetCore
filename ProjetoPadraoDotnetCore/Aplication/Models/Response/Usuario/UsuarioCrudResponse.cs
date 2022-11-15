@@ -1,8 +1,8 @@
-﻿using Infraestrutura.Enum;
+﻿using Aplication.Models.Request.Usuario;
 
-namespace Infraestrutura.Entity;
+namespace Aplication.Models.Response.Usuario;
 
-public class Usuario
+public class UsuarioCrudResponse
 {
     public int IdUsuario { get; set; }
     public string Nome { get; set; } = null!;
@@ -23,14 +23,10 @@ public class Usuario
     public string? NomePai { get; set; } 
     public string? Observacao { get; set; } 
     public string? Rg { get; set; } 
-    public DateTime? DataNascimento { get; set; }
-    public EGenero Genero { get; set; }
+    public string DataNascimento { get; set; } = null!;
+    public int Genero { get; set; }
     
     public int IdUsuarioCadastro { get; set; }
     public int? IdProfissao { get; set; }
-
-    #region Relacionamento
-    public virtual Profissao Profissao { get; set; } = null!;
-    public virtual IEnumerable<SkillUsuario> LSkillUsuarios { get; set; } = null!;
-    #endregion
+    public List<SkillRequest> lSkills { get; set; } = null!;
 }

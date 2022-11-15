@@ -40,6 +40,11 @@ public class UsuarioService : IUsuarioService
         WriteRepository.Add(usuario);
     }
     
+    public Usuario CadastrarComRetorno(Usuario usuario)
+    {
+       return WriteRepository.AddWithReturn(usuario);
+    }
+    
     public void CadastrarListaUsuario(List<Usuario> lUsuario)
     {
         WriteRepository.AddRange(lUsuario);

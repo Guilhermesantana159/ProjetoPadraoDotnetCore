@@ -8,7 +8,7 @@ public class MenuMapping : IEntityTypeConfiguration<Menu>
 {
     public void Configure(EntityTypeBuilder<Menu> builder)
     {
-        builder.ToTable("MENU");
+        builder.ToTable("Menu");
         
         builder.HasKey(o => o.IdMenu);
         builder.Property(t => t.Nome).HasColumnName("Nome").IsRequired();

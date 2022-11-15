@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infraestrutura.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20221106221810_AddTableProfissao")]
-    partial class AddTableProfissao
+    [Migration("20221111224413_SkillUsuario")]
+    partial class SkillUsuario
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -49,7 +49,7 @@ namespace Infraestrutura.Migrations
 
                     b.HasIndex("IdModulo");
 
-                    b.ToTable("MENU", (string)null);
+                    b.ToTable("Menu", (string)null);
                 });
 
             modelBuilder.Entity("Infraestrutura.Entity.Modulo", b =>
@@ -63,21 +63,21 @@ namespace Infraestrutura.Migrations
                     b.Property<string>("DescricaoLabel")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("DESCRICAOLABEL");
+                        .HasColumnName("DescricaoLabel");
 
                     b.Property<string>("Icone")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("ICONE");
+                        .HasColumnName("Icone");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("NOME");
+                        .HasColumnName("Nome");
 
                     b.HasKey("IdModulo");
 
-                    b.ToTable("MODULO", (string)null);
+                    b.ToTable("Modulo", (string)null);
                 });
 
             modelBuilder.Entity("Infraestrutura.Entity.Profissao", b =>
@@ -98,6 +98,29 @@ namespace Infraestrutura.Migrations
                     b.ToTable("Profissao", (string)null);
                 });
 
+            modelBuilder.Entity("Infraestrutura.Entity.SkillUsuario", b =>
+                {
+                    b.Property<int>("IdSkill")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdSkill"), 1L, 1);
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Descricao");
+
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdSkill");
+
+                    b.HasIndex("IdUsuario");
+
+                    b.ToTable("SkillUsuario", (string)null);
+                });
+
             modelBuilder.Entity("Infraestrutura.Entity.Usuario", b =>
                 {
                     b.Property<int>("IdUsuario")
@@ -106,42 +129,103 @@ namespace Infraestrutura.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdUsuario"), 1L, 1);
 
+                    b.Property<string>("Bairro")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Cidade");
+
+                    b.Property<string>("Cep")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Cep");
+
+                    b.Property<string>("Cidade")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Cidade1");
+
                     b.Property<string>("Cpf")
                         .IsRequired()
                         .HasMaxLength(14)
                         .HasColumnType("nvarchar(14)")
                         .HasColumnName("CPF");
 
-                    b.Property<DateTime>("DataNascimento")
+                    b.Property<DateTime?>("DataNascimento")
                         .HasColumnType("datetime2")
                         .HasColumnName("DataNascimento");
+
+                    b.Property<int>("Dedicacao")
+                        .HasColumnType("int")
+                        .HasColumnName("Dedicacao");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)")
-                        .HasColumnName("EMAIL");
+                        .HasColumnName("Email");
+
+                    b.Property<string>("Estado")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Estado");
+
+                    b.Property<int>("Genero")
+                        .HasColumnType("int")
+                        .HasColumnName("Genero");
+
+                    b.Property<int?>("IdProfissao")
+                        .HasColumnType("int")
+                        .HasColumnName("IdProfissao");
+
+                    b.Property<int>("IdUsuarioCadastro")
+                        .HasColumnType("int");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Perfil")
+                    b.Property<string>("NomeMae")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("NomeMae");
+
+                    b.Property<string>("NomePai")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("NomePai");
+
+                    b.Property<int?>("Numero")
                         .HasColumnType("int")
-                        .HasColumnName("Perfil");
+                        .HasColumnName("Numero");
+
+                    b.Property<string>("Observacao")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Observacao");
+
+                    b.Property<string>("Pais")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Pais");
+
+                    b.Property<bool>("PerfilAdministrador")
+                        .HasColumnType("bit")
+                        .HasColumnName("PerfilAdministrador");
+
+                    b.Property<string>("Rg")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Rg");
+
+                    b.Property<string>("Rua")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Rua");
 
                     b.Property<string>("Senha")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("SENHA");
+                        .HasColumnName("Senha");
 
                     b.Property<string>("Telefone")
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("TELEFONE");
+                        .HasColumnName("Telefone");
 
                     b.HasKey("IdUsuario");
 
-                    b.ToTable("USUARIO", (string)null);
+                    b.HasIndex("IdProfissao");
+
+                    b.ToTable("Usuario", (string)null);
                 });
 
             modelBuilder.Entity("Infraestrutura.Entity.Menu", b =>
@@ -155,9 +239,39 @@ namespace Infraestrutura.Migrations
                     b.Navigation("Modulo");
                 });
 
+            modelBuilder.Entity("Infraestrutura.Entity.SkillUsuario", b =>
+                {
+                    b.HasOne("Infraestrutura.Entity.Usuario", "Usuario")
+                        .WithMany("LSkillUsuarios")
+                        .HasForeignKey("IdUsuario")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("Infraestrutura.Entity.Usuario", b =>
+                {
+                    b.HasOne("Infraestrutura.Entity.Profissao", "Profissao")
+                        .WithMany("LUsuario")
+                        .HasForeignKey("IdProfissao");
+
+                    b.Navigation("Profissao");
+                });
+
             modelBuilder.Entity("Infraestrutura.Entity.Modulo", b =>
                 {
                     b.Navigation("lMenus");
+                });
+
+            modelBuilder.Entity("Infraestrutura.Entity.Profissao", b =>
+                {
+                    b.Navigation("LUsuario");
+                });
+
+            modelBuilder.Entity("Infraestrutura.Entity.Usuario", b =>
+                {
+                    b.Navigation("LSkillUsuarios");
                 });
 #pragma warning restore 612, 618
         }

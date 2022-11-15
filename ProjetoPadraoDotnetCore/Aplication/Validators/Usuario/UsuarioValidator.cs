@@ -17,7 +17,7 @@ public class UsuarioValidator : IUsuarioValidator
         var validation = new ValidationResult();
         
         if(string.IsNullOrEmpty(request.Email))
-            validation.LErrors.Add("Campo Email é obrigatório!");
+            validation.LErrors.Add("Campo email é obrigatório!");
         if(string.IsNullOrEmpty(request.Nome))
             validation.LErrors.Add("Campo nome é obrigatório!");
         if(string.IsNullOrEmpty(request.Senha))

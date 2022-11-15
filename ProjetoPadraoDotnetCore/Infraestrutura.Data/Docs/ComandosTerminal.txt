@@ -1,5 +1,5 @@
 ﻿//Criar Migration
-dotnet ef migrations add Modifykill
+dotnet ef migrations add SkillUsuario
 
 //Remover ultimo migration
 dotnet ef migrations remove

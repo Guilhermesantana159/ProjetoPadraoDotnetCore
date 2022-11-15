@@ -47,7 +47,7 @@ namespace Infraestrutura.Migrations
 
                     b.HasIndex("IdModulo");
 
-                    b.ToTable("MENU", (string)null);
+                    b.ToTable("Menu", (string)null);
                 });
 
             modelBuilder.Entity("Infraestrutura.Entity.Modulo", b =>
@@ -61,21 +61,21 @@ namespace Infraestrutura.Migrations
                     b.Property<string>("DescricaoLabel")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("DESCRICAOLABEL");
+                        .HasColumnName("DescricaoLabel");
 
                     b.Property<string>("Icone")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("ICONE");
+                        .HasColumnName("Icone");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("NOME");
+                        .HasColumnName("Nome");
 
                     b.HasKey("IdModulo");
 
-                    b.ToTable("MODULO", (string)null);
+                    b.ToTable("Modulo", (string)null);
                 });
 
             modelBuilder.Entity("Infraestrutura.Entity.Profissao", b =>
@@ -240,7 +240,7 @@ namespace Infraestrutura.Migrations
             modelBuilder.Entity("Infraestrutura.Entity.SkillUsuario", b =>
                 {
                     b.HasOne("Infraestrutura.Entity.Usuario", "Usuario")
-                        .WithMany("LSkillUsuario")
+                        .WithMany("LSkillUsuarios")
                         .HasForeignKey("IdUsuario")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -269,7 +269,7 @@ namespace Infraestrutura.Migrations
 
             modelBuilder.Entity("Infraestrutura.Entity.Usuario", b =>
                 {
-                    b.Navigation("LSkillUsuario");
+                    b.Navigation("LSkillUsuarios");
                 });
 #pragma warning restore 612, 618
         }

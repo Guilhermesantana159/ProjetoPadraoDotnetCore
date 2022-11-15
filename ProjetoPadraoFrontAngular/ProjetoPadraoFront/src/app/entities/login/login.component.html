@@ -20,9 +20,21 @@
             </text-error-message>
           </div>
           <div class="mb-3">
-            <label for="pwd" class="form-label">Senha:</label>
-            <input type="password" formControlName="senhaLogin" maxlength="10" class="form-control form-control-sm" id="senhaLogin" placeholder="Insira sua senha" name="senhaLogin">
-            <text-error-message  *ngIf="loginFormGroup.get('senhaLogin')?.errors?.['required'] && submitLogin"
+            <label for="pswdLogin" class="form-label">Senha:</label>
+            <div class="input-group">
+              <input [type]="ActiveEyePasswordLogin ? 'text' : 'password'" 
+              class="form-control form-control-sm" 
+              formControlName="senhaLogin"
+              placeholder="Insira sua senha" 
+              maxlength="10" id="pswdLogin"  name="pswdLogin"             
+              aria-label="Senha" 
+              aria-describedby="div-eye">
+              <div class="input-group-append">
+                <div class="eye-password" id="div-eye" (click)="EyePasswordLogin()">
+                  <i [class]="ActiveEyePasswordLogin ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'"></i>
+                </div>
+              </div>
+            </div>            <text-error-message  *ngIf="loginFormGroup.get('senhaLogin')?.errors?.['required'] && submitLogin"
               text="Este campo é obrigatório">
             </text-error-message>
           </div>
@@ -35,16 +47,16 @@
       <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
         <form class="form-signin"  [formGroup]="UserRegisterFormGroup" (ngSubmit)="RegisterUsuario(UserRegisterFormGroup)" autocomplete="off">
           <div class="mb-3 mt-3">
-            <label for="email" class="form-label">Nome:</label>
-            <input type="text" formControlName="nome" maxlength="150" class="form-control form-control-sm" id="nome" placeholder="Insira seu nome*" name="nome">
+            <label for="email" class="form-label">Nome:<span class="span-required" matTooltip="Campo obrigatório" matTooltipPosition="right">*</span></label>
+            <input type="text" formControlName="nome" maxlength="150" class="form-control form-control-sm" id="nome" placeholder="Insira seu nome" name="nome">
             <text-error-message  
               *ngIf="UserRegisterFormGroup.get('nome')?.errors?.['required'] && submitRegister"
               text="Este campo é obrigatório">
             </text-error-message>
           </div>
           <div class="mb-3 mt-3">
-            <label for="email" class="form-label">Email:</label>
-            <input type="email" formControlName="email" maxlength="150" class="form-control form-control-sm" id="email" placeholder="Insira seu email*" name="email">
+            <label for="email" class="form-label">Email:<span class="span-required" matTooltip="Campo obrigatório" matTooltipPosition="right">*</span></label>
+            <input type="email" formControlName="email" maxlength="150" class="form-control form-control-sm" id="email" placeholder="Insira seu email" name="email">
             <text-error-message  
               *ngIf="UserRegisterFormGroup.get('email')?.errors?.['email'] && submitRegister"
               text="Campo inválido!">
@@ -55,8 +67,8 @@
             </text-error-message>
           </div>
           <div class="mb-3 mt-3">
-            <label for="email" class="form-label">CPF:</label>
-            <input type="text" [mask]= "'000.000.000-00'" formControlName="CPF" maxlength="14" class="form-control form-control-sm" id="CPF" placeholder="Insira seu CPF*" name="CPF">
+            <label for="email" class="form-label">CPF:<span class="span-required" matTooltip="Campo obrigatório" matTooltipPosition="right">*</span></label>
+            <input type="text" [mask]= "'000.000.000-00'" formControlName="CPF" maxlength="14" class="form-control form-control-sm" id="CPF" placeholder="Insira seu CPF" name="CPF">
             <text-error-message  
               *ngIf="UserRegisterFormGroup.get('CPF')?.errors?.['required'] && submitRegister"
               text="Este campo é obrigatório">
@@ -67,8 +79,21 @@
             </text-error-message>
           </div>
           <div class="mb-3">
-            <label for="pwd" class="form-label">Senha:</label>
-            <input type="password" formControlName="senha" maxlength="10" class="form-control form-control-sm" id="pwd" placeholder="Insira sua senha*" name="pswd">
+            <label for="pwd" class="form-label">Senha:<span class="span-required" matTooltip="Campo obrigatório" matTooltipPosition="right">*</span></label>
+            <div class="input-group">
+              <input [type]="ActiveEyePasswordRegister ? 'text' : 'password'" 
+              class="form-control form-control-sm" 
+              formControlName="senha"
+              placeholder="Insira sua senha" 
+              maxlength="10" id="pwd"  name="pswd"             
+              aria-label="Senha" 
+              aria-describedby="div-eye">
+              <div class="input-group-append">
+                <div class="eye-password" id="div-eye" (click)="EyePasswordRegister()">
+                  <i [class]="ActiveEyePasswordRegister ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'"></i>
+                </div>
+              </div>
+            </div>
             <text-error-message  
               *ngIf="UserRegisterFormGroup.get('senha')?.errors?.['required'] && submitRegister"
               text="Este campo é obrigatório">
