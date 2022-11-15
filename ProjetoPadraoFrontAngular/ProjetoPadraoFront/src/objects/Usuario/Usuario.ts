@@ -8,6 +8,7 @@ export interface Usuario extends RetornoPadrao
 export interface DataUsuario
 {
     nome: string,
+    idUsuario: string,
     sessionKey: token
 }
 

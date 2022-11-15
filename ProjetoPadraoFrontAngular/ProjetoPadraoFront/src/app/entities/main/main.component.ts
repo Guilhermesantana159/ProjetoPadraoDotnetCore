@@ -15,6 +15,7 @@ export class MainComponent{
   usuarioNome: string | null;
   estruturaMenu: Array<Modulo> = [];
   loading: boolean;
+  fullscreen: boolean = false;
 
   constructor(private toastr: ToastrService,private response: BaseService,private router: Router){
     this.loading = true;
@@ -36,12 +37,18 @@ export class MainComponent{
   toggleClass = () =>{
     document.getElementById('sidebar')?.classList.toggle('active');
     document.getElementById('content')?.classList.toggle('active');;
-  }
+  };
 
-  deslogar = () =>{
+  Deslogar = () =>{
     window.localStorage.clear();
     this.router.navigateByUrl('/');
-  }
+  };
+
+  EditarPerfil = () => {
+    let id = window.localStorage.getItem('IdUsuario');
+    
+    this.router.navigateByUrl('/main/usuario/' + id + '/editar');
+  };
 }
 
 

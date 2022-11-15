@@ -151,3 +151,17 @@ textarea{
     background-color: #fff; 
     border-radius: 8px; 
 } 
+
+.eye-password{
+    cursor: pointer;
+    position: absolute;
+    top: 30%;
+    right: 2%;
+}
+
+.span-badge{
+    margin-left: 15pt;
+    position: absolute;
+    margin-top: 45pt;
+    z-index: 2;
+}
