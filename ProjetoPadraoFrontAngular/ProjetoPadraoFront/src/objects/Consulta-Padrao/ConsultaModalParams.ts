@@ -3,6 +3,7 @@ export interface ConsultaModalParams
     Label: string,
     Title: string,
     Disabled: boolean,
-    Class: string
+    Class: string,
+    Required: boolean
 }
 

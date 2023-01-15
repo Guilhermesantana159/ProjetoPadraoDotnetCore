@@ -4,6 +4,7 @@ using Infraestrutura.DataBaseContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infraestrutura.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20221211173221_AddTablePet")]
+    partial class AddTablePet
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -163,9 +165,6 @@ namespace Infraestrutura.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Estado");
 
-                    b.Property<string>("Foto")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Genero")
                         .HasColumnType("int")
                         .HasColumnName("Genero");
@@ -222,14 +221,9 @@ namespace Infraestrutura.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Telefone");
 
-                    b.Property<int>("UsuarioFkIdUsuario")
-                        .HasColumnType("int");
-
                     b.HasKey("IdUsuario");
 
                     b.HasIndex("IdProfissao");
-
-                    b.HasIndex("UsuarioFkIdUsuario");
 
                     b.ToTable("Usuario", (string)null);
                 });
@@ -262,15 +256,7 @@ namespace Infraestrutura.Migrations
                         .WithMany("LUsuario")
                         .HasForeignKey("IdProfissao");
 
-                    b.HasOne("Infraestrutura.Entity.Usuario", "UsuarioFk")
-                        .WithMany()
-                        .HasForeignKey("UsuarioFkIdUsuario")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Profissao");
-
-                    b.Navigation("UsuarioFk");
                 });
 
             modelBuilder.Entity("Infraestrutura.Entity.Modulo", b =>

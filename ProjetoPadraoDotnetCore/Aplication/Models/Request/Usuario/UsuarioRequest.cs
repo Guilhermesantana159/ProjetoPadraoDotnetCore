@@ -6,8 +6,9 @@ public class UsuarioRequest
 {
     public int? IdUsuario { get; set; }
     public string? Nome { get; set; } = null!;
-    public string? Email { get; set; } = null!;
+    public string? Foto { get; set; } = null!;
     public string? Senha { get; set; } = null!;
+    public string? Email { get; set; } = null!;
     public bool PerfilAdministrador { get; set; }
     public int? Dedicacao { get; set; }
     public int? IdUsuarioCadastro { get; set; }

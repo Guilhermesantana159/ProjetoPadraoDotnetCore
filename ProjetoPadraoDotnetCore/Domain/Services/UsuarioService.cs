@@ -15,6 +15,11 @@ public class UsuarioService : IUsuarioService
         WriteRepository = writeRepository;
     }
 
+    public Usuario GetByIdWithInclude(int id)
+    {
+        return ReadRepository.GetByIdWithInclude(id);
+    }
+    
     public Usuario GetById(int id)
     {
         return ReadRepository.GetById(id);

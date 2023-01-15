@@ -1,10 +1,11 @@
 <div class="w-100 header-page-crud-image">
 </div>
 <div class="d-flex justify-content-center header-page-crud">
-    <img class="rounded-circle img-thumbnail image-perfil" src="https://themesbrand.com/velzon/html/material/assets/images/users/avatar-1.jpg">
-    <button type="button" class="btn btn-light btn-sm rounded-circle btn-perfil">
+    <img class="rounded-circle img-thumbnail image-perfil" [src]="UserRegisterFormGroup.get('foto')?.value == null ? 'assets/Images/Avatar.png' : UserRegisterFormGroup.get('foto')?.value">
+    <button type="button" class="btn btn-light btn-sm rounded-circle btn-perfil" (click)="OpenFileUpload()">
         <i class="bi bi-camera-fill"></i>    
     </button>
+    <input type="file" hidden class="form-control form-control-sm" id="customFile" (change)="ChangeFoto($event)" accept="image/png, image/gif, image/jpeg" />  
 </div>
 <div class="card">
     <div class="card-header">
@@ -15,7 +16,7 @@
         </div>
         <div class="row">
           <div class="d-flex justify-content-end text-muted">
-            <span class="locale-text">Cadastros > Usuário > <strong class="text-decoration-underline">Novo</strong></span>
+            <span class="locale-text">Cadastros > Usuário > <strong class="text-decoration-underline">{{IsNew != true ? 'Editar' : 'Novo'}}</strong></span>
           </div>
         </div>
       </div> 
@@ -27,8 +28,8 @@
                 <strong>Principal</strong>
               </ng-template>
               <div class="card-body">
-                <div class="row py-1">
-                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6">
+                <div class="row">
+                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6 py-1">
                         <div class="input-group-sm">
                             <label class="form-label input-label text-muted">
                                 Nome<span class="span-required" matTooltip="Campo obrigatório" matTooltipPosition="right">*</span>
@@ -40,7 +41,7 @@
                         text="Este campo é obrigatório">
                     </text-error-message>
                     </div>
-                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6">
+                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6 py-1">
                         <div class="input-group-sm">
                             <label class="form-label input-label text-muted">
                                 Email<span class="span-required" matTooltip="Campo obrigatório" matTooltipPosition="right">*</span>
@@ -48,13 +49,17 @@
                             <input class="form-control input-form" type="text" maxlength="100" formControlName="email"/>
                         </div>
                         <text-error-message  
+                        *ngIf="UserRegisterFormGroup.get('email')?.errors?.['email'] && submitRegister"
+                        text="Campo inválido!">
+                      </text-error-message>
+                        <text-error-message  
                         *ngIf="UserRegisterFormGroup.get('email')?.errors?.['required'] && submitRegister"
                         text="Este campo é obrigatório">
                         </text-error-message>
                     </div>
                 </div>
-                <div class="row py-1">
-                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6">
+                <div class="row">
+                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6 py-1">
                         <div class="input-group-sm">
                             <label class="form-label input-label text-muted">
                                 Nome do pai
@@ -62,7 +67,7 @@
                             <input class="form-control input-form" type="text" maxlength="100" formControlName="nomePai">
                         </div>
                     </div>
-                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6">
+                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6 py-1">
                         <div class="input-group-sm">
                             <label class="form-label input-label text-muted">
                                 Nome da mãe<span class="span-required" matTooltip="Campo obrigatório" matTooltipPosition="right">*</span>
@@ -75,8 +80,8 @@
                         </text-error-message>
                     </div>
                 </div>
-                <div class="row py-1">
-                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6">
+                <div class="row">
+                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6 py-1">
                         <div class="input-group-sm">
                             <label class="form-label input-label text-muted">
                                 CPF<span class="span-required" matTooltip="Campo obrigatório" matTooltipPosition="right">*</span>
@@ -92,7 +97,7 @@
                         text="Campo inválido!">
                       </text-error-message>
                     </div>
-                    <div class="col-sm-12 col-xs-3 col-md-3 col-lg-3">
+                    <div class="col-sm-12 col-xs-3 col-md-3 col-lg-3 py-1">
                         <div class="input-group-sm">
                             <label class="form-label input-label text-muted">
                                 Profissão<span class="span-required" matTooltip="Campo obrigatório" matTooltipPosition="right">*</span>
@@ -108,7 +113,7 @@
                         text="Este campo é obrigatório">
                         </text-error-message>
                     </div>
-                    <div class="col-sm-12 col-xs-3 col-md-3 col-lg-3">
+                    <div class="col-sm-12 col-xs-3 col-md-3 col-lg-3 py-1">
                         <div class="input-group-sm">
                             <label class="form-label input-label text-muted">
                                 Telefone
@@ -121,8 +126,8 @@
                       </text-error-message>
                     </div>
                 </div>
-                <div class="row py-1">
-                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6">
+                <div class="row">
+                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6 py-1">
                         <label class="form-label input-label text-muted">
                             Data de nascimento<span class="span-required" matTooltip="Campo obrigatório" matTooltipPosition="right">*</span>
                         </label>
@@ -146,7 +151,10 @@
                             text="Campo inválido!">
                         </text-error-message>
                     </div>
-                    <div class="col-sm-12 col-xs-3 col-md-3 col-lg-3 align-self-center">
+                    <div class="col-sm-12 col-xs-3 col-md-3 col-lg-3 align-self-center py-1">
+                        <div class="input-label mb-3">
+                            <label class="text-muted">Gênero<span class="span-required" matTooltip="Campo obrigatório" matTooltipPosition="right">*</span></label>
+                        </div>
                         <mat-radio-group aria-label="Select an option" formControlName="genero">
                             <mat-radio-button class="px-1" checked value=0>Masculino</mat-radio-button>
                             <mat-radio-button class="px-1" value=1>Feminino</mat-radio-button>
@@ -165,8 +173,8 @@
                         </text-error-message>
                     </div>
                 </div>
-                <div class="row py-1">
-                    <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
+                <div class="row">
+                    <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12 py-1">
                         <label class="form-label input-label text-muted">
                             Skills
                         </label>
@@ -187,8 +195,8 @@
                         </mat-form-field>
                     </div>
                 </div>
-                <div class="row py-1">
-                    <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
+                <div class="row">
+                    <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12 py-1">
                         <label class="form-label input-label text-muted">
                             Observações
                         </label>
@@ -213,8 +221,8 @@
                 <strong>Endereço</strong>
               </ng-template>
               <div class="card-body">
-                <div class="row py-1">
-                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6">
+                <div class="row">
+                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6 py-1">
                         <div class="input-group">
                             <label class="form-label input-label text-muted">
                                 Cep<span class="span-required" matTooltip="Campo obrigatório" matTooltipPosition="right">*</span>
@@ -241,20 +249,20 @@
                     text="Campo inválido">
                     </text-error-message>
                 </div>
-                <div class="row py-1">
-                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6">
+                <div class="row">
+                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6 py-1">
                         <div class="input-group-sm">
                             <label class="form-label input-label text-muted">
                                 País<span class="span-required" matTooltip="Campo obrigatório" matTooltipPosition="right">*</span>
                             </label>
-                            <input class="form-control input-form" type="text" [readonly]="disabledForApiCep" formControlName="pais"/>
+                            <input class="form-control input-form" formControlName="pais" type="text" [readonly]="disabledForApiCep"/>
                         </div>
                         <text-error-message  
                         *ngIf="UserRegisterFormGroup.get('pais')?.errors?.['required'] && submitRegister"
                         text="Campo obrigatório">
                         </text-error-message>
                     </div>
-                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6">
+                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6 py-1">
                         <div class="input-group-sm">
                             <label class="form-label input-label text-muted">
                                 Estado<span class="span-required" matTooltip="Campo obrigatório" matTooltipPosition="right">*</span>
@@ -267,8 +275,8 @@
                         </text-error-message>
                     </div>
                 </div>
-                <div class="row py-1">
-                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6">
+                <div class="row">
+                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6 py-1">
                         <div class="input-group-sm">
                             <label class="form-label input-label text-muted">
                                 Cidade<span class="span-required" matTooltip="Campo obrigatório" matTooltipPosition="right">*</span>
@@ -280,7 +288,7 @@
                         text="Campo obrigatório">
                         </text-error-message>
                     </div>
-                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6">
+                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6 py-1">
                         <div class="input-group-sm">
                             <label class="form-label input-label text-muted">
                                 Bairro<span class="span-required" matTooltip="Campo obrigatório" matTooltipPosition="right">*</span>
@@ -293,8 +301,8 @@
                         </text-error-message>
                     </div>
                 </div>
-                <div class="row py-1">
-                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6">
+                <div class="row">
+                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6 py-1">
                         <div class="input-group-sm">
                             <label class="form-label input-label text-muted">
                                 Rua<span class="span-required" matTooltip="Campo obrigatório" matTooltipPosition="right">*</span>
@@ -306,7 +314,7 @@
                         text="Campo obrigatório">
                         </text-error-message>
                     </div>
-                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6">
+                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6 py-1">
                         <div class="input-group-sm">
                             <label class="form-label input-label text-muted">
                                 Número<span class="span-required" matTooltip="Campo obrigatório" matTooltipPosition="right">*</span>
@@ -335,15 +343,15 @@
                 <strong>Configuração</strong>
               </ng-template>
               <div class="card-body">
-                <div class="row py-1">
-                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6 align-self-end">
+                <div class="row">
+                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6 align-self-end py-1">
                         <mat-slide-toggle formControlName="perfilAdministrador">
                             <label class="input-label text-muted">Perfil Administrador<span class="span-required" matTooltip="Campo obrigatório" matTooltipPosition="right">*</span></label>
                         </mat-slide-toggle>
                     </div>
                 </div>
-                <div class="row py-1">
-                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6 align-self-end">
+                <div class="row">
+                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6 align-self-end py-1">
                         <mat-slider
                             formControlName="dedicacao"
                             FormatLabel
@@ -355,13 +363,13 @@
                             max="100"
                             aria-label="units">
                         </mat-slider>
-                        <label class="input-label text-muted">Dedicação do usuário</label>
+                        <label class="input-label text-muted">Dedicação do usuário<span class="span-required" matTooltip="Campo obrigatório" matTooltipPosition="right">*</span></label>
                     </div>
                     <text-error-message  
                         *ngIf="UserRegisterFormGroup.get('dedicacao')?.errors?.['min'] && submitRegister"
-                        text="O valor mínimo deste campo é 1 ">
+                        text="O valor mínimo deste campo é 1">
                     </text-error-message>
-                </div>
+                </div> 
                 <div class="row py-1">
                     <consulta-padrao 
                         [ParamsConsulta]="paramsConsultaUsuario" 
@@ -372,17 +380,27 @@
                         text="Este campo é obrigatório">
                     </text-error-message>
                 </div>
-                <div class="row py-1">
-                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6">
-                        <div class="input-group-sm">
-                            <label class="form-label input-label text-muted">
-                                Senha<span class="span-required" matTooltip="Campo obrigatório" matTooltipPosition="right">*</span>
-                            </label>
-                            <input class="form-control input-form" type="password" formControlName="senha"/>
-                        </div>
-                        <text-error-message  
-                        *ngIf="UserRegisterFormGroup.get('senha')?.errors?.['required'] && submitRegister"
-                        text="Campo obrigatório">
+                <div class="row" [hidden]="!IsNew">
+                    <div class="col-sm-12 col-xs-6 col-md-6 col-lg-6 align-self-end py-1">
+                        <label class="form-label input-label text-muted">
+                            Senha<span class="span-required" matTooltip="Campo obrigatório" matTooltipPosition="right">*</span>
+                        </label>                    
+                        <div class="input-group">
+                          <input [type]="ActiveEyePassword ? 'text' : 'password'" 
+                          class="form-control input-form" 
+                          formControlName="senha"
+                          placeholder="Insira sua senha" 
+                          maxlength="10" id="senha"  name="senha"             
+                          aria-label="Senha" 
+                          aria-describedby="div-eye">
+                          <div class="input-group-append">
+                            <div class="eye-password" id="div-eye" (click)="EyePassword()">
+                              <i [class]="ActiveEyePassword ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'"></i>
+                            </div>
+                          </div>
+                        </div>            
+                        <text-error-message  *ngIf="UserRegisterFormGroup.get('senha')?.errors?.['required'] && submitRegister"
+                          text="Este campo é obrigatório">
                         </text-error-message>
                         <text-error-message  
                         *ngIf="UserRegisterFormGroup.get('senha')?.errors?.['invalidSenha'] && submitRegister && 
@@ -390,14 +408,14 @@
                         [text]="UserRegisterFormGroup.get('senha')?.errors?.['Motivo']">
                         </text-error-message>
                     </div>
-                </div>
+                  </div>
                 <hr>
                 <div class="d-flex justify-content-end">
                     <button type="button" class="btn btn-outline-danger btn-sm mx-1" (click)="ButtonEventAba(-1)">
                         <i class="bi bi-box-arrow-in-left"></i><strong>Voltar</strong>
                     </button>
-                    <button type="submit" class="btn btn-outline-success btn-sm" (click)="Salvar(UserRegisterFormGroup)">
-                        <i class="bi bi-caret-right"></i><strong>Salvar</strong>
+                    <button type="submit" class="btn btn-outline-success btn-sm" [disabled]="loading" (click)="Salvar(UserRegisterFormGroup)">
+                        <i class="bi bi-caret-right"></i><strong>{{IsNew != true ? 'Editar' : 'Salvar'}}</strong>
                     </button>
                 </div>
               </div>

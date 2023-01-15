@@ -4,7 +4,7 @@ import { BaseService } from 'src/factorys/base.service';
 import { Usuario } from 'src/objects/Usuario/Usuario';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { ValidateSenha } from 'src/factorys/validators/validators-form';
+import { ValidateSenha } from '../../../factorys/validators/validators-form';
 
 @Component({
   selector: 'login-root',
@@ -33,7 +33,7 @@ export class LoginComponent {
       email: ['', [Validators.required,Validators.email]],
       nome: ['', Validators.required],
       CPF: ['', [Validators.required,Validators.minLength(11)]],
-      senha: ['', [Validators.required,ValidateSenha]],
+      senha: ['', [Validators.required,ValidateSenha]]
     });
   }
 
@@ -50,7 +50,7 @@ export class LoginComponent {
           window.localStorage.setItem('NomeUsuario',response.data.nome);
           window.localStorage.setItem('IdUsuario',response.data.idUsuario);
           window.localStorage.setItem('Token',response.data.sessionKey.acess_token);
-          this.toastr.success('<small> Seja bem vindo <br>' + response.data.nome, 'Mensagem:');   
+          this.toastr.success('<small> Seja bem vindo <br>' + response.data.nome + '</small>', 'Mensagem:');   
           this.router.navigate(['/', 'main'])        
         }else
         {
@@ -74,7 +74,7 @@ export class LoginComponent {
           window.localStorage.setItem('NomeUsuario',response.data.nome);
           window.localStorage.setItem('IdUsuario',response.data.idUsuario);
           window.localStorage.setItem('Token',response.data.sessionKey.acess_token);
-          this.toastr.success('<small>' + 'Seja bem vindo de volta: <br>' + response.data.nome + '<small>', 'Mensagem:');   
+          this.toastr.success('<small>' + 'Seja bem vindo de volta: <br>' + response.data.nome + '</small>', 'Mensagem:');   
           this.router.navigate(['/', 'main'])
         }
         else

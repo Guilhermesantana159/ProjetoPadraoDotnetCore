@@ -36,5 +36,10 @@ public class UsuarioMapping : IEntityTypeConfiguration<Usuario>
             .HasOne(t => t.Profissao)
             .WithMany(t => t.LUsuario)
             .HasForeignKey(t => t.IdProfissao);
+
+        builder
+            .HasOne(t => t.UsuarioFk)
+            .WithOne(t => t.UsuarioFk)
+            .HasForeignKey<Usuario>(t => t.IdUsuarioCadastro);
     }
 }

@@ -14,4 +14,5 @@ public interface IUsuarioService
     public void Editar(Usuario usuario);
     public void EditarListaUsuario(List<Usuario> lUsuario);
     public void DeleteById(int id);
+    public Usuario GetByIdWithInclude(int id);
 }

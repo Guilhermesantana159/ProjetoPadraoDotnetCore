@@ -14,7 +14,7 @@ public interface IUsuarioApp
     public ValidationResult Cadastrar(UsuarioRequest request);
     public UsuarioCadastroInicialResponse CadastroInicial(UsuarioRegistroInicialRequest request);
     public void CadastrarListaUsuario(List<Usuario> lUsuario);
-    public void Editar(Usuario usuario);
+    public ValidationResult Editar(UsuarioRequest request);
     public void EditarListaUsuario(List<Usuario> lUsuario);
     public void DeleteById(int id);
     public BaseGridResponse ConsultarGridUsuario(BaseGridRequest request);

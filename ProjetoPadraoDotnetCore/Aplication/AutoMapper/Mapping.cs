@@ -1,7 +1,6 @@
 ﻿using Aplication.Models.Request.ModuloMenu;
 using Aplication.Models.Request.Profissao;
 using Aplication.Models.Request.Usuario;
-using Aplication.Models.Response;
 using Aplication.Models.Response.Base;
 using Aplication.Models.Response.Menu;
 using Aplication.Models.Response.Usuario;
@@ -24,24 +23,22 @@ public class Mapping : Profile
             .ReverseMap();
 
         CreateMap<UsuarioRequest, Usuario>()
-            .ForMember(dst => dst.Senha,
-                map => map.MapFrom(src => new HashCripytograph().Hash(src.Senha)))
             .ForMember(dst => dst.LSkillUsuarios,
                 map => map.MapFrom(src => src.lSkills));
-        
-        CreateMap<Usuario,UsuarioCrudResponse>()
-            .ForMember(dst => dst.Senha,
-                map => map.MapFrom(src => new HashCripytograph().Hash(src.Senha)))
+        CreateMap<Usuario, UsuarioCrudResponse>()
+            .ForMember(dst => dst.DataNascimento,
+                map => map.MapFrom(src => src.DataNascimento!.Value.ToString("MM/dd/yyyy")))
             .ForMember(dst => dst.lSkills,
                 map => map.MapFrom(src => src.LSkillUsuarios))
-            .ForMember(dst => dst.DataNascimento,
-                map => map.MapFrom(src => src.DataNascimento.ToString()));
+            .ForMember(dst => dst.Genero,
+                map => map.MapFrom(src => src.Genero.GetHashCode().ToString()));
 
         CreateMap<UsuarioRegistroInicialRequest, Usuario>()
             .ForMember(dst => dst.Senha,
                 map => map.MapFrom(src => new HashCripytograph().Hash(src.Senha)));
+
         #endregion
-        
+
         #region ModuloMenu
 
         CreateMap<ModuloRequest, Modulo>()
@@ -49,7 +46,7 @@ public class Mapping : Profile
                 map => map.MapFrom(src => src.Id));
 
         CreateMap<MenuRequest, Menu>();
-        
+
         CreateMap<Modulo, ModuloResponse>()
             .ForMember(dst => dst.lMenus,
                 map => map.MapFrom(src => src.lMenus));
@@ -59,7 +56,8 @@ public class Mapping : Profile
         #endregion
 
         #region Utils
-        CreateMap<EnderecoExternalReponse,EnderecoResponse>()
+
+        CreateMap<EnderecoExternalReponse, EnderecoResponse>()
             .ForMember(dst => dst.Bairro,
                 map => map.MapFrom(src => src.bairro))
             .ForMember(dst => dst.Cidade,
@@ -69,15 +67,16 @@ public class Mapping : Profile
             .ForMember(dst => dst.Rua,
                 map => map.MapFrom(src => src.logradouro));
 
-        CreateMap<ProfissaoCadastrarRequest,Profissao>();
-        
-        CreateMap<ProfissaoEditarRequest,Profissao>();
-        
-        CreateMap<Profissao,SelectBaseResponse>()
+        CreateMap<ProfissaoCadastrarRequest, Profissao>();
+
+        CreateMap<ProfissaoEditarRequest, Profissao>();
+
+        CreateMap<Profissao, SelectBaseResponse>()
             .ForMember(dst => dst.Description,
                 map => map.MapFrom(src => src.Descricao))
             .ForMember(dst => dst.Value,
                 map => map.MapFrom(src => src.IdProfissao));
+
         #endregion
     }
 }

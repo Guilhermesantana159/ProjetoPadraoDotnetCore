@@ -1,5 +1,5 @@
 <div [class]="ParamsConsulta.Class">
-  <label class="input-label text-muted">{{ParamsConsulta.Label}}</label>
+  <label class="input-label text-muted">{{ParamsConsulta.Label}}<span class="span-required" [hidden]="!ParamsConsulta.Required" matTooltip="Campo obrigatório" matTooltipPosition="right">*</span></label>
   <div class="input-group">
     <input *ngIf="!gridOptions.Parametros.MultiModal" type="text" class="form-control" [value]="ConsultaModal.SelectedText" disabled>
     <div class="col-sm-8 col-xs-8 col-md-8 col-lg-8" *ngIf="gridOptions.Parametros.MultiModal">

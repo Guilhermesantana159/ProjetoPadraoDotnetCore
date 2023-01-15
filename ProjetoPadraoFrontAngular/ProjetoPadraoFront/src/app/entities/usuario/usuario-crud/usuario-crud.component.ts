@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ConsultaModal } from 'src/objects/Consulta-Padrao/consulta-modal';
@@ -12,6 +12,7 @@ import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { RetornoPadrao } from 'src/objects/RetornoPadrao';
 import { ValidateDataAniversario, ValidateSenha } from 'src/factorys/validators/validators-form';
 import { Skill } from 'src/objects/Usuario/Skill';
+import { UsuarioResponse } from '../../../../objects/Usuario/UsuarioResponse';
 
 @Component({
   selector: 'usuario-crud-root',
@@ -25,13 +26,15 @@ export class UsuarioCrudComponent{
   UserRegisterFormGroup: FormGroup;
   submitRegister = false;
   indexTab: number = 0;
+  IsNew = true;
 
   //Aba configurações
   paramsConsultaUsuario: ConsultaModalParams = {
     Label: 'Usuário que cadastrou',
     Title: 'Consulta de usuário',
     Disabled: false,
-    Class: 'col-sm-12 col-xs-6 col-md-6 col-lg-6'
+    Class: 'col-sm-12 col-xs-6 col-md-6 col-lg-6',
+    Required: true
   };
 
   //Aba endereço
@@ -52,24 +55,25 @@ export class UsuarioCrudComponent{
       perfilAdministrador: [false],
       dedicacao: [0, Validators.min(1)],
       idUsuarioCadastro: ['', [Validators.required]],
-      cep: ['', [Validators.required,Validators.minLength(8)]],
+      cep: [undefined, [Validators.required,Validators.minLength(8)]],
       pais: ['Brasil', [Validators.required]],
-      estado: ['', [Validators.required]],
-      cidade: ['', [Validators.required]],
-      bairro: ['', [Validators.required]],
-      rua: ['', [Validators.required]],
-      numero: ['', [Validators.required]],
-      nome: ['', [Validators.required]],
-      email: ['', [Validators.required]],
-      nomeMae: ['', [Validators.required]],
-      nomePai: [''],      
-      cpf: ['', [Validators.required,Validators.minLength(11)]],
-      observacao: [''],     
-      rg: ['', [Validators.minLength(9)]],
-      telefone: ['', [Validators.minLength(11)]],
+      estado: [undefined, [Validators.required]],
+      cidade: [undefined, [Validators.required]],
+      bairro: [undefined, [Validators.required]],
+      foto: [null],
+      rua: [undefined, [Validators.required]],
+      numero: [undefined, [Validators.required]],
+      nome: [undefined, [Validators.required]],
+      email: [undefined, [Validators.required,Validators.email]],
+      nomeMae: [undefined, [Validators.required]],
+      nomePai: [undefined],      
+      cpf: [undefined, [Validators.required,Validators.minLength(11)]],
+      observacao: [undefined],     
+      rg: [undefined, [Validators.minLength(9)]],
+      telefone: [undefined, [Validators.minLength(11)]],
       genero: ['0', [Validators.required]],
-      dataNascimento: ['', [Validators.required,ValidateDataAniversario]],
-      idProfissao: ['', [Validators.required]],
+      dataNascimento: [undefined, [Validators.required,ValidateDataAniversario]],
+      idProfissao: [undefined, [Validators.required]],
       lSkills: [[]],
       senha: ['', [Validators.required,ValidateSenha]]
     });
@@ -88,15 +92,21 @@ export class UsuarioCrudComponent{
       //Load Edit
       if(params['id'] != undefined){
          this.response.Get("Usuario","ConsultarViaId/" + params['id']).subscribe(
-      (response: any) =>{        
+      (response: UsuarioResponse) =>{        
         if(response.sucesso){
+          this.IsNew = false;
           this.UserRegisterFormGroup.setValue(response.data);
+          this.UserRegisterFormGroup.get('pais')?.setValue('Brasil');
+          this.UserRegisterFormGroup.get('dataNascimento')?.setValue(new Date(response.data.dataNascimento));
+
+          //Senha Imutavel quando edição
+          this.UserRegisterFormGroup.controls['senha'].clearValidators();
+          this.UserRegisterFormGroup.controls['senha'].updateValueAndValidity();
         }else{
           this.toastr.error(response.mensagem, 'Mensagem:');
         }
       });
-      }
-    });
+    }});
   }
 
   //Funções aba principal
@@ -156,36 +166,72 @@ export class UsuarioCrudComponent{
         this.loading = false;
       }
     );
-  
   };
 
   //Operacional da página
   Salvar = (form:FormGroup) =>{
-    debugger
-
     this.loading = true;
     this.submitRegister = true;
-
-    //Formatação tipo da variável
-    form.get('genero')?.setValue(parseInt(form.get('genero')?.value));
 
     if(this.UserRegisterFormGroup.invalid){
       this.loading = false;
       this.toastr.error('<small>Preencha os campos corretamente no formulário!</small>', 'Mensagem:');
       return;
     }
-    this.response.Post("Usuario","Cadastrar",form.value).subscribe(
-      (response: RetornoPadrao) =>{        
-        if(response.sucesso){
-          this.toastr.success(response.mensagem, 'Mensagem:');
-          this.router.navigateByUrl('/main/usuario')
-        }else{
-          this.toastr.error(response.mensagem, 'Mensagem:');
+
+    //Formatação tipo da variável enum back-end
+    form.get('genero')?.setValue(parseInt(form.get('genero')?.value));
+
+    if(this.IsNew){
+      this.response.Post("Usuario","Cadastrar",form.value).subscribe(
+        (response: RetornoPadrao) =>{        
+          if(response.sucesso){
+            this.toastr.success(response.mensagem, 'Mensagem:');
+            this.router.navigateByUrl('/main/usuario')
+          }else{
+            this.toastr.error(response.mensagem, 'Mensagem:');
+          }
+          this.loading = false;
         }
-        this.loading = false;
-      }
-    );
-  }
+      );
+    }else{
+      this.response.Post("Usuario","Editar",form.value).subscribe(
+        (response: RetornoPadrao) =>{        
+          if(response.sucesso){
+            this.toastr.success(response.mensagem, 'Mensagem:');
+            this.router.navigateByUrl('/main/usuario')
+          }else{
+            this.toastr.error(response.mensagem, 'Mensagem:');
+          }
+          this.loading = false;
+        }
+      );
+    }
+
+    //Re atribuição caso error
+    form.get('genero')?.setValue((form.get('genero')?.value.toString()));
+  };
+
+  OpenFileUpload = () => {
+    document.getElementById("customFile")?.click();
+  };
+
+  ActiveEyePassword: boolean = false;
+
+  EyePassword = (): void => {
+    this.ActiveEyePassword = !this.ActiveEyePassword;
+  };
+
+  ChangeFoto = (event:any) => {
+    let file = event.target.files[0];
+    let reader = new FileReader();
+    reader.readAsDataURL(file); 
+
+    reader.onloadend = () => {
+      let base64data: any = reader.result;
+      this.UserRegisterFormGroup.get('foto')?.setValue(base64data);
+    }
+  };
 
   //Modais
   ModalUsuarioChange(event: ConsultaModal){
@@ -193,7 +239,7 @@ export class UsuarioCrudComponent{
   }
 
   LimparCampoData(){
-    this.UserRegisterFormGroup.get('dataNascimento')?.setValue('');
+    this.UserRegisterFormGroup.get('dataNascimento')?.setValue(undefined);
   }
 
   //Interação das abas

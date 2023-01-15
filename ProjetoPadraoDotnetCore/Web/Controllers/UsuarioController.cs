@@ -13,7 +13,6 @@ namespace Web.Controllers;
 public class UsuarioController : DefaultController
 {
     protected readonly IUsuarioApp App;
-    
     public UsuarioController(IUsuarioApp usuarioApp)
     {
         App = usuarioApp;
@@ -113,12 +112,16 @@ public class UsuarioController : DefaultController
     [HttpPost]
     [Authorize]
     [Route("Editar")]
-    public JsonResult Editar(Usuario usuario)
+    public JsonResult Editar(UsuarioRequest request)
     {
         try
         {
-            App.Editar(usuario);
-            return ResponderSucesso("Usuário editado com sucesso!");
+            var edicao = App.Editar(request);
+            
+            if(edicao.IsValid())
+                return ResponderSucesso("Usuário editado com sucesso!");
+            
+            return ResponderErro(edicao.LErrors.FirstOrDefault());
         }
         catch (Exception e)
         {

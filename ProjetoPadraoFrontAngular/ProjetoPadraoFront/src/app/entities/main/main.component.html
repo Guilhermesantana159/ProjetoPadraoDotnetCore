@@ -1,5 +1,5 @@
 <div class="wrapper">
-    <nav id="sidebar">
+    <nav id="sidebar" tabindex="-1">
         <div class="sidebar-header">
             <div class="d-flex justify-content-center">
                 <h3>Projeto Padrão</h3>
@@ -14,21 +14,21 @@
                 <a href="main">
                 <i class="bi bi-house-fill"></i>              
                 Principal
-                </a>
+                </a> 
             </li>
             <div *ngFor="let menu of estruturaMenu">
-            <li>  
-                <a [href]="'#'+ menu.nome" role="button" data-bs-toggle="collapse" aria-expanded="false" 
-                class="dropdown-toggle" [attr.aria-controls]="menu.nome">
-                <i [class]="menu.icone"></i>
-                    {{ menu.descricaoLabel}}
-                </a>
-                <ul class="collapse list-unstyled" [id]="menu.nome" *ngFor="let subMenu of menu.lMenus"> 
-                    <li routerLinkActive="active">
-                        <a [routerLink]="subMenu.link" routerLinkActive="active"><span class="px-2">&#x268A;</span>{{subMenu.nome}}</a>
-                    </li>
-                </ul> 
-            </li>
+                <li>  
+                    <a [href]="'#'+ menu.nome" role="button" data-bs-toggle="collapse" aria-expanded="false" 
+                    class="dropdown-toggle" [attr.aria-controls]="menu.nome">
+                    <i [class]="menu.icone"></i>
+                        {{ menu.descricaoLabel}}
+                    </a>
+                    <ul class="collapse list-unstyled" [id]="menu.nome" *ngFor="let subMenu of menu.lMenus"> 
+                        <li class="link" routerLinkActive="active-link">
+                            <a [routerLink]="subMenu.link"><span class="px-2">&#x268A;</span>{{subMenu.nome}}</a>
+                        </li>
+                    </ul> 
+                </li>
             </div>
         </ul>
     </nav>
@@ -36,14 +36,14 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
                 <div class="btn-group">
-                    <button type="button" id="sidebarCollapse" class="btn btn-danger" (click)="toggleClass()">
+                    <button type="button" class="btn btn-danger" (click)="toggleClass()">
                         <span><i class="bi bi-justify-left"></i></span>
-                    </button>
+                    </button> 
                 </div>
                 <div class="d-flex justify-content-end">                        
                     <div class="btn-group dropstart mx-2">
                         <button type="button" class="btn btn-light btn-lg btn-navbar" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img class="rounded" src="assets/Images/Avatar.png" width="60"/>
+                            <img class="rounded" src="assets/Images/AvatarMulher.png" width="60"/>
                         </button>
                         <span class="span-badge translate-middle badge rounded-pill bg-danger">
                             1+<span class="visually-hidden"></span>

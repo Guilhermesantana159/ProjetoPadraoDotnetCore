@@ -11,6 +11,7 @@ using Aplication.Models.Grid;
 using Aplication.Models.Response.Auth;
 using Aplication.Models.Response.Usuario;
 using Aplication.Utils.FilterDynamic;
+using Aplication.Utils.HashCripytograph;
 
 namespace Aplication.Controllers;
 public class UsuarioApp : IUsuarioApp
@@ -39,7 +40,7 @@ public class UsuarioApp : IUsuarioApp
 
     public UsuarioCrudResponse GetById(int id)
     {
-        return Mapper.Map<Usuario, UsuarioCrudResponse>(Service.GetById(id));
+        return Mapper.Map<Usuario, UsuarioCrudResponse>(Service.GetByIdWithInclude(id));
     }
 
     public ValidationResult Cadastrar(UsuarioRequest request)
@@ -47,12 +48,15 @@ public class UsuarioApp : IUsuarioApp
         var validation = Validation.ValidaçãoCadastro(request);
         var lUsuario = Service.GetAllList();
 
-        if (lUsuario.Any(x => x.Email == request.Email && x.IdUsuario != request.IdUsuario))
+        if (lUsuario.Any(x => x.Email == request.Email))
             validation.LErrors.Add("Email já vinculado a outro usuário");
 
         if(validation.IsValid())
         {
             var usuario = Mapper.Map<UsuarioRequest,Usuario>(request);
+            
+            //Hash da senha
+            usuario.Senha = new HashCripytograph().Hash(request.Senha);
             Service.Cadastrar(usuario);
         }
 
@@ -94,9 +98,21 @@ public class UsuarioApp : IUsuarioApp
         Service.CadastrarListaUsuario(lUsuario);
     }
     
-    public void Editar(Usuario usuario)
+    public ValidationResult Editar(UsuarioRequest request)
     {
-        Service.Editar(usuario);
+        var validation = Validation.ValidaçãoCadastro(request);
+        var lUsuario = Service.GetAllList();
+
+        if (lUsuario.Any(x => x.Email == request.Email && x.IdUsuario != request.IdUsuario))
+            validation.LErrors.Add("Email já vinculado a outro usuário");
+
+        if(validation.IsValid())
+        {
+            var usuario = Mapper.Map<UsuarioRequest,Usuario>(request);
+            Service.Editar(usuario);
+        }
+
+        return validation;
     }
     
     public void EditarListaUsuario(List<Usuario> lUsuario)

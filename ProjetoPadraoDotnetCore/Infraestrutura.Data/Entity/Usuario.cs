@@ -6,6 +6,7 @@ public class Usuario
 {
     public int IdUsuario { get; set; }
     public string Nome { get; set; } = null!;
+    public string? Foto { get; set; }
     public string Email { get; set; } = null!;
     public string Cpf { get; set; } = null!;
     public string? Telefone { get; set; }
@@ -32,5 +33,6 @@ public class Usuario
     #region Relacionamento
     public virtual Profissao Profissao { get; set; } = null!;
     public virtual IEnumerable<SkillUsuario> LSkillUsuarios { get; set; } = null!;
+    public virtual Usuario UsuarioFk {get; set; } = null!;
     #endregion
 }

@@ -44,11 +44,11 @@ login-root{
 }
 
 .header-page-crud{
-    height: 25vh; 
-    margin: -10vh 22% 2% 22%;   
+    height: 25vh;
+    margin: -10vh 22% 2% 22%;
     border-radius: 5pt;
     background-color: #fff;
-    box-shadow: 0.5px 0.5px 10pt black;    
+    box-shadow: 0.5px 0.5px 10pt black;
     align-items: center;
 }
 
@@ -59,7 +59,7 @@ login-root{
     background-image: url('https://www.auvergne-numerique.fr/wp-content/uploads/2019/04/Acteur-priv2-1114x432-c-default.jpg?x34428');
     background-size: cover;
     background-position: center;
-}   
+}
 
 .header-aba{
     background-color: rgba(128, 128, 128, 0.699);
@@ -113,7 +113,7 @@ login-root{
 
 textarea{
     font-weight: bolder !important;
-    font-size: 10pt !important; 
+    font-size: 10pt !important;
 }
 
 .form-control{
@@ -130,7 +130,7 @@ textarea{
 }
 
 .modal-backdrop {
-    z-index: 0;
+    z-index: -3;
 }
 
 ::-webkit-scrollbar {
@@ -147,15 +147,15 @@ textarea{
     border: 2px solid white; /* should match background, can't be transparent */
     background-color: rgba(0, 0, 0, .5);
 }
-::-webkit-scrollbar-track { 
-    background-color: #fff; 
-    border-radius: 8px; 
-} 
+::-webkit-scrollbar-track {
+    background-color: #fff;
+    border-radius: 8px;
+}
 
 .eye-password{
     cursor: pointer;
     position: absolute;
-    top: 30%;
+    top: 20%;
     right: 2%;
 }
 

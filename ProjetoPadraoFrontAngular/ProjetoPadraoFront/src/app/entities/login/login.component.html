@@ -34,7 +34,8 @@
                   <i [class]="ActiveEyePasswordLogin ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'"></i>
                 </div>
               </div>
-            </div>            <text-error-message  *ngIf="loginFormGroup.get('senhaLogin')?.errors?.['required'] && submitLogin"
+            </div>            
+            <text-error-message  *ngIf="loginFormGroup.get('senhaLogin')?.errors?.['required'] && submitLogin"
               text="Este campo é obrigatório">
             </text-error-message>
           </div>

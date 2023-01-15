@@ -1,8 +1,8 @@
 ﻿//Criar Migration
-dotnet ef migrations add SkillUsuario
+dotnet ef migrations add AddFkUsuario
 
 //Remover ultimo migration
-dotnet ef migrations remove
+dotnet ef migrations remove AddFkUsuario
 
 //Update no banco
 dotnet ef database update
