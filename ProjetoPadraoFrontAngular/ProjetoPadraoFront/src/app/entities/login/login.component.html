@@ -1,5 +1,5 @@
 <div class="text-center">
-  <div class="form-login">
+  <div class="form-login mb-2">
     <nav>
       <div class="nav nav-tabs" id="nav-tab" role="tablist">
           <a class="nav-link active" id="nav-login-tab" data-bs-toggle="tab" data-bs-target="#nav-login" type="button" role="tab" aria-controls="nav-login" aria-selected="true">Entrar</a>
@@ -66,6 +66,15 @@
               *ngIf="UserRegisterFormGroup.get('email')?.errors?.['required'] && submitRegister"
               text="Este campo é obrigatório">
             </text-error-message>
+          </div>
+          <div class="mb-3 mt-3">
+            <div class="input-label mb-3">
+                <label class="form-label">Gênero<span class="span-required" matTooltip="Campo obrigatório" matTooltipPosition="right">*</span></label>
+            </div>
+            <mat-radio-group aria-label="Select an option" formControlName="genero">
+                <mat-radio-button class="px-1" checked value=0>Masculino</mat-radio-button>
+                <mat-radio-button class="px-1" value=1>Feminino</mat-radio-button>
+            </mat-radio-group>
           </div>
           <div class="mb-3 mt-3">
             <label for="email" class="form-label">CPF:<span class="span-required" matTooltip="Campo obrigatório" matTooltipPosition="right">*</span></label>

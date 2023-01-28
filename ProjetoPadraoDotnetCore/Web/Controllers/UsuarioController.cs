@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Mvc;
 using Aplication.Interfaces;
 using Aplication.Models.Request.Usuario;
 using Aplication.Models.Response.Usuario;
 using Infraestrutura.Entity;
+using Infraestrutura.Enum;
+using Infraestrutura.Reports.Usuario;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Web.Controllers.Base;
 
 namespace Web.Controllers;
@@ -13,9 +15,11 @@ namespace Web.Controllers;
 public class UsuarioController : DefaultController
 {
     protected readonly IUsuarioApp App;
-    public UsuarioController(IUsuarioApp usuarioApp)
+    protected readonly IUsuarioGridBuildReport ReportGrid;
+    public UsuarioController(IUsuarioApp usuarioApp, IUsuarioGridBuildReport reportGrid)
     {
         App = usuarioApp;
+        ReportGrid = reportGrid;
     }
 
     [HttpPost]
@@ -176,5 +180,21 @@ public class UsuarioController : DefaultController
         {
             return ResponderErro(e.Message);
         }
+    }
+    
+    [HttpPost]
+    [Route("GerarRelatorioGridUsuario")]
+    public FileStreamResult GerarRelatorioGridUsuario(UsuarioRelatorioRequest request)
+    {
+       var retorno = App.ConsultarRelatorioUsuario(request);
+        var result = ReportGrid.GerarRelatorioGridUsuario(request.Tipo,retorno);
+        
+        if(request.Tipo == ETipoArquivo.Excel)
+            return File(result,"application/excel" , "RelatorioUsuarios.xls");
+        if(request.Tipo == ETipoArquivo.Word)
+            return File(result,"application/word" , "RelatorioUsuarios.docx");
+
+        return File(result,"application/pdf" , "RelatorioUsuarios.pdf");
+
     }
 }

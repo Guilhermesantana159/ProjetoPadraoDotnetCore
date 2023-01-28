@@ -5,6 +5,7 @@ import { GridService } from 'src/components/data-grid/data-grid.service';
 import { EnumBase } from 'src/enums/EnumBase';
 import { TypeFilter } from 'src/enums/TypeFilter';
 import { GridOptions } from 'src/objects/Grid/GridOptions';
+import { ETipoArquivo } from '../../../../enums/ETipoArquivo';
 
 @Component({
   selector: 'usuario-root',
@@ -36,10 +37,9 @@ export class UsuarioComponent{
           PaginatorSizeOptions: [10,15,20],
           PageSize: 10,
           MultiModal: true,
+          UrlRelatorio: 'Usuario/GerarRelatorioGridUsuario',
           Modal: undefined,
-          Params: {
-            Teste: 1
-          }
+          Params: undefined
         },
         Colunas: [{
             Field: 'Action',
@@ -105,10 +105,10 @@ export class UsuarioComponent{
           OrderBy: true,
           Filter: true,
           ServerField: 'Nome',
-          StyleColuna: 'min-width: 40vh; max-width: 50vh;',
+          StyleColuna: 'min-width: 45vh; max-width: 50vh;',
           EnumOptions: undefined,
-          StyleCell: 'margin-left:5pt; padding: 2pt; border-radius: 2pt; background: rgb(40,167,69);',
-          ClassCell: 'd-inline text-white',
+          StyleCell: 'margin-left:5pt; padding: 3pt; border-radius: 2pt;',
+          ClassCell: 'd-inline',
           CellGraphics: undefined,
           CellImage: {
             PropertyLink: 'imagemUsuario',
@@ -128,7 +128,7 @@ export class UsuarioComponent{
           ServerField: 'Email',
           Filter: true,
           OrderBy: true,
-          StyleColuna: undefined,
+          StyleColuna: 'min-width: 45vh; max-width: 50vh;',
           EnumOptions: undefined,
           StyleCell: undefined,
           ClassCell: undefined,
@@ -187,13 +187,13 @@ export class UsuarioComponent{
           CellImage: undefined,  
         },
         {
-          Field: 'aprovacao',
-          DisplayName: 'Aprovação do usuário',
+          Field: 'dedicacao',
+          DisplayName: 'Dedicaçãp do usuário',
           CellTemplate: undefined,
           ActionButton: undefined, 
           Type: TypeFilter.String,
           EnumName: undefined,
-          ServerField: 'aprovacao',
+          ServerField: 'dedicacao',
           Filter: false,
           OrderBy: false,
           StyleColuna: 'min-width: 40vh',
@@ -201,7 +201,7 @@ export class UsuarioComponent{
           StyleCell: undefined,
           ClassCell: undefined,
           CellGraphics: {  
-            PropertyLink: 'aprovacao',
+            PropertyLink: 'dedicacao',
             Tooltip: '%',
             OnlyGraphics: true,
             ClassGraphics: '',
@@ -219,6 +219,10 @@ export class UsuarioComponent{
 
   Editar(data: any){
     this.router.navigate(['main/usuario/' + data.idUsuario.toString() + '/editar']);
+  }
+
+  GerarRelatorio(tipo: ETipoArquivo){
+    this.gridService.EmitirRelatorio(tipo);
   }
 };
 

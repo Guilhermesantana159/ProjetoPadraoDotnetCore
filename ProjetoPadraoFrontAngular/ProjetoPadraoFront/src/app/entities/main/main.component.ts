@@ -5,6 +5,9 @@ import { ToastrService } from 'ngx-toastr';
 import { EstruturaMenu, Modulo } from 'src/objects/Menus/EstruturaMenu';
 import { FormControl } from '@angular/forms';
 import { Observable, startWith, map } from 'rxjs';
+import { DataNotificacao, NotificacaoResponse } from '../../../objects/Notificacao/NotificacaoResponse';
+import { ELido } from '../../../enums/ELido';
+import { NotificacaoRequest } from '../../../objects/Notificacao/NotificacaoRequestLida';
 
 @Component({
   selector: 'main-root',
@@ -19,6 +22,11 @@ export class MainComponent implements OnInit{
   loading: boolean;
   fullscreen: boolean = false;
   control = new FormControl('');
+  fotoUser: string = window.localStorage.getItem('Foto') ?? "";
+  listNotificacao: Array<DataNotificacao> = [];
+  idUsuarioLogado: number = 0;
+  notificaoSemLer: boolean = false;
+  quantidadeSemLer: number = 0;
 
   constructor(private toastr: ToastrService,private response: BaseService,private router: Router){
     this.loading = true;
@@ -35,6 +43,28 @@ export class MainComponent implements OnInit{
         }
       }
     ); 
+
+    this.idUsuarioLogado = Number.parseInt(window.localStorage.getItem('IdUsuario') ?? '0');
+
+    this.response.Get("Notificacao","GetNotificacoesByUser/" + this.idUsuarioLogado).subscribe(
+      (response: NotificacaoResponse) =>{        
+        if(response.sucesso){
+
+          response.data.itens.forEach(element => {
+            
+            if(element.lido == ELido.Nao){
+              this.notificaoSemLer = true;
+              this.quantidadeSemLer++;
+            }
+
+            this.listNotificacao.push(element);
+          });
+        }else{
+          this.toastr.error('<small>' + response.mensagem + '</small>', 'Mensagem:');
+        }
+      }
+    ); 
+
   }
 
   toggleClass = () =>{
@@ -45,6 +75,23 @@ export class MainComponent implements OnInit{
   Deslogar = () =>{
     window.localStorage.clear();
     this.router.navigateByUrl('/');
+  };
+
+  NotificacaoLida = (notificacao: DataNotificacao) =>{
+    if(notificacao.lido == ELido.Nao){
+      
+      this.listNotificacao.forEach(element => {
+        if(element == notificacao){
+          element.lido = ELido.Sim;
+        }
+      });
+
+      let request: NotificacaoRequest = {
+        IdNotificaoLida: notificacao.idNotificacao
+      }; 
+
+      this.response.Post("Notificacao","NotificacaoLida", request).subscribe(); 
+    }
   };
 
   EditarPerfil = () => {
@@ -71,6 +118,7 @@ export class MainComponent implements OnInit{
   private _normalizeValue(value: string): string {
     return value.toLowerCase().replace(/\s/g, '');
   }
+
 }
 
 

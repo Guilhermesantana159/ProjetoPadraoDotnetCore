@@ -1,4 +1,5 @@
 import { RetornoPadrao } from "../RetornoPadrao"
+import { Skill } from './Skill';
 
 export interface UsuarioResponse extends RetornoPadrao
 {
@@ -31,5 +32,5 @@ export interface DataUsuarioResponse
     genero: string,
     idUsuarioCadastro: number,
     idProfissao: string,
-    lSkills: Array<string>
+    lSkills: Array<Skill>
 }

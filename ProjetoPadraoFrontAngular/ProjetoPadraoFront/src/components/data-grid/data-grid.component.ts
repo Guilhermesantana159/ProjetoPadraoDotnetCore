@@ -12,6 +12,7 @@ import {debounce} from 'utils-decorators';
 import { GridService } from './data-grid.service';
 import { TypeActionButton } from 'src/enums/TypeActionButton';
 import { TypeFilter } from 'src/enums/TypeFilter';
+import { ETipoArquivo } from '../../enums/ETipoArquivo';
 
 @Injectable({
   providedIn: 'root'
@@ -67,6 +68,10 @@ export class DataGridComponent implements OnInit{
       //Eventos da grid 
       this.gridService.recarregar.subscribe(() => {
         this.ConsultarGrid();
+      });
+
+      this.gridService.relatorio.subscribe((tipo: ETipoArquivo) => {
+        this.EmitirRelatorio(tipo);
       });
     }
 
@@ -219,5 +224,32 @@ export class DataGridComponent implements OnInit{
     if(action.TypeActionButton == TypeActionButton.Selecionar){
       this.gridService.SelecionarModal(data);
     }  
+  }
+
+  EmitirRelatorio(tipo: ETipoArquivo){
+    
+    let request = {
+      OrderFilters: {
+        Campo: this.sort.active,
+        Operador: this.sort.direction == 'asc' ? 0 : 1
+      },
+      QueryFilters: this.QueryFilters,
+      Tipo: tipo
+    }
+
+    if(this.gridOptions.Parametros.Params != undefined){
+      request = Object.assign(request,this.gridOptions.Parametros.Params)
+    }
+    
+    this.response.PostRelatorio(this.gridOptions.Parametros.UrlRelatorio,request)
+    .subscribe((response: any) => {
+      let fileName = response.headers.get('content-disposition')?.split(';')[1].split('=')[1];
+      let blob: Blob = response.body as Blob;
+      let a = document.createElement('a');
+      a.download = fileName;
+      a.href = window.URL.createObjectURL(blob);
+
+      a.click()
+    });  
   }
 }

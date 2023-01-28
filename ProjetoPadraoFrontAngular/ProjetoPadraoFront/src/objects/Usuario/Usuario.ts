@@ -9,7 +9,8 @@ export interface DataUsuario
 {
     nome: string,
     idUsuario: string,
-    sessionKey: token
+    sessionKey: token,
+    foto: string
 }
 
 export interface token

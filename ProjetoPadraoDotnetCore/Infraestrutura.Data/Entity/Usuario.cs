@@ -27,12 +27,13 @@ public class Usuario
     public DateTime? DataNascimento { get; set; }
     public EGenero Genero { get; set; }
     
-    public int IdUsuarioCadastro { get; set; }
+    public int? IdUsuarioCadastro { get; set; }
     public int? IdProfissao { get; set; }
 
     #region Relacionamento
     public virtual Profissao Profissao { get; set; } = null!;
     public virtual IEnumerable<SkillUsuario> LSkillUsuarios { get; set; } = null!;
+    public virtual IEnumerable<Notificacao> LNotificacaoUsuarios { get; set; } = null!;
     public virtual Usuario UsuarioFk {get; set; } = null!;
     #endregion
 }

@@ -1,33 +1,35 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { DefaultService } from 'src/factorys/default.service';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ConsultaModal } from 'src/objects/Consulta-Padrao/consulta-modal';
 import { ConsultaModalParams } from 'src/objects/Consulta-Padrao/ConsultaModalParams';
-import { GridOptions } from 'src/objects/Grid/GridOptions';
 import { GridService } from '../data-grid/data-grid.service';
 
 @Component({
   selector: 'consulta-padrao',
   templateUrl: './consulta-padrao.component.html'
 })
-export class ConsultaModalComponent{
+
+export class ConsultaModalComponent implements OnInit{
   @Input() ParamsConsulta!: ConsultaModalParams;
   @Output() valueChange = new EventEmitter();
 
   //Multi modal
   itens: Array<string> = [];
   itensMultiModal: Array<ConsultaModal> = [];
-  
+
+  //Modal
   ConsultaModal: ConsultaModal = {
     SelectedText: '',
     SelectedValue: undefined
   }
+  gridOptions: any;
 
-  gridOptions: GridOptions;
+  constructor(private gridService: GridService){
+  }
 
-  constructor(defaultService: DefaultService,gridService: GridService){
-    this.gridOptions = defaultService.Modal.ConsultaPadraoUsuario;
+  ngOnInit(): void {
+    this.gridOptions = this.ParamsConsulta.GridOptions;
 
-    gridService.selecionar.subscribe((data: any) => {
+    this.gridService.selecionar.subscribe((data: any) => {
       if(!this.gridOptions.Parametros.MultiModal){
         if(this.gridOptions.Parametros.Modal?.SelectedText != undefined &&
           this.gridOptions.Parametros.Modal?.SelectedText != undefined){
@@ -49,7 +51,7 @@ export class ConsultaModalComponent{
           this.valueChange.emit(this.itensMultiModal);
         }
       }
-    });
+    });  
   }
 
   ResetConsultaPadrao(){
@@ -73,5 +75,8 @@ export class ConsultaModalComponent{
     }
   }
 
-  
+  LoadEdit(ConsultaModal: ConsultaModal){
+    this.ConsultaModal.SelectedText = ConsultaModal.SelectedText;
+    this.ConsultaModal.SelectedValue = ConsultaModal.SelectedValue;
+  };
 }

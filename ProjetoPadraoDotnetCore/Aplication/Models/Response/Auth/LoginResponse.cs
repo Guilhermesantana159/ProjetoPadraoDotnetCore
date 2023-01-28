@@ -6,4 +6,5 @@ public class LoginResponse
     public int IdUsuario { get; set; }
     public string Nome { get; set; }
     public object SessionKey { get; set; }
+    public string Foto { get; set; }
 }

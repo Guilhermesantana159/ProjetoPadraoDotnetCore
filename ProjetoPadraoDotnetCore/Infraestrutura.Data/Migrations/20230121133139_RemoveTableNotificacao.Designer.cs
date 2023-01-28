@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infraestrutura.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20230115000405_AddFkUsuario")]
-    partial class AddFkUsuario
+    [Migration("20230121133139_RemoveTableNotificacao")]
+    partial class RemoveTableNotificacao
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -78,6 +78,52 @@ namespace Infraestrutura.Migrations
                     b.HasKey("IdModulo");
 
                     b.ToTable("Modulo", (string)null);
+                });
+
+            modelBuilder.Entity("Infraestrutura.Entity.Notificacao", b =>
+                {
+                    b.Property<int>("IdNotificacao")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdNotificacao"), 1L, 1);
+
+                    b.Property<int>("ClassficacaoMensagem")
+                        .HasColumnType("int")
+                        .HasColumnName("ClassficacaoMensagem");
+
+                    b.Property<string>("Corpo")
+                        .IsRequired()
+                        .HasMaxLength(800)
+                        .HasColumnType("nvarchar(800)")
+                        .HasColumnName("Corpo");
+
+                    b.Property<DateTime>("DataCadastro")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DataCadastro");
+
+                    b.Property<DateTime?>("DataVisualização")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DataVisualização");
+
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Lido")
+                        .HasColumnType("int")
+                        .HasColumnName("Lido");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)")
+                        .HasColumnName("Titulo");
+
+                    b.HasKey("IdNotificacao");
+
+                    b.HasIndex("IdUsuario");
+
+                    b.ToTable("Notificacao", (string)null);
                 });
 
             modelBuilder.Entity("Infraestrutura.Entity.Profissao", b =>
@@ -176,7 +222,7 @@ namespace Infraestrutura.Migrations
                         .HasColumnType("int")
                         .HasColumnName("IdProfissao");
 
-                    b.Property<int>("IdUsuarioCadastro")
+                    b.Property<int?>("IdUsuarioCadastro")
                         .HasColumnType("int");
 
                     b.Property<string>("Nome")
@@ -224,14 +270,11 @@ namespace Infraestrutura.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Telefone");
 
-                    b.Property<int>("UsuarioFkIdUsuario")
-                        .HasColumnType("int");
-
                     b.HasKey("IdUsuario");
 
                     b.HasIndex("IdProfissao");
 
-                    b.HasIndex("UsuarioFkIdUsuario");
+                    b.HasIndex("IdUsuarioCadastro");
 
                     b.ToTable("Usuario", (string)null);
                 });
@@ -245,6 +288,17 @@ namespace Infraestrutura.Migrations
                         .IsRequired();
 
                     b.Navigation("Modulo");
+                });
+
+            modelBuilder.Entity("Infraestrutura.Entity.Notificacao", b =>
+                {
+                    b.HasOne("Infraestrutura.Entity.Usuario", "Usuario")
+                        .WithMany("LNotificacaoUsuarios")
+                        .HasForeignKey("IdUsuario")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Infraestrutura.Entity.SkillUsuario", b =>
@@ -266,9 +320,7 @@ namespace Infraestrutura.Migrations
 
                     b.HasOne("Infraestrutura.Entity.Usuario", "UsuarioFk")
                         .WithMany()
-                        .HasForeignKey("UsuarioFkIdUsuario")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdUsuarioCadastro");
 
                     b.Navigation("Profissao");
 
@@ -287,6 +339,8 @@ namespace Infraestrutura.Migrations
 
             modelBuilder.Entity("Infraestrutura.Entity.Usuario", b =>
                 {
+                    b.Navigation("LNotificacaoUsuarios");
+
                     b.Navigation("LSkillUsuarios");
                 });
 #pragma warning restore 612, 618

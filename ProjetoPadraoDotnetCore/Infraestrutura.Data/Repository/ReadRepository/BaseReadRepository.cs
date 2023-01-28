@@ -13,9 +13,9 @@ public class BaseReadRepository <T> : IBaseReadRepository<T> where T : class
         Context = context;
     }
 
-    public T GetById(int id)
+    public T? GetById(int id)
     {
-        return Context.Set<T>().Find(id)!;
+        return Context.Set<T>().Find(id);
     }
 
     public IQueryable<T> GetAll()

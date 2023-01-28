@@ -25,6 +25,7 @@ export class DefaultService{
                 Controller: 'Usuario',
                 Metodo: 'ConsultarGridUsuario',
                 PaginatorSizeOptions: [5,10],
+                UrlRelatorio: '',
                 MultiModal: false,
                 Modal: {
                   SelectedText: 'nome',

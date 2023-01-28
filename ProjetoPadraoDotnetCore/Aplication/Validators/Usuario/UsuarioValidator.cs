@@ -12,7 +12,7 @@ public class UsuarioValidator : IUsuarioValidator
         Util = utilDocument;
     }
 
-    public ValidationResult ValidaçãoCadastroInicial(UsuarioRegistroInicialRequest request)
+    public ValidationResult ValidacaoCadastroInicial(UsuarioRegistroInicialRequest request)
     {
         var validation = new ValidationResult();
         
@@ -30,7 +30,7 @@ public class UsuarioValidator : IUsuarioValidator
         return validation;    
     }
     
-    public ValidationResult ValidaçãoCadastro(UsuarioRequest request)
+    public ValidationResult ValidacaoCadastro(UsuarioRequest request)
     {
         var validation = new ValidationResult();
         

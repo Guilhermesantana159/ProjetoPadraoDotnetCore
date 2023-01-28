@@ -16,4 +16,9 @@
       <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.20" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Services\TipoNotificacaoService.cs" />
+      <Compile Remove="Interfaces\ITipoNotificacaoService.cs" />
+    </ItemGroup>
+
 </Project>

@@ -1,31 +1,39 @@
-﻿using Aplication.Interfaces;
-using Aplication.Models.Request.Usuario;
-using Aplication.Utils.Obj;
-using Aplication.Validators.Usuario;
-using AutoMapper;
-using Domain.Interfaces;
-using Infraestrutura.Entity;
-using System.Linq.Dynamic.Core;
+﻿using System.Linq.Dynamic.Core;
 using Aplication.Authentication;
+using Aplication.Interfaces;
 using Aplication.Models.Grid;
+using Aplication.Models.Request.Usuario;
 using Aplication.Models.Response.Auth;
 using Aplication.Models.Response.Usuario;
 using Aplication.Utils.FilterDynamic;
 using Aplication.Utils.HashCripytograph;
+using Aplication.Utils.Helpers;
+using Aplication.Utils.Obj;
+using Aplication.Validators.Usuario;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Domain.Interfaces;
+using Infraestrutura.Entity;
+using Infraestrutura.Enum;
+using Infraestrutura.Reports.Usuario.Obj;
 
 namespace Aplication.Controllers;
 public class UsuarioApp : IUsuarioApp
 {
     protected readonly IUsuarioService Service;
+    protected readonly INotificacaoService NotificaService;
     protected readonly IMapper Mapper;
     protected readonly IUsuarioValidator Validation;
     protected readonly IJwtTokenAuthentication Jwt;
-    public UsuarioApp(IUsuarioService service,IMapper mapper,IUsuarioValidator validation, IJwtTokenAuthentication jwt)
+    private readonly IConfiguration _configuration;
+    public UsuarioApp(IUsuarioService service,IMapper mapper,IUsuarioValidator validation, IJwtTokenAuthentication jwt, IConfiguration configuration, INotificacaoService notificaService)
     {
         Service = service;
         Mapper = mapper;
         Validation = validation;
         Jwt = jwt;
+        _configuration = configuration;
+        NotificaService = notificaService;
     }
 
     public List<Usuario> GetAll()
@@ -45,7 +53,7 @@ public class UsuarioApp : IUsuarioApp
 
     public ValidationResult Cadastrar(UsuarioRequest request)
     {
-        var validation = Validation.ValidaçãoCadastro(request);
+        var validation = Validation.ValidacaoCadastro(request);
         var lUsuario = Service.GetAllList();
 
         if (lUsuario.Any(x => x.Email == request.Email))
@@ -57,7 +65,21 @@ public class UsuarioApp : IUsuarioApp
             
             //Hash da senha
             usuario.Senha = new HashCripytograph().Hash(request.Senha);
-            Service.Cadastrar(usuario);
+            var cadastro = Service.CadastrarComRetorno(usuario);
+            
+            //Enviar Notificação de bem-vindo
+            var pushMensagem = new Notificacao()
+            {
+                IdUsuario = cadastro.IdUsuario,
+                DataCadastro = DateTime.Now,
+                Lido = ESimNao.Nao,
+                ClassficacaoMensagem = EMensagemNotificacao.MensagemBemVindo,
+                Corpo = $"Seja bem vindo {usuario.Nome} este é um futuro software de gestão de projeto aproveite as funcionalidades!",
+                Titulo = "Seja bem vindo",
+                DataVisualização = null,
+            };
+            
+            NotificaService.Cadastrar(pushMensagem);
         }
 
         return validation;
@@ -65,7 +87,7 @@ public class UsuarioApp : IUsuarioApp
 
     public UsuarioCadastroInicialResponse CadastroInicial(UsuarioRegistroInicialRequest request)
     {
-        var validation = Validation.ValidaçãoCadastroInicial(request);
+        var validation = Validation.ValidacaoCadastroInicial(request);
 
         var response = new UsuarioCadastroInicialResponse()
         {
@@ -81,12 +103,31 @@ public class UsuarioApp : IUsuarioApp
         {
             var usuario = Mapper.Map<UsuarioRegistroInicialRequest,Usuario>(request);
             var responseCadastro = Service.CadastrarComRetorno(usuario);
+            
+            //Enviar Notificação de bem-vindo
+            var pushMensagem = new Notificacao()
+            {
+                IdUsuario = responseCadastro.IdUsuario,
+                DataCadastro = DateTime.Now,
+                Lido = ESimNao.Nao,
+                ClassficacaoMensagem = EMensagemNotificacao.MensagemBemVindo,
+                Corpo = $"Seja bem vindo {usuario.Nome} este é um futuro software de gestão de projeto aproveite as funcionalidades!",
+                Titulo = "Seja bem vindo",
+                DataVisualização = null,
+            };
+            
+            NotificaService.Cadastrar(pushMensagem);
 
             response.DataUsuario = new LoginResponse()
             {
                 SessionKey = Jwt.GerarToken(responseCadastro.Cpf),
                 Nome = usuario.Nome,
-                Autenticado = true
+                Autenticado = true,
+                Foto = usuario.Foto == null 
+                    ? usuario.Genero == EGenero.Masculino 
+                        ? _configuration.GetSection("ImageDefaultUser:Masculino").Value 
+                        : _configuration.GetSection("ImageDefaultUser:Feminino").Value     
+                    : usuario.Foto
             };
         }
 
@@ -100,7 +141,7 @@ public class UsuarioApp : IUsuarioApp
     
     public ValidationResult Editar(UsuarioRequest request)
     {
-        var validation = Validation.ValidaçãoCadastro(request);
+        var validation = Validation.ValidacaoCadastro(request);
         var lUsuario = Service.GetAllList();
 
         if (lUsuario.Any(x => x.Email == request.Email && x.IdUsuario != request.IdUsuario))
@@ -109,6 +150,7 @@ public class UsuarioApp : IUsuarioApp
         if(validation.IsValid())
         {
             var usuario = Mapper.Map<UsuarioRequest,Usuario>(request);
+            
             Service.Editar(usuario);
         }
 
@@ -123,6 +165,19 @@ public class UsuarioApp : IUsuarioApp
     public void DeleteById(int id)
     {
         Service.DeleteById(id);
+    }
+    
+    public List<UsuarioGridReportObj> ConsultarRelatorioUsuario(UsuarioRelatorioRequest request)
+    {
+        var itens = Service.GetAllQuery();
+        
+        itens = string.IsNullOrEmpty(request.OrderFilters?.Campo)
+            ? itens.OrderByDescending(x => x.IdUsuario)
+            : itens.OrderBy($"{request.OrderFilters.Campo} {request.OrderFilters.Operador.ToString()}");
+
+        itens = itens.AplicarFiltrosDinamicos(request.QueryFilters);
+
+        return itens.ProjectTo<UsuarioGridReportObj>(Mapper.ConfigurationProvider).ToList();
     }
     
     public BaseGridResponse ConsultarGridUsuario(BaseGridRequest request)
@@ -142,15 +197,17 @@ public class UsuarioApp : IUsuarioApp
                 {
                     IdUsuario = x.IdUsuario,
                     Nome = x.Nome,
-                    Cpf = x.Cpf,
-                    DataNascimento = x.DataNascimento.ToString(),
+                    Cpf = x.Cpf.ToFormatCpf(),
+                    DataNascimento = x.DataNascimento == null ? null : x.DataNascimento!.Value.FormatDateBr(),
                     Email = x.Email,
                     Senha = x.Senha,
                     Telefone = x.Telefone,
-                    Teste = x.IdUsuario == 29,
                     Perfil = x.PerfilAdministrador ? "Administrador" : "Comum",
-                    ImagemUsuario = "https://i.pinimg.com/236x/33/fe/73/33fe73c8629b599c835c9d76e360f8bc--daffy-duck-duck-duck.jpg",
-                    Aprovacao = 30
+                    ImagemUsuario = x.Foto == null ? x.Genero == EGenero.Masculino 
+                            ? _configuration.GetSection("ImageDefaultUser:Masculino").Value 
+                            : _configuration.GetSection("ImageDefaultUser:Feminino").Value     
+                        : x.Foto,
+                    Dedicacao = x.Dedicacao 
                 }).ToList(),
             
             TotalItens = itens.Count()

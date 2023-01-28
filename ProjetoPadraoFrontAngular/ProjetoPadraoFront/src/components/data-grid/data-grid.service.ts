@@ -1,4 +1,5 @@
 import { EventEmitter, Injectable } from "@angular/core";
+import { ETipoArquivo } from "../../enums/ETipoArquivo";
 
 @Injectable({
     providedIn: 'root'
@@ -6,6 +7,7 @@ import { EventEmitter, Injectable } from "@angular/core";
 
 export class GridService{
     public recarregar = new EventEmitter(); 
+    public relatorio = new EventEmitter(); 
     public selecionar = new EventEmitter<any>(); 
 
     public RecarregarGrid()
@@ -13,6 +15,11 @@ export class GridService{
         this.recarregar.emit(); 
     };
 
+    public EmitirRelatorio(tipo: ETipoArquivo)
+    {
+        this.relatorio.emit(tipo); 
+    };
+ 
     public SelecionarModal(data: any)
     {
         this.selecionar.emit(data); 

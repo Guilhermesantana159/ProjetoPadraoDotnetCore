@@ -8,6 +8,7 @@ using Aplication.Utils.HashCripytograph;
 using AutoMapper;
 using Domain.DTO.Correios;
 using Infraestrutura.Entity;
+using Infraestrutura.Reports.Usuario.Obj;
 
 namespace Aplication.AutoMapper;
 
@@ -37,6 +38,7 @@ public class Mapping : Profile
             .ForMember(dst => dst.Senha,
                 map => map.MapFrom(src => new HashCripytograph().Hash(src.Senha)));
 
+        CreateMap<Usuario, UsuarioGridReportObj>();
         #endregion
 
         #region ModuloMenu

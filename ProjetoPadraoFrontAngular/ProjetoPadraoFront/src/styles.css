@@ -165,3 +165,8 @@ textarea{
     margin-top: 45pt;
     z-index: 2;
 }
+
+.NaoLido{
+    background-color: rgba(70, 70, 70, 0.034);
+    color:  rgba(3, 3, 3, 0.459);
+}

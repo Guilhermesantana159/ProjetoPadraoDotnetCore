@@ -33,6 +33,7 @@ export class LoginComponent {
       email: ['', [Validators.required,Validators.email]],
       nome: ['', Validators.required],
       CPF: ['', [Validators.required,Validators.minLength(11)]],
+      genero: ['0'],
       senha: ['', [Validators.required,ValidateSenha]]
     });
   }
@@ -43,6 +44,9 @@ export class LoginComponent {
       return;
     }
 
+    //Formatação tipo da variável enum back-end
+    form.get('genero')?.setValue(parseInt(form.get('genero')?.value));
+
     this.loading = true;
     this.response.Post("Usuario","CadastroInicial",form.value).subscribe(
       (response: Usuario) =>{        
@@ -50,6 +54,7 @@ export class LoginComponent {
           window.localStorage.setItem('NomeUsuario',response.data.nome);
           window.localStorage.setItem('IdUsuario',response.data.idUsuario);
           window.localStorage.setItem('Token',response.data.sessionKey.acess_token);
+          window.localStorage.setItem('Foto', response.data.foto);
           this.toastr.success('<small> Seja bem vindo <br>' + response.data.nome + '</small>', 'Mensagem:');   
           this.router.navigate(['/', 'main'])        
         }else
@@ -59,6 +64,9 @@ export class LoginComponent {
         this.loading = false;
       }
     );
+
+    //Re atribuição caso error
+    form.get('genero')?.setValue((form.get('genero')?.value.toString()));
   }
     
   Login = (form:FormGroup) =>{
@@ -74,6 +82,7 @@ export class LoginComponent {
           window.localStorage.setItem('NomeUsuario',response.data.nome);
           window.localStorage.setItem('IdUsuario',response.data.idUsuario);
           window.localStorage.setItem('Token',response.data.sessionKey.acess_token);
+          window.localStorage.setItem('Foto', response.data.foto);
           this.toastr.success('<small>' + 'Seja bem vindo de volta: <br>' + response.data.nome + '</small>', 'Mensagem:');   
           this.router.navigate(['/', 'main'])
         }

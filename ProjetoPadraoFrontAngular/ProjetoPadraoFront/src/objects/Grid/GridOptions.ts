@@ -11,6 +11,7 @@ export interface GridOptions{
 export interface Parametros{
     Controller: string,
     Metodo: string,
+    UrlRelatorio: string,
     MultiModal: boolean,
     Modal: {
         SelectedValue: string,

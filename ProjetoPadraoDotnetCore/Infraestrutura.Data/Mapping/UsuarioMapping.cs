@@ -39,7 +39,10 @@ public class UsuarioMapping : IEntityTypeConfiguration<Usuario>
 
         builder
             .HasOne(t => t.UsuarioFk)
-            .WithOne(t => t.UsuarioFk)
-            .HasForeignKey<Usuario>(t => t.IdUsuarioCadastro);
+            .WithMany()
+            .HasForeignKey(t => t.IdUsuarioCadastro)
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.ClientSetNull);
+
     }
 }

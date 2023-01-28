@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ConsultaModal } from 'src/objects/Consulta-Padrao/consulta-modal';
@@ -13,6 +13,7 @@ import { RetornoPadrao } from 'src/objects/RetornoPadrao';
 import { ValidateDataAniversario, ValidateSenha } from 'src/factorys/validators/validators-form';
 import { Skill } from 'src/objects/Usuario/Skill';
 import { UsuarioResponse } from '../../../../objects/Usuario/UsuarioResponse';
+import { DefaultService } from 'src/factorys/default.service';
 
 @Component({
   selector: 'usuario-crud-root',
@@ -29,13 +30,7 @@ export class UsuarioCrudComponent{
   IsNew = true;
 
   //Aba configurações
-  paramsConsultaUsuario: ConsultaModalParams = {
-    Label: 'Usuário que cadastrou',
-    Title: 'Consulta de usuário',
-    Disabled: false,
-    Class: 'col-sm-12 col-xs-6 col-md-6 col-lg-6',
-    Required: true
-  };
+  paramsConsultaUsuario: ConsultaModalParams;
 
   //Aba endereço
   disabledForApiCep: boolean = true;
@@ -46,8 +41,21 @@ export class UsuarioCrudComponent{
   addOnBlur = true;
   lSkill: Skill[] = [];
 
-  constructor(private formBuilder: FormBuilder,private response: BaseService,
+  constructor(private formBuilder: FormBuilder,private response: BaseService,private defaultService: DefaultService,
     private toastr: ToastrService,private router: Router,private route: ActivatedRoute) {
+    
+    this.loading = true;
+
+    this.paramsConsultaUsuario = {
+      Label: 'Usuário que cadastrou',
+      Title: 'Consulta de usuário',
+      Disabled: false,
+      Class: 'col-sm-12 col-xs-6 col-md-6 col-lg-6',
+      Required: true,
+      GridOptions: defaultService.Modal.ConsultaPadraoUsuario,
+      SelectedText: '',
+      SelectedValue: undefined
+    };
 
     //Formulario builder
     this.UserRegisterFormGroup = this.formBuilder.group({
@@ -99,14 +107,25 @@ export class UsuarioCrudComponent{
           this.UserRegisterFormGroup.get('pais')?.setValue('Brasil');
           this.UserRegisterFormGroup.get('dataNascimento')?.setValue(new Date(response.data.dataNascimento));
 
+          //Atribuições
+          response.data.lSkills.forEach(element => {
+            this.lSkill.push(element);
+          });
+
+          this.paramsConsultaUsuario.SelectedText = 'Sla';
+          this.paramsConsultaUsuario.SelectedValue = response.data.idUsuarioCadastro;
+          
           //Senha Imutavel quando edição
           this.UserRegisterFormGroup.controls['senha'].clearValidators();
           this.UserRegisterFormGroup.controls['senha'].updateValueAndValidity();
+
         }else{
           this.toastr.error(response.mensagem, 'Mensagem:');
         }
       });
     }});
+
+    this.loading = false;
   }
 
   //Funções aba principal

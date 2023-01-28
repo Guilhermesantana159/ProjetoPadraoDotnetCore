@@ -4,7 +4,7 @@ namespace Domain.Interfaces;
 
 public interface IUsuarioService
 {
-    public Usuario GetById(int id);
+    public Usuario? GetById(int id);
     public Usuario? GetByCpf(string cpf);
     public List<Usuario> GetAllList();
     public IQueryable<Usuario> GetAllQuery();

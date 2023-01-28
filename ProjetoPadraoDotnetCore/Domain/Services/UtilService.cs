@@ -74,7 +74,7 @@ public class UtilService : IUtilsService
         ProfissaoWriteRepository.Update(profissao);
     }
     
-    public Profissao GetProfissaoById(int id)
+    public Profissao? GetProfissaoById(int id)
     { 
         return ProfissaoReadRepository.GetById(id);
     }

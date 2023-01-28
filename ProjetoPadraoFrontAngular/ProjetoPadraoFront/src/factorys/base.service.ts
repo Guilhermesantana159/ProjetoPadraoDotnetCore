@@ -26,4 +26,15 @@ export class BaseService{
         return this.request.post<any>(this.rota + controller + '/' + metodo,objetoEnvio)
     };
 
+    PostUrl(url: string,objetoEnvio: any){
+        return this.request.post<any>(this.rota + url,objetoEnvio)
+    };
+
+    PostRelatorio(url: string,objetoEnvio: any){
+        return this.request.post(this.rota + url,objetoEnvio,{observe:'response',responseType:'blob'})
+    };
+
+    GetRelatorio(url: string){
+        return this.request.get(this.rota + url,{observe:'response',responseType:'blob'})
+    };
 };

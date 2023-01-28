@@ -9,6 +9,6 @@ public interface IUtilsService
     public IQueryable<Profissao> ConsultarProfissoes();
     public void CadastrarProfissao(Profissao profissao);
     public void EditarProfissao(Profissao profissao);
-    public Profissao GetProfissaoById(int id);
+    public Profissao? GetProfissaoById(int id);
     public void DeletarProfissaoPorId(int id);
 }

@@ -2,6 +2,7 @@
 using Aplication.Models.Request.Usuario;
 using Aplication.Models.Response.Usuario;
 using Infraestrutura.Entity;
+using Infraestrutura.Reports.Usuario.Obj;
 using ValidationResult = Aplication.Utils.Obj.ValidationResult;
 
 namespace Aplication.Interfaces;
@@ -18,5 +19,6 @@ public interface IUsuarioApp
     public void EditarListaUsuario(List<Usuario> lUsuario);
     public void DeleteById(int id);
     public BaseGridResponse ConsultarGridUsuario(BaseGridRequest request);
+    public List<UsuarioGridReportObj> ConsultarRelatorioUsuario(UsuarioRelatorioRequest request);
 
 }

@@ -17,7 +17,7 @@ public class UsuarioReadRepository : BaseReadRepository<Usuario>,IUsuarioReadRep
     {
         return _context.Usuario
                    .Include(x => x.LSkillUsuarios)
-                   .Include(x => x.UsuarioFk).FirstOrDefault(x => x.IdUsuario == id) ?? 
+                   .FirstOrDefault(x => x.IdUsuario == id) ?? 
                throw new InvalidOperationException($"Usuário com Id {id} não encontrado!");
     }
 }
