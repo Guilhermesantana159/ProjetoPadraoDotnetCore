@@ -7,12 +7,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Services\External" />
+      <ProjectReference Include="..\Infraestrutura.Data\Infraestrutura.Data.csproj" />
+      <ProjectReference Include="..\Infraestrutura.Reports\Infraestrutura.Reports.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Infraestrutura.Data\Infraestrutura.Data.csproj" />
-      <ProjectReference Include="..\Infraestrutura.Reports\Infraestrutura.Reports.csproj" />
+      <PackageReference Include="LinqBuilder.OrderBy" Version="0.16.1" />
+      <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.20" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Services\TipoNotificacaoService.cs" />
+      <Compile Remove="Interfaces\ITipoNotificacaoService.cs" />
     </ItemGroup>
 
 </Project>
