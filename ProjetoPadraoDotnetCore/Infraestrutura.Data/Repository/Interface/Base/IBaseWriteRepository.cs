@@ -8,4 +8,5 @@ public interface IBaseWriteRepository <T> : IDisposable where T : class
     void UpdateRange(List<T> lEntidade);
     void DeleteById(int id);
     void DeleteRange(List<T> lEntidade);
+    public T AddWithReturn(T entidade);
 }

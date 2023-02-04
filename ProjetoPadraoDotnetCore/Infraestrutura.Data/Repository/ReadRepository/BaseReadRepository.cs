@@ -6,16 +6,16 @@ namespace Infraestrutura.Repository.ReadRepository;
 
 public class BaseReadRepository <T> : IBaseReadRepository<T> where T : class
 {
-    private Context Context;
+    public Context Context;
 
     public BaseReadRepository(Context context)
     {
         Context = context;
     }
 
-    public T GetById(int id)
+    public T? GetById(int id)
     {
-        return Context.Set<T>().Find(id)!;
+        return Context.Set<T>().Find(id);
     }
 
     public IQueryable<T> GetAll()

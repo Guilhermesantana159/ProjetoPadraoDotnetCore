@@ -1,5 +1,5 @@
-﻿using Aplication.Enum;
-using Aplication.Models.Response.Base;
+﻿using Aplication.Models.Response.Base;
+using Infraestrutura.Enum;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers.Base;
@@ -11,7 +11,7 @@ public class DefaultController : ControllerBase
         var retorno = new Retorno()
         {
             Mensagem = mensagem,
-            Objeto = objeto,
+            Data = objeto,
             Status = StatusRetorno.Sucesso,
             Sucesso = true
         };
@@ -36,18 +36,18 @@ public class DefaultController : ControllerBase
         {
             Status = StatusRetorno.Sucesso,
             Sucesso = true,
-            Objeto = objeto
+            Data = objeto
         };
         
         return new JsonResult(retorno);
     }
-
+    
     protected JsonResult ResponderErro(string mensagem,object objeto)
     {
         var retorno = new Retorno()
         {
             Mensagem = mensagem,
-            Objeto = objeto,
+            Data = objeto,
             Status = StatusRetorno.Erro,
             Sucesso = false
         };
@@ -55,7 +55,7 @@ public class DefaultController : ControllerBase
         return new JsonResult(retorno);
     }
     
-    protected JsonResult ResponderErro(string mensagem)
+    protected JsonResult ResponderErro(string? mensagem)
     {
         var retorno = new Retorno()
         {
@@ -73,7 +73,7 @@ public class DefaultController : ControllerBase
         {
             Status = StatusRetorno.Erro,
             Sucesso = false,
-            Objeto = objeto
+            Data = objeto
         };
         
         return new JsonResult(retorno);
