@@ -183,6 +183,7 @@ public class UsuarioController : DefaultController
     }
     
     [HttpPost]
+    [Authorize]
     [Route("GerarRelatorioGridUsuario")]
     public FileStreamResult GerarRelatorioGridUsuario(UsuarioRelatorioRequest request)
     {

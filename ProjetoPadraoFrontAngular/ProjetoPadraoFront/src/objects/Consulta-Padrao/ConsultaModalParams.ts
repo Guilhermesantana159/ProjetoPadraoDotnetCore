@@ -9,6 +9,6 @@ export interface ConsultaModalParams
     Required: boolean,
     GridOptions: GridOptions,
     SelectedText: string,
-    SelectedValue: string | undefined | number
+    SelectedValue: string 
 }
 

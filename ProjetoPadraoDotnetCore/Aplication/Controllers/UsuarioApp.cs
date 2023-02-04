@@ -2,6 +2,7 @@
 using Aplication.Authentication;
 using Aplication.Interfaces;
 using Aplication.Models.Grid;
+using Aplication.Models.Request.Senha;
 using Aplication.Models.Request.Usuario;
 using Aplication.Models.Response.Auth;
 using Aplication.Models.Response.Usuario;
@@ -44,6 +45,11 @@ public class UsuarioApp : IUsuarioApp
     public Usuario? GetByCpf(string cpf)
     {
         return Service.GetByCpf(cpf);
+    }
+    
+    public Usuario? GetByCpfEmail(string cpf,string email)
+    {
+        return Service.GetAllQuery().FirstOrDefault(x => x.Email == email && x.Cpf == cpf);
     }
 
     public UsuarioCrudResponse GetById(int id)
@@ -212,6 +218,54 @@ public class UsuarioApp : IUsuarioApp
             
             TotalItens = itens.Count()
         };
+    }
+
+    public ValidationResult AlterarSenha(UsuarioAlterarSenhaRequest request)
+    {
+        var retorno = new ValidationResult();
+
+        var usuario = Service.GetById(request.IdUsuario ?? 0);
+
+        if (usuario == null)
+            retorno.LErrors.Add("Usuário não encontrado na base!");
+
+        if (retorno.IsValid() && usuario != null)
+        {
+            usuario.Senha = new HashCripytograph().Hash(request.Senha);
+            usuario.TentativasRecuperarSenha = 0;
+            Service.Editar(usuario);
+        }
+
+        return retorno;
+    }
+    public ValidationResult ValidarCodigo(Usuario? usuario,ValidarCodigoRequest request)
+    {
+        var retorno = new ValidationResult();
+        
+        if (usuario == null)
+            retorno.LErrors.Add("Usuário não encontrado na base!");
+        
+        if(usuario != null && usuario.TentativasRecuperarSenha >= 3)
+            retorno.LErrors.Add("Número máximo de tentativas alcançado!");
+
+        if (retorno.IsValid() && usuario != null)
+        {
+            if (request.Codigo != usuario.CodigoRecuperarSenha.ToString())
+            {
+                usuario.TentativasRecuperarSenha += 1;
+                retorno.LErrors.Add($"Código inválido! Tentativas restantes: {3 - usuario.TentativasRecuperarSenha}");
+
+                //Atualizar numero tentativas
+                Service.Editar(usuario);
+            }
+        }
+
+        return retorno;
+    }
+
+    public Usuario? GetById(int? id)
+    {
+        return Service.GetById(id ?? 0);
     }
 }
 

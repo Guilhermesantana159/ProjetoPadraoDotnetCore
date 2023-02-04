@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ConsultaModal } from 'src/objects/Consulta-Padrao/consulta-modal';
@@ -14,6 +14,7 @@ import { ValidateDataAniversario, ValidateSenha } from 'src/factorys/validators/
 import { Skill } from 'src/objects/Usuario/Skill';
 import { UsuarioResponse } from '../../../../objects/Usuario/UsuarioResponse';
 import { DefaultService } from 'src/factorys/default.service';
+import { ConsultaModalComponent } from 'src/components/consulta-modal/consulta-padrao.component';
 
 @Component({
   selector: 'usuario-crud-root',
@@ -22,6 +23,9 @@ import { DefaultService } from 'src/factorys/default.service';
 })
 
 export class UsuarioCrudComponent{
+  @ViewChild(ConsultaModalComponent)
+  child!: ConsultaModalComponent;
+
   //Variaveis funcionais comportamento da tela tela
   loading = false;
   UserRegisterFormGroup: FormGroup;
@@ -54,7 +58,7 @@ export class UsuarioCrudComponent{
       Required: true,
       GridOptions: defaultService.Modal.ConsultaPadraoUsuario,
       SelectedText: '',
-      SelectedValue: undefined
+      SelectedValue: ''
     };
 
     //Formulario builder
@@ -112,8 +116,11 @@ export class UsuarioCrudComponent{
             this.lSkill.push(element);
           });
 
+          //Modal
           this.paramsConsultaUsuario.SelectedText = 'Sla';
-          this.paramsConsultaUsuario.SelectedValue = response.data.idUsuarioCadastro;
+          this.paramsConsultaUsuario.SelectedValue = response.data.idUsuarioCadastro.toString();
+
+          this.child.LoadEdit(this.paramsConsultaUsuario);
           
           //Senha Imutavel quando edição
           this.UserRegisterFormGroup.controls['senha'].clearValidators();

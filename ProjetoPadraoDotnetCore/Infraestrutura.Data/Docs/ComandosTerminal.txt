@@ -1,5 +1,5 @@
 ﻿//Criar Migration
-dotnet ef migrations add RemoveTableNotificacao
+dotnet ef migrations add AddColumnsRecSenha
 
 //Remover ultimo migration
 dotnet ef migrations remove AddTableNotificacao

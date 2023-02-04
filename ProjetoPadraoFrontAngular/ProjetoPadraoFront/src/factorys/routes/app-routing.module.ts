@@ -4,6 +4,7 @@ import { UsuarioCrudComponent } from 'src/app/entities/usuario/usuario-crud/usua
 import { UsuarioComponent } from 'src/app/entities/usuario/usuario-grid/usuario-grid.component';
 import { LoginComponent } from '../../app/entities/login/login.component';
 import { MainComponent } from '../../app/entities/main/main.component';
+import { RecoverPasswordComponent } from '../../app/entities/recoverPassword/recoverPassword.component';
 
 const routes: Routes = [
   {path: 'main',component: MainComponent, 
@@ -23,6 +24,7 @@ const routes: Routes = [
     ]
   },
   {path: 'login',component: LoginComponent},
+  {path: 'recuperar-senha',component: RecoverPasswordComponent},
   {path: '**',component: LoginComponent}
 ];
 

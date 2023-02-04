@@ -1,6 +1,7 @@
 ﻿using Aplication.Authentication;
 using Aplication.Controllers;
 using Aplication.Interfaces;
+using Aplication.Utils.Email;
 using Aplication.Utils.HashCripytograph;
 using Aplication.Utils.ValidatorDocument;
 using Aplication.Validators.EstruturaMenu;
@@ -33,6 +34,7 @@ namespace CrossCutting.IOC
             services.AddTransient<IHashCriptograph, HashCripytograph>();
             services.AddTransient<IValidatorDocument, ValidatorDocument>();
             services.AddTransient<IJwtTokenAuthentication, JwtAuthentication>();
+            services.AddScoped<IEmailHelper, EmailHelper>();
             services.AddSingleton<IConfiguration>(builder.Configuration);
             #endregion
 

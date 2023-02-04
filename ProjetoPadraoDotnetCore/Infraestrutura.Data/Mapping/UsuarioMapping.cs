@@ -31,6 +31,9 @@ public class UsuarioMapping : IEntityTypeConfiguration<Usuario>
         builder.Property(t => t.Rg).HasColumnName("Rg");
         builder.Property(t => t.Genero).HasColumnName("Genero");
         builder.Property(t => t.IdProfissao).HasColumnName("IdProfissao");
+        builder.Property(t => t.DataRecuperacaoSenha).HasColumnName("DataRecuperacaoSenha");
+        builder.Property(t => t.TentativasRecuperarSenha).HasColumnName("TentativasRecuperarSenha");
+        builder.Property(t => t.CodigoRecuperarSenha).HasColumnName("CodigoRecuperarSenha");
 
         builder
             .HasOne(t => t.Profissao)

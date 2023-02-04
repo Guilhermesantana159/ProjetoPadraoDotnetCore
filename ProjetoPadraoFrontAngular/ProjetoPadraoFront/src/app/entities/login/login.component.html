@@ -19,7 +19,7 @@
               text="Este campo é obrigatório">
             </text-error-message>
           </div>
-          <div class="mb-3">
+          <div class="mb-1">
             <label for="pswdLogin" class="form-label">Senha:</label>
             <div class="input-group">
               <input [type]="ActiveEyePasswordLogin ? 'text' : 'password'" 
@@ -38,6 +38,9 @@
             <text-error-message  *ngIf="loginFormGroup.get('senhaLogin')?.errors?.['required'] && submitLogin"
               text="Este campo é obrigatório">
             </text-error-message>
+          </div>
+          <div class="mb-3 d-flex justify-content-end">
+            <small><a class="recoverPassword"  routerLink="recuperar-senha">Esqueci minha senha</a></small>
           </div>
           <button type="submit" class="submit-login" [disabled]="loading">
               <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>

@@ -75,7 +75,7 @@ export class ConsultaModalComponent implements OnInit{
     }
   }
 
-  LoadEdit(ConsultaModal: ConsultaModal){
+  LoadEdit(ConsultaModal: ConsultaModalParams){
     this.ConsultaModal.SelectedText = ConsultaModal.SelectedText;
     this.ConsultaModal.SelectedValue = ConsultaModal.SelectedValue;
   };

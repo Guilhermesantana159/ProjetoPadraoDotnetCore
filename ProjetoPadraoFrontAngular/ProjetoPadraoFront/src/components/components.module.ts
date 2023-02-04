@@ -20,6 +20,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { ConsultaModalComponent } from './consulta-modal/consulta-padrao.component';
 import {MatChipsModule} from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { CodeInputComponent } from './code-input/code-input.component';
 
 const maskConfigFunction: () => Partial<IConfig> = () => {
     return {
@@ -28,9 +29,9 @@ const maskConfigFunction: () => Partial<IConfig> = () => {
 };
 
 @NgModule({
-    declarations: [ TextErrorMessageComponent,DataGridComponent,NoSanitizePipe,ConsultaModalComponent],
+    declarations: [ TextErrorMessageComponent,DataGridComponent,NoSanitizePipe,ConsultaModalComponent,CodeInputComponent],
     providers: [{ provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }],
-    exports: [ TextErrorMessageComponent,DataGridComponent,ConsultaModalComponent],
+    exports: [ TextErrorMessageComponent,DataGridComponent,ConsultaModalComponent,CodeInputComponent],
     imports: [  
                 MatTableModule,
                 BrowserModule,

@@ -1,4 +1,5 @@
 ﻿using Aplication.Models.Grid;
+using Aplication.Models.Request.Senha;
 using Aplication.Models.Request.Usuario;
 using Aplication.Models.Response.Usuario;
 using Infraestrutura.Entity;
@@ -20,5 +21,9 @@ public interface IUsuarioApp
     public void DeleteById(int id);
     public BaseGridResponse ConsultarGridUsuario(BaseGridRequest request);
     public List<UsuarioGridReportObj> ConsultarRelatorioUsuario(UsuarioRelatorioRequest request);
+    public Usuario? GetByCpfEmail(string cpf, string email);
+    public ValidationResult AlterarSenha(UsuarioAlterarSenhaRequest request);
+    public ValidationResult ValidarCodigo(Usuario? usuario, ValidarCodigoRequest request);
+    public Usuario? GetById(int? id);
 
 }

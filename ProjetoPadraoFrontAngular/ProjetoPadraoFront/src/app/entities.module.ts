@@ -26,6 +26,7 @@ import {MatRadioModule, MAT_RADIO_DEFAULT_OPTIONS} from '@angular/material/radio
 import {MatChipsModule} from '@angular/material/chips';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {RecoverPasswordComponent } from './entities/recoverPassword/recoverPassword.component';
 
 const maskConfigFunction: () => Partial<IConfig> = () => {
     return {
@@ -39,14 +40,15 @@ const maskConfigFunction: () => Partial<IConfig> = () => {
         LoginComponent,
         MainComponent,
         UsuarioComponent,
-        UsuarioCrudComponent 
+        UsuarioCrudComponent,
+        RecoverPasswordComponent
     ],
     exports: [  
         AppComponent,
         LoginComponent,
         MainComponent, 
         UsuarioComponent,
-        UsuarioCrudComponent
+        UsuarioCrudComponent,
     ],
     imports: [  
         CommonModule,

@@ -1,7 +1,9 @@
 using Aplication.Authentication;
 using Aplication.Interfaces;
 using Aplication.Models.Request.Login;
+using Aplication.Models.Request.Senha;
 using Aplication.Models.Request.Token;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Controllers.Base;
 
@@ -56,6 +58,78 @@ public class AuthController : DefaultController
             var retorno = Token.GerarToken(request.Cpf);
 
             return ResponderSucesso(retorno);
+        }
+        catch (Exception e)
+        {
+            return ResponderErro(e.Message);
+        }
+    }
+    
+    [HttpPost]
+    [Route("RecuperarSenha")]
+    public JsonResult RecuperarSenha(RecuperarSenhaRequest request)
+    {
+        try
+        {
+            var usuario = UsuarioApp.GetByCpfEmail(request.CpfRecover,request.EmailRecover);
+            
+            if(usuario == null)
+                return ResponderErro("Não foi encontrado usuário vinculado a este CPF e email!");
+
+            var retorno = AuthApp.RecuperarSenha(usuario);
+            
+            if(!retorno.IsValid())
+                return ResponderErro(retorno.LErrors.FirstOrDefault());
+
+            return ResponderSucesso("Insira o código informado no email",usuario.IdUsuario);
+        }
+        catch (Exception e)
+        {
+            return ResponderErro(e.Message);
+        }
+    }
+    
+    [HttpPost]
+    [Authorize]
+    [Route("AlterarSenha")]
+    public JsonResult AlterarSenha(UsuarioAlterarSenhaRequest request)
+    {
+        try
+        {
+            var retorno = UsuarioApp.AlterarSenha(request);
+            
+            if(!retorno.IsValid())
+                return ResponderErro(retorno.LErrors.FirstOrDefault());
+
+            return ResponderSucesso("Senha Alterada com sucesso");
+        }
+        catch (Exception e)
+        {
+            return ResponderErro(e.Message);
+        }
+    }
+    
+    [HttpPost]
+    [Route("ValidarCodigo")]
+    public JsonResult ValidarCodigo(ValidarCodigoRequest request)
+    {
+        try
+        {
+            var usuario = UsuarioApp.GetById(request.IdUsuario);
+            var retorno = UsuarioApp.ValidarCodigo(usuario,request);
+            
+            if(!retorno.IsValid())
+                return ResponderErro(retorno.LErrors.FirstOrDefault());
+
+            var login = new LoginRequest()
+            {
+                EmailLogin = usuario!.Email,
+                SenhaLogin = usuario.Senha
+            };
+                
+            var sessao = AuthApp.Login(login,true);
+
+            return ResponderSucesso("Codigo validado com sucesso!",sessao);
         }
         catch (Exception e)
         {
