@@ -130,7 +130,7 @@ textarea{
 }
 
 .modal-backdrop {
-    z-index: -3;
+    z-index: 0;
 }
 
 ::-webkit-scrollbar {
@@ -169,6 +169,10 @@ textarea{
 .NaoLido{
     background-color: rgba(70, 70, 70, 0.034);
     color:  rgba(3, 3, 3, 0.459);
+}
+
+.mat-tab-header-pagination {
+    z-index: 0 !important;
 }
 
 recover-password-root{
