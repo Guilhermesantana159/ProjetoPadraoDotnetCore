@@ -6,4 +6,5 @@ public class MenuRequest
     public string Nome { get; set; }
     public string Link { get; set; }
     public int IdModulo { get; set; }
+    public string DescricaoMenu { get; set; }
 }
