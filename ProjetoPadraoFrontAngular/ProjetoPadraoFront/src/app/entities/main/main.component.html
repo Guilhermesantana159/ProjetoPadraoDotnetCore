@@ -17,14 +17,14 @@
                 </a> 
             </li>
             <div *ngFor="let menu of estruturaMenu">
-                <li>  
+                <li class="menu">   
                     <a [href]="'#'+ menu.nome" role="button" data-bs-toggle="collapse" aria-expanded="false" 
-                    class="dropdown-toggle" [attr.aria-controls]="menu.nome">
+                    class="dropdown-toggle" [attr.aria-controls]="menu.nome" [matTooltip]="menu.descricaoModulo" matTooltipPosition="above">
                     <i [class]="menu.icone"></i>
                         {{ menu.descricaoLabel}}
                     </a>
                     <ul class="collapse list-unstyled" [id]="menu.nome" *ngFor="let subMenu of menu.lMenus"> 
-                        <li class="link" routerLinkActive="active-link">
+                        <li class="link" routerLinkActive="active-link" [matTooltip]="subMenu.descricaoMenu" matTooltipPosition="above">
                             <a [routerLink]="subMenu.link"><span class="px-2">&#x268A;</span>{{subMenu.nome}}</a>
                         </li>
                     </ul> 
@@ -134,7 +134,7 @@
               </div>
             </div>
         </div>
-        <div class="container-fluid" style="min-height: 100vh;">
+        <div class="container-fluid" style="min-height: 100vh;z-index: 1;">
             <router-outlet></router-outlet>            
         </div>
         <footer class="text-center p-2 border-top footer-content bottom-0 end-0">

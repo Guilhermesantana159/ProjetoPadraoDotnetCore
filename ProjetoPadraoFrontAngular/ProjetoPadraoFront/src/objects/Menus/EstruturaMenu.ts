@@ -15,11 +15,13 @@ export interface Modulo
     nome: string,
     icone: string,
     descricaoLabel: string,
+    descricaoModulo: string,
     lMenus: Array<Menu> 
 }
 
 export interface Menu
 {
     nome: string,
-    link: string
+    link: string,
+    descricaoMenu: string
 }

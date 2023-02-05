@@ -59,6 +59,7 @@ span {
     position: sticky;
     height: 100vh;
     top: 0;
+    z-index: 1;
 }
 
 #sidebar.active {
@@ -193,6 +194,20 @@ ul ul a {
     max-height: 20vh;
     margin-top: 20vh;
 }
+
+#sidebar.active .menu:hover ul{
+    display: block;
+    left: 90pt;
+    position: fixed;
+    margin-top: -80pt;
+    min-width: 170pt;
+    background-color: rgb(14,75,109,0.800);
+}
+
+#sidebar.active .menu ul{
+    display: none;
+}
+
 /* ---------------------------------------------------
     CONTENT STYLE
 ----------------------------------------------------- */
@@ -210,8 +225,8 @@ ul ul a {
     min-height: 100vh;
     transition: all 0.3s;
     background-color: rgb(243, 243, 244);
+    border-radius: 5pt;
 }
-
 
 /* ---------------------------------------------------
     MEDIAQUERIES
